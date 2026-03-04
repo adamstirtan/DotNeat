@@ -94,6 +94,22 @@ public sealed class CartPoleFitnessEvaluatorTests
         Assert.AreEqual(3, evaluator.Trials);
     }
 
+    [TestMethod]
+    public void Evaluate_InitialRandomPopulation_IsNotSolvedAtGenerationZero_ForDifferentSeeds()
+    {
+        const int populationSize = 150;
+        const int maxSteps = 500;
+        const int trials = 5;
+
+        double seed12345Best = EvaluateInitialPopulationBestFitness(seed: 12345, populationSize, maxSteps, trials);
+        double seed54321Best = EvaluateInitialPopulationBestFitness(seed: 54321, populationSize, maxSteps, trials);
+
+        Assert.IsLessThan(maxSteps + 1d, seed12345Best,
+            $"Seed 12345 should not solve cart-pole at generation zero; best was {seed12345Best}.");
+        Assert.IsLessThan(maxSteps + 1d, seed54321Best,
+            $"Seed 54321 should not solve cart-pole at generation zero; best was {seed54321Best}.");
+    }
+
     // Creates a genome with the given number of fully-connected inputs and outputs
     private static Genome CreateMinimalGenome(int inputCount, int outputCount)
     {
@@ -159,5 +175,53 @@ public sealed class CartPoleFitnessEvaluatorTests
             tracker.GetOrCreateConnectionInnovation(inputAngularVel, output)));
 
         return genome;
+    }
+
+    private static double EvaluateInitialPopulationBestFitness(int seed, int populationSize, int maxSteps, int trials)
+    {
+        CartPoleFitnessEvaluator evaluator = new(maxSteps: maxSteps, trials: trials, seed: seed);
+        InnovationTracker tracker = new();
+        Random random = new(seed);
+
+        Guid inputPos = Guid.NewGuid();
+        Guid inputVel = Guid.NewGuid();
+        Guid inputAngle = Guid.NewGuid();
+        Guid inputAngularVel = Guid.NewGuid();
+        Guid output = Guid.NewGuid();
+
+        int innov0 = tracker.GetOrCreateConnectionInnovation(inputPos, output);
+        int innov1 = tracker.GetOrCreateConnectionInnovation(inputVel, output);
+        int innov2 = tracker.GetOrCreateConnectionInnovation(inputAngle, output);
+        int innov3 = tracker.GetOrCreateConnectionInnovation(inputAngularVel, output);
+
+        double best = double.MinValue;
+
+        for (int i = 0; i < populationSize; i++)
+        {
+            Genome genome = new();
+            genome.Nodes.Add(new NodeGene(inputPos, NodeType.Input, new ReluActivationFunction(), 0));
+            genome.Nodes.Add(new NodeGene(inputVel, NodeType.Input, new ReluActivationFunction(), 0));
+            genome.Nodes.Add(new NodeGene(inputAngle, NodeType.Input, new ReluActivationFunction(), 0));
+            genome.Nodes.Add(new NodeGene(inputAngularVel, NodeType.Input, new ReluActivationFunction(), 0));
+            genome.Nodes.Add(new NodeGene(output, NodeType.Output, new SigmoidActivationFunction(), 0));
+
+            genome.Connections.Add(new ConnectionGene(Guid.NewGuid(), inputPos, output, NextWeight(random), true, innov0));
+            genome.Connections.Add(new ConnectionGene(Guid.NewGuid(), inputVel, output, NextWeight(random), true, innov1));
+            genome.Connections.Add(new ConnectionGene(Guid.NewGuid(), inputAngle, output, NextWeight(random), true, innov2));
+            genome.Connections.Add(new ConnectionGene(Guid.NewGuid(), inputAngularVel, output, NextWeight(random), true, innov3));
+
+            double fitness = evaluator.Evaluate(genome);
+            if (fitness > best)
+            {
+                best = fitness;
+            }
+        }
+
+        return best;
+    }
+
+    private static double NextWeight(Random random)
+    {
+        return -1d + (2d * random.NextDouble());
     }
 }

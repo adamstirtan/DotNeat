@@ -37,6 +37,7 @@ public sealed record EvolutionOptions(
 public sealed record GenerationMetrics(
     int Generation,
     double BestFitness,
+    double AverageFitness,
     int SpeciesCount,
     double AverageComplexity);
 
@@ -51,7 +52,7 @@ public sealed class EvolutionOrchestrator(Func<Genome, double> evaluate, Evoluti
     private readonly Func<Genome, double> _evaluate = evaluate ?? throw new ArgumentNullException(nameof(evaluate));
     private readonly EvolutionOptions _options = options ?? throw new ArgumentNullException(nameof(options));
 
-    public EvolutionResult Run()
+    public EvolutionResult Run(Action<GenerationMetrics>? onGenerationCompleted = null)
     {
         _options.Validate();
 
@@ -93,8 +94,11 @@ public sealed class EvolutionOrchestrator(Func<Genome, double> evaluate, Evoluti
                 _options.C2,
                 _options.C3);
 
+            double averageFitness = rawFitness.Values.Average();
             double averageComplexity = population.Average(ComputeComplexity);
-            history.Add(new GenerationMetrics(generation, generationBestFitness, species.Count, averageComplexity));
+            GenerationMetrics metrics = new(generation, generationBestFitness, averageFitness, species.Count, averageComplexity);
+            history.Add(metrics);
+            onGenerationCompleted?.Invoke(metrics);
 
             if (generation == _options.GenerationCount - 1)
             {

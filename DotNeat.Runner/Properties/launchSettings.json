@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DotNeat.Runner": {
+      "commandName": "Project",
+      "commandLineArgs": "cartpole"
+    }
+  }
+}

@@ -22,6 +22,7 @@ public sealed class CartPoleFitnessEvaluator
     private const double MassPole = 0.1;
     private const double HalfPoleLength = 0.5;
     private const double ForceMagnitude = 10.0;
+    private const double DisturbanceForceMagnitude = 1.0;
     private const double TimeStep = 0.02;
 
     // Episode termination thresholds
@@ -34,13 +35,14 @@ public sealed class CartPoleFitnessEvaluator
 
     private readonly int _maxSteps;
     private readonly int _trials;
+    private readonly int _seed;
 
     /// <summary>
     /// Initializes a new <see cref="CartPoleFitnessEvaluator"/>.
     /// </summary>
     /// <param name="maxSteps">Maximum timesteps per episode. Default is 500.</param>
     /// <param name="trials">Number of independent trials per genome. Default is 5.</param>
-    public CartPoleFitnessEvaluator(int maxSteps = 500, int trials = 5)
+    public CartPoleFitnessEvaluator(int maxSteps = 500, int trials = 5, int seed = 12345)
     {
         if (maxSteps < 1)
         {
@@ -54,6 +56,7 @@ public sealed class CartPoleFitnessEvaluator
 
         _maxSteps = maxSteps;
         _trials = trials;
+        _seed = seed;
     }
 
     /// <summary>Gets the maximum number of timesteps per episode.</summary>
@@ -98,11 +101,14 @@ public sealed class CartPoleFitnessEvaluator
 
     private int RunEpisode(NeuralNetwork network, int trial)
     {
-        // Vary starting conditions slightly across trials for robustness
-        double x = (trial % 2 == 0) ? 0.0 : 0.05;
-        double xDot = 0.0;
-        double theta = (trial % 2 == 0) ? 0.01 : -0.01;
-        double thetaDot = 0.0;
+        Random trialRandom = CreateDeterministicTrialRandom(trial);
+
+        // Deterministic but diverse initial state per genome/trial.
+        // This avoids trivial saturation where many controllers score max from generation 0.
+        double x = NextRange(trialRandom, -1.5, 1.5);
+        double xDot = NextRange(trialRandom, -2.0, 2.0);
+        double theta = NextRange(trialRandom, -0.2, 0.2);
+        double thetaDot = NextRange(trialRandom, -2.5, 2.5);
 
         Guid input0 = network.InputNodeIds[0];
         Guid input1 = network.InputNodeIds[1];
@@ -125,6 +131,7 @@ public sealed class CartPoleFitnessEvaluator
 
             // Output > 0.5 → push right (+force); otherwise push left (−force)
             double force = outputs[outputId] > 0.5 ? ForceMagnitude : -ForceMagnitude;
+            force += NextRange(trialRandom, -DisturbanceForceMagnitude, DisturbanceForceMagnitude);
 
             (x, xDot, theta, thetaDot) = PhysicsStep(x, xDot, theta, thetaDot, force);
 
@@ -135,6 +142,17 @@ public sealed class CartPoleFitnessEvaluator
         }
 
         return _maxSteps;
+    }
+
+    private Random CreateDeterministicTrialRandom(int trial)
+    {
+        int seed = HashCode.Combine(_seed, trial);
+        return new Random(seed);
+    }
+
+    private static double NextRange(Random random, double min, double max)
+    {
+        return min + ((max - min) * random.NextDouble());
     }
 
     /// <summary>
