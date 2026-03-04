@@ -1,5 +1,5 @@
 using DotNeat;
-using DotNeat.Runner.Visualization;
+using DotNeat.Runner.Persistence;
 
 namespace DotNeat.Runner.Experiments;
 
@@ -53,8 +53,11 @@ public sealed class CartPoleExperiment(int seed = 12345) : IExperiment
         Console.WriteLine();
         Console.WriteLine("Generation | BestFitness | AvgFitness | Species | AvgComplexity | ChampSteps");
 
-        HashSet<int> snapshotGenerations = ExperimentVisualization.SelectSnapshotGenerations(options.GenerationCount, desiredSnapshotCount: 6);
-        List<NetworkSnapshot> snapshots = [];
+        SqliteExperimentRunPersistence persistence = new();
+        EvolutionRunContext runContext = new(
+            ExperimentName: Name,
+            Seed: _seed,
+            ConfigJson: ExperimentConfigSerializer.Serialize(options, new { MaxSteps = maxSteps, Trials = trials }));
 
         EvolutionResult result = orchestrator.Run(
             onGenerationCompleted: metrics =>
@@ -66,31 +69,15 @@ public sealed class CartPoleExperiment(int seed = 12345) : IExperiment
                         $"{metrics.Generation,10} | {metrics.BestFitness,11:F2} | {metrics.AverageFitness,10:F2} | {metrics.SpeciesCount,7} | {metrics.AverageComplexity,13:F2} | {champSteps,10:F1}");
                 }
             },
-            onGenerationChampionCaptured: (metrics, champion) =>
-            {
-                if (snapshotGenerations.Contains(metrics.Generation))
-                {
-                    snapshots.Add(new NetworkSnapshot(metrics.Generation, champion));
-                }
-            });
+            runPersistence: persistence,
+            runContext: runContext);
 
         Console.WriteLine();
         double bestSteps = result.BestFitness - 1.0;
         bool solved = result.BestFitness >= maxSteps + 1;
         Console.WriteLine($"Best fitness: {result.BestFitness:F2} (avg {bestSteps:F1} steps survived)");
         Console.WriteLine(solved ? $"SOLVED in {result.History.Count} generations!" : "Did not reach solving criterion.");
-
-        string reportPath = ExperimentVisualization.WriteEvolutionReport(
-            experimentName: Name,
-            seed: _seed,
-            history: result.History,
-            goalFitness: maxSteps + 1,
-            goalLabel: "Solved threshold",
-            additionalMetricSelector: m => m.BestFitness - 1.0,
-            additionalMetricLabel: "ChampionSteps",
-            networkSnapshots: snapshots);
-
-        Console.WriteLine($"Visualization report: {reportPath}");
+        Console.WriteLine($"Results database: {persistence.DatabasePath}");
     }
 
     private static Genome CreateGenome(

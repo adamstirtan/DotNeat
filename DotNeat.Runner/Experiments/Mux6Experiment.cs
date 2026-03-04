@@ -1,5 +1,5 @@
 using DotNeat;
-using DotNeat.Runner.Visualization;
+using DotNeat.Runner.Persistence;
 
 namespace DotNeat.Runner.Experiments;
 
@@ -57,8 +57,11 @@ public sealed class Mux6Experiment : IExperiment
         Console.WriteLine();
         Console.WriteLine("Generation | BestFitness | AvgFitness | Species | AvgComplexity");
 
-        HashSet<int> snapshotGenerations = ExperimentVisualization.SelectSnapshotGenerations(options.GenerationCount, desiredSnapshotCount: 6);
-        List<NetworkSnapshot> snapshots = [];
+        SqliteExperimentRunPersistence persistence = new();
+        EvolutionRunContext runContext = new(
+            ExperimentName: Name,
+            Seed: _seed,
+            ConfigJson: ExperimentConfigSerializer.Serialize(options));
 
         EvolutionResult result = orchestrator.Run(
             onGenerationCompleted: metrics =>
@@ -69,28 +72,14 @@ public sealed class Mux6Experiment : IExperiment
                         $"{metrics.Generation,10} | {metrics.BestFitness,11:F2} | {metrics.AverageFitness,10:F2} | {metrics.SpeciesCount,7} | {metrics.AverageComplexity,13:F2}");
                 }
             },
-            onGenerationChampionCaptured: (metrics, champion) =>
-            {
-                if (snapshotGenerations.Contains(metrics.Generation))
-                {
-                    snapshots.Add(new NetworkSnapshot(metrics.Generation, champion));
-                }
-            });
+            runPersistence: persistence,
+            runContext: runContext);
 
         Console.WriteLine();
         bool solved = result.BestFitness >= 64d;
         Console.WriteLine($"Best fitness: {result.BestFitness:F2} / 64.00");
         Console.WriteLine(solved ? "SOLVED." : "Did not fully solve benchmark.");
-
-        string reportPath = ExperimentVisualization.WriteEvolutionReport(
-            experimentName: Name,
-            seed: _seed,
-            history: result.History,
-            goalFitness: 64d,
-            goalLabel: "Perfect classification (64/64)",
-            networkSnapshots: snapshots);
-
-        Console.WriteLine($"Visualization report: {reportPath}");
+        Console.WriteLine($"Results database: {persistence.DatabasePath}");
     }
 
     private static Genome CreateGenome(

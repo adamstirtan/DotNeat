@@ -39,7 +39,22 @@ public sealed record GenerationMetrics(
     double BestFitness,
     double AverageFitness,
     int SpeciesCount,
-    double AverageComplexity);
+    double AverageComplexity,
+    int PopulationSize);
+
+public sealed record EvolutionRunContext(
+    string ExperimentName,
+    int Seed,
+    string ConfigJson);
+
+public interface IEvolutionRunPersistence
+{
+    Guid BeginRun(EvolutionRunContext context);
+
+    void PersistGeneration(Guid runId, GenerationMetrics metrics, Genome generationChampion);
+
+    void CompleteRun(Guid runId, double bestFitness, DateTime finishedUtc);
+}
 
 public sealed record EvolutionResult(
     Genome BestGenome,
@@ -54,9 +69,18 @@ public sealed class EvolutionOrchestrator(Func<Genome, double> evaluate, Evoluti
 
     public EvolutionResult Run(
         Action<GenerationMetrics>? onGenerationCompleted = null,
-        Action<GenerationMetrics, Genome>? onGenerationChampionCaptured = null)
+        Action<GenerationMetrics, Genome>? onGenerationChampionCaptured = null,
+        IEvolutionRunPersistence? runPersistence = null,
+        EvolutionRunContext? runContext = null)
     {
         _options.Validate();
+
+        if (runPersistence is not null && runContext is null)
+        {
+            throw new ArgumentNullException(nameof(runContext), "runContext is required when runPersistence is provided.");
+        }
+
+        Guid? runId = runPersistence?.BeginRun(runContext!);
 
         Random rng = new(_options.Seed);
         InnovationTracker innovationTracker = new();
@@ -111,13 +135,19 @@ public sealed class EvolutionOrchestrator(Func<Genome, double> evaluate, Evoluti
 
             double averageFitness = totalFitness / population.Count;
             double averageComplexity = totalComplexity / population.Count;
-            GenerationMetrics metrics = new(generation, generationBestFitness, averageFitness, species.Count, averageComplexity);
+            GenerationMetrics metrics = new(generation, generationBestFitness, averageFitness, species.Count, averageComplexity, population.Count);
             history.Add(metrics);
             onGenerationCompleted?.Invoke(metrics);
 
+            Genome championClone = CloneGenome(generationBest);
+            if (runPersistence is not null && runId.HasValue)
+            {
+                runPersistence.PersistGeneration(runId.Value, metrics, championClone);
+            }
+
             if (onGenerationChampionCaptured is not null)
             {
-                onGenerationChampionCaptured(metrics, CloneGenome(generationBest));
+                onGenerationChampionCaptured(metrics, championClone);
             }
 
             if (generation == _options.GenerationCount - 1)
@@ -134,6 +164,11 @@ public sealed class EvolutionOrchestrator(Func<Genome, double> evaluate, Evoluti
                 rng);
 
             population = [.. nextPopulation];
+        }
+
+        if (runPersistence is not null && runId.HasValue)
+        {
+            runPersistence.CompleteRun(runId.Value, bestFitness, DateTime.UtcNow);
         }
 
         return new EvolutionResult(
