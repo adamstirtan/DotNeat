@@ -1,13 +1,10 @@
+using DotNeat.Runner.Visualization;
+
 namespace DotNeat.Runner.Experiments;
 
-public sealed class CartPoleExperiment : IExperiment
+public sealed class CartPoleExperiment(int seed = 12345) : IExperiment
 {
-    private readonly int _seed;
-
-    public CartPoleExperiment(int seed = 12345)
-    {
-        _seed = seed;
-    }
+    private readonly int _seed = seed;
 
     public string Name => "cartpole";
 
@@ -70,6 +67,17 @@ public sealed class CartPoleExperiment : IExperiment
         bool solved = result.BestFitness >= maxSteps + 1;
         Console.WriteLine($"Best fitness: {result.BestFitness:F2} (avg {bestSteps:F1} steps survived)");
         Console.WriteLine(solved ? $"SOLVED in {result.History.Count} generations!" : "Did not reach solving criterion.");
+
+        string reportPath = ExperimentVisualization.WriteEvolutionReport(
+            experimentName: Name,
+            seed: _seed,
+            history: result.History,
+            goalFitness: maxSteps + 1,
+            goalLabel: "Solved threshold",
+            additionalMetricSelector: m => m.BestFitness - 1.0,
+            additionalMetricLabel: "ChampionSteps");
+
+        Console.WriteLine($"Visualization report: {reportPath}");
     }
 
     private static Genome CreateGenome(

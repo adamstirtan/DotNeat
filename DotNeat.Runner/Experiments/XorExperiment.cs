@@ -1,15 +1,10 @@
-using DotNeat;
+using DotNeat.Runner.Visualization;
 
 namespace DotNeat.Runner.Experiments;
 
-public sealed class XorExperiment : IExperiment
+public sealed class XorExperiment(int seed = 31337) : IExperiment
 {
-    private readonly int _seed;
-
-    public XorExperiment(int seed = 12345)
-    {
-        _seed = seed;
-    }
+    private readonly int _seed = seed;
 
     public string Name => "xor";
 
@@ -58,6 +53,15 @@ public sealed class XorExperiment : IExperiment
 
         Console.WriteLine();
         Console.WriteLine($"Best fitness: {result.BestFitness:F6} / 4.000000");
+
+        string reportPath = ExperimentVisualization.WriteEvolutionReport(
+            experimentName: Name,
+            seed: _seed,
+            history: result.History,
+            goalFitness: 4d,
+            goalLabel: "Perfect XOR (4/4)");
+
+        Console.WriteLine($"Visualization report: {reportPath}");
     }
 
     private static Genome CreateGenome(Random rng, InnovationTracker tracker, Guid inputA, Guid inputB, Guid output)

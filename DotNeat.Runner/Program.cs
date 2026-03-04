@@ -6,6 +6,8 @@ int seed = args.Length > 1 && int.TryParse(args[1], out int parsedSeed) ? parsed
 IExperiment experiment = experimentName switch
 {
     "cartpole" => new CartPoleExperiment(seed),
+    "mux6" => new Mux6Experiment(seed),
+    "multiplexer" => new Mux6Experiment(seed),
     _ => new XorExperiment(seed),
 };
 

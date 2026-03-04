@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>xor evolution report</title>
+  <style>
+    body { font-family: Segoe UI, Arial, sans-serif; margin: 24px; color: #1f2937; }
+    h1 { margin-bottom: 4px; }
+    .meta { color: #6b7280; margin-bottom: 16px; }
+    .chart { margin: 16px 0 28px 0; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; }
+    .caption { font-weight: 600; margin-bottom: 8px; }
+    .legend { font-size: 12px; color: #4b5563; margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <h1>xor evolution visualization</h1>
+  <div class="meta">Seed: 12345 | Generations: 40</div>
+
+  <div class="chart">
+    <div class="caption">Fitness progression</div>
+    <svg viewBox="0 0 920 250" width="100%" height="260" role="img" aria-label="Fitness over generations">
+<line x1="50" y1="215" x2="900" y2="215" stroke="#9ca3af" />
+<line x1="50" y1="20" x2="50" y2="215" stroke="#9ca3af" />
+<line x1="50" y1="36.25" x2="900" y2="36.25" stroke="#ef4444" stroke-dasharray="6,4" />
+<text x="56" y="30.25" font-size="11" fill="#ef4444">Perfect XOR (4/4)</text>
+<polyline fill="none" stroke="#2e7d32" stroke-width="2" points="50.00,188.18 71.79,188.17 93.59,188.16 115.38,179.81 137.18,179.81 158.97,177.62 180.77,157.98 202.56,153.19 224.36,153.19 246.15,152.96 267.95,143.62 289.74,143.62 311.54,135.49 333.33,132.81 355.13,132.81 376.92,130.66 398.72,130.66 420.51,130.66 442.31,130.66 464.10,123.28 485.90,117.85 507.69,117.85 529.49,117.85 551.28,115.46 573.08,115.46 594.87,101.13 616.67,101.13 638.46,101.13 660.26,87.40 682.05,87.40 703.85,87.40 725.64,87.40 747.44,87.40 769.23,83.23 791.03,83.23 812.82,83.23 834.62,83.23 856.41,79.53 878.21,79.09 900.00,79.09" />
+<polyline fill="none" stroke="#1565c0" stroke-width="2" points="50.00,198.75 71.79,193.98 93.59,192.51 115.38,192.30 137.18,191.44 158.97,192.54 180.77,191.74 202.56,192.04 224.36,191.12 246.15,190.17 267.95,188.94 289.74,190.06 311.54,187.65 333.33,195.08 355.13,187.68 376.92,192.66 398.72,187.92 420.51,188.47 442.31,185.38 464.10,185.14 485.90,180.63 507.69,184.23 529.49,177.51 551.28,180.48 573.08,175.92 594.87,178.25 616.67,181.98 638.46,174.67 660.26,175.02 682.05,173.31 703.85,174.05 725.64,171.61 747.44,169.56 769.23,171.69 791.03,172.25 812.82,168.58 834.62,167.62 856.41,167.38 878.21,168.37 900.00,169.26" />
+<rect x="56" y="231" width="10" height="10" fill="#2e7d32" />
+<text x="72" y="240" font-size="11" fill="#374151">Best fitness</text>
+<rect x="56" y="217" width="10" height="10" fill="#1565c0" />
+<text x="72" y="226" font-size="11" fill="#374151">Average fitness</text>
+<text x="50" y="244" font-size="11" fill="#6b7280">Gen 0</text>
+<text x="845" y="244" font-size="11" fill="#6b7280">Gen 39</text>
+<text x="54" y="32" font-size="11" fill="#6b7280">4.11</text>
+<text x="54" y="211" font-size="11" fill="#6b7280">2.82</text>
+</svg>
+
+  </div>
+
+  <div class="chart">
+    <div class="caption">Speciation behavior</div>
+    <svg viewBox="0 0 920 250" width="100%" height="260" role="img" aria-label="Species count">
+<line x1="50" y1="215" x2="900" y2="215" stroke="#9ca3af" />
+<line x1="50" y1="20" x2="50" y2="215" stroke="#9ca3af" />
+<polyline fill="none" stroke="#6a1b9a" stroke-width="2" points="50.00,198.75 71.79,198.75 93.59,194.79 115.38,190.82 137.18,186.86 158.97,186.86 180.77,167.04 202.56,159.12 224.36,147.23 246.15,147.23 267.95,143.26 289.74,131.37 311.54,127.41 333.33,119.48 355.13,111.55 376.92,99.66 398.72,95.70 420.51,95.70 442.31,95.70 464.10,91.74 485.90,87.77 507.69,79.85 529.49,79.85 551.28,75.88 573.08,75.88 594.87,71.92 616.67,56.07 638.46,56.07 660.26,56.07 682.05,48.14 703.85,44.18 725.64,44.18 747.44,44.18 769.23,44.18 791.03,44.18 812.82,44.18 834.62,40.21 856.41,40.21 878.21,40.21 900.00,36.25" />
+<rect x="56" y="231" width="10" height="10" fill="#6a1b9a" />
+<text x="72" y="240" font-size="11" fill="#374151">Species</text>
+<text x="50" y="244" font-size="11" fill="#6b7280">Gen 0</text>
+<text x="845" y="244" font-size="11" fill="#6b7280">Gen 39</text>
+<text x="54" y="32" font-size="11" fill="#6b7280">46.10</text>
+<text x="54" y="211" font-size="11" fill="#6b7280">-3.10</text>
+</svg>
+
+  </div>
+
+  <div class="chart">
+    <div class="caption">Structural growth</div>
+    <svg viewBox="0 0 920 250" width="100%" height="260" role="img" aria-label="Average complexity">
+<line x1="50" y1="215" x2="900" y2="215" stroke="#9ca3af" />
+<line x1="50" y1="20" x2="50" y2="215" stroke="#9ca3af" />
+<polyline fill="none" stroke="#ef6c00" stroke-width="2" points="50.00,198.13 71.79,196.38 93.59,198.75 115.38,181.88 137.18,173.45 158.97,162.34 180.77,160.28 202.56,135.91 224.36,131.80 246.15,118.53 267.95,115.44 289.74,108.45 311.54,103.41 333.33,97.44 355.13,91.89 376.92,94.36 398.72,83.15 420.51,81.40 442.31,76.57 464.10,71.22 485.90,70.40 507.69,67.72 529.49,63.40 551.28,59.91 573.08,61.65 594.87,59.08 616.67,54.45 638.46,57.44 660.26,54.25 682.05,51.78 703.85,58.16 725.64,46.95 747.44,48.69 769.23,46.84 791.03,49.41 812.82,41.60 834.62,40.67 856.41,36.25 878.21,36.76 900.00,36.35" />
+<rect x="56" y="231" width="10" height="10" fill="#ef6c00" />
+<text x="72" y="240" font-size="11" fill="#374151">Complexity</text>
+<text x="50" y="244" font-size="11" fill="#6b7280">Gen 0</text>
+<text x="845" y="244" font-size="11" fill="#6b7280">Gen 39</text>
+<text x="54" y="32" font-size="11" fill="#6b7280">22.32</text>
+<text x="54" y="211" font-size="11" fill="#6b7280">3.36</text>
+</svg>
+
+  </div>
+
+  
+</body>
+</html>
