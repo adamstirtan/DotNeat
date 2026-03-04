@@ -1,3 +1,5 @@
+using DotNeat;
+
 namespace DotNeat.Tests;
 
 [TestClass]
@@ -95,6 +97,46 @@ public sealed class ReproductionPipelineTests
 
         Assert.HasCount(1, next);
         Assert.AreNotEqual(0d, next[0].Connections.Single().Weight);
+    }
+
+    [TestMethod]
+    public void Reproduce_DoesNotReturnCyclicGenome_WhenCrossoverCombinationIsCyclic()
+    {
+        Guid input = Guid.NewGuid();
+        Guid hidden = Guid.NewGuid();
+        Guid output = Guid.NewGuid();
+
+        Genome parentA = new();
+        parentA.Nodes.Add(new NodeGene(input, NodeType.Input, new ReluActivationFunction(), 0));
+        parentA.Nodes.Add(new NodeGene(hidden, NodeType.Hidden, new ReluActivationFunction(), 0));
+        parentA.Nodes.Add(new NodeGene(output, NodeType.Output, new SigmoidActivationFunction(), 0));
+        parentA.Connections.Add(new ConnectionGene(Guid.NewGuid(), input, hidden, 1, true, 1));
+        parentA.Connections.Add(new ConnectionGene(Guid.NewGuid(), hidden, output, 1, true, 2));
+
+        Genome parentB = new();
+        parentB.Nodes.Add(new NodeGene(input, NodeType.Input, new ReluActivationFunction(), 0));
+        parentB.Nodes.Add(new NodeGene(hidden, NodeType.Hidden, new ReluActivationFunction(), 0));
+        parentB.Nodes.Add(new NodeGene(output, NodeType.Output, new SigmoidActivationFunction(), 0));
+        parentB.Connections.Add(new ConnectionGene(Guid.NewGuid(), input, output, 1, true, 3));
+        parentB.Connections.Add(new ConnectionGene(Guid.NewGuid(), output, hidden, 1, true, 4));
+
+        Species species = new(1, parentA, [parentA, parentB]);
+
+        IReadOnlyDictionary<Guid, double> fitness = new Dictionary<Guid, double>
+        {
+            [parentA.GenomeId] = 1,
+            [parentB.GenomeId] = 1,
+        };
+
+        IReadOnlyList<Genome> next = ReproductionPipeline.Reproduce(
+            [species],
+            fitness,
+            offspringCount: 6,
+            innovationTracker: new InnovationTracker(),
+            options: new ReproductionOptions(ElitesPerSpecies: 0, TournamentSize: 1, CrossoverProbability: 1, MutationProbability: 0),
+            random: new Random(9));
+
+        Assert.IsTrue(next.All(g => g.GetValidationErrors().Count == 0));
     }
 
     private static (Genome best, Genome other) CreateTwoMemberSpeciesGenomes(double bestWeight, double otherWeight)

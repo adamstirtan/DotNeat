@@ -141,7 +141,14 @@ public static class ReproductionPipeline
                     Genome parentB = SelectParent(group, rawFitnessByGenomeId, config.TournamentSize, rng);
                     double parentBFitness = rawFitnessByGenomeId[parentB.GenomeId];
 
-                    child = GenomeCrossover.Crossover(parentA, parentAFitness, parentB, parentBFitness, rng);
+                    try
+                    {
+                        child = GenomeCrossover.Crossover(parentA, parentAFitness, parentB, parentBFitness, rng);
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        child = CloneGenome(parentA);
+                    }
                 }
                 else
                 {
@@ -153,6 +160,11 @@ public static class ReproductionPipeline
                     ApplyMutation(child, mutator, config, rng);
                 }
 
+                if (!IsGenomeValid(child))
+                {
+                    child = CloneGenome(parentA);
+                }
+
                 nextGeneration.Add(child);
                 if (nextGeneration.Count >= offspringCount)
                 {
@@ -162,6 +174,11 @@ public static class ReproductionPipeline
         }
 
         return nextGeneration;
+    }
+
+    private static bool IsGenomeValid(Genome genome)
+    {
+        return genome.GetValidationErrors().Count == 0;
     }
 
     private static Dictionary<int, int> AllocateOffspringCounts(

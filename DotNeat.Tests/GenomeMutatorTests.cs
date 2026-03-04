@@ -90,6 +90,31 @@ public sealed class GenomeMutatorTests
         Assert.IsTrue(genome.Connections[0].Enabled);
     }
 
+    [TestMethod]
+    public void MutateToggleConnection_DoesNotEnableCycle()
+    {
+        Guid input = Guid.NewGuid();
+        Guid hidden = Guid.NewGuid();
+        Guid output = Guid.NewGuid();
+
+        Genome genome = new();
+        genome.Nodes.Add(new NodeGene(input, NodeType.Input, new ReluActivationFunction(), 0));
+        genome.Nodes.Add(new NodeGene(hidden, NodeType.Hidden, new ReluActivationFunction(), 0));
+        genome.Nodes.Add(new NodeGene(output, NodeType.Output, new SigmoidActivationFunction(), 0));
+
+        genome.Connections.Add(new ConnectionGene(Guid.NewGuid(), input, hidden, 1, true, 1));
+        genome.Connections.Add(new ConnectionGene(Guid.NewGuid(), hidden, output, 1, true, 2));
+        genome.Connections.Add(new ConnectionGene(Guid.NewGuid(), output, input, 1, false, 3));
+
+        GenomeMutator mutator = new(new InnovationTracker(), new Random(7));
+
+        for (int i = 0; i < 20; i++)
+        {
+            _ = mutator.MutateToggleConnection(genome);
+            Assert.IsFalse(genome.GetValidationErrors().Contains("Cycle detected in enabled connections."));
+        }
+    }
+
     private static Genome CreateSingleConnectionGenome(double weight)
     {
         Guid input = Guid.NewGuid();

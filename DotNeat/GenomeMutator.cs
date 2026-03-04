@@ -166,9 +166,26 @@ public sealed class GenomeMutator(InnovationTracker innovationTracker, Random? r
             return false;
         }
 
-        ConnectionGene connection = genome.Connections[_random.Next(genome.Connections.Count)];
-        connection.Enabled = !connection.Enabled;
-        return true;
+        List<ConnectionGene> randomized = [.. genome.Connections.OrderBy(_ => _random.Next())];
+
+        foreach (ConnectionGene connection in randomized)
+        {
+            if (connection.Enabled)
+            {
+                connection.Enabled = false;
+                return true;
+            }
+
+            connection.Enabled = true;
+            if (genome.GetValidationErrors().Count == 0)
+            {
+                return true;
+            }
+
+            connection.Enabled = false;
+        }
+
+        return false;
     }
 
     private void UpsertConnection(Genome genome, Guid inputNodeId, Guid outputNodeId, double weight, int innovationNumber)
