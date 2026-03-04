@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>DotNeat — Car Experiment</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Segoe UI, Arial, sans-serif; background: #111827; color: #e5e7eb; padding: 16px; }
+    h1 { font-size: 1.25rem; margin-bottom: 12px; color: #93c5fd; }
+    #layout { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+    #canvasWrap { position: relative; flex: 0 0 auto; }
+    #arena { display: block; border: 2px solid #374151; border-radius: 6px; cursor: crosshair;
+             max-width: 100%; background: #1a1a2e; }
+    #hint { color: #6b7280; font-size: 11px; margin-top: 4px; }
+    #panel { flex: 1 1 220px; min-width: 200px; display: flex; flex-direction: column; gap: 10px; }
+    .card { background: #1f2937; border-radius: 8px; padding: 12px; }
+    .card h2 { font-size: 0.75rem; color: #6b7280; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+    .metric { display: flex; justify-content: space-between; margin: 4px 0; }
+    .metric .label { color: #9ca3af; font-size: 13px; }
+    .metric .value { font-size: 13px; font-weight: 600; color: #f9fafb; }
+    #statusDot { display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+                 background: #ef4444; margin-right: 6px; vertical-align: middle; }
+    #statusDot.ok { background: #22c55e; }
+    .sparkWrap { display: flex; gap: 8px; flex-wrap: wrap; }
+    .sparkWrap canvas { border-radius: 4px; border: 1px solid #374151; }
+    #indicators { font-size: 11px; color: #9ca3af; padding: 6px 8px; background: #111827;
+                  border-radius: 4px; font-family: monospace; }
+  </style>
+</head>
+<body>
+<h1>🚗 DotNeat — Interactive Car Experiment</h1>
+<div id="layout">
+  <div id="canvasWrap">
+    <canvas id="arena" width="800" height="600"></canvas>
+    <p id="hint">Click the arena to move the goal. The next generation will target the new position.</p>
+  </div>
+
+  <div id="panel">
+    <div class="card">
+      <h2>Status</h2>
+      <div class="metric">
+        <span class="label"><span id="statusDot"></span>Connection</span>
+        <span class="value" id="statusText">Connecting…</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Evolution metrics</h2>
+      <div class="metric"><span class="label">Generation</span><span class="value" id="gen">—</span></div>
+      <div class="metric"><span class="label">Best fitness</span><span class="value" id="fitness">—</span></div>
+      <div class="metric"><span class="label">Avg fitness</span><span class="value" id="avgFitness">—</span></div>
+      <div class="metric"><span class="label">Species</span><span class="value" id="species">—</span></div>
+      <div class="metric"><span class="label">Avg complexity</span><span class="value" id="complexity">—</span></div>
+    </div>
+
+    <div class="card">
+      <h2>Champion outputs</h2>
+      <div id="indicators">Waiting for data…</div>
+    </div>
+
+    <div class="card">
+      <h2>Sparklines</h2>
+      <div class="sparkWrap">
+        <div><div style="font-size:10px;color:#6b7280;margin-bottom:2px">Fitness</div>
+          <canvas id="fitChart" width="180" height="60"></canvas></div>
+        <div><div style="font-size:10px;color:#6b7280;margin-bottom:2px">Species</div>
+          <canvas id="specChart" width="90" height="60"></canvas></div>
+        <div><div style="font-size:10px;color:#6b7280;margin-bottom:2px">Complexity</div>
+          <canvas id="cmpxChart" width="90" height="60"></canvas></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  // ── Constants ────────────────────────────────────────────────────────────────
+  const ARENA_W = 800, ARENA_H = 600;
+  const RAY_ANGLES = [-Math.PI / 2, -Math.PI / 4, 0, Math.PI / 4, Math.PI / 2];
+  const MAX_RAY_LEN = 250;
+  const GOAL_R = 35;
+  const FRAME_MS = 50; // 20 fps playback
+
+  // ── State ────────────────────────────────────────────────────────────────────
+  let currentMsg = null;
+  let animIdx = 0;
+  let lastFrameTime = 0;
+  const history = { fitness: [], avgFitness: [], species: [], complexity: [] };
+
+  // Pending local goal override (shown immediately on click, reported to server)
+  let pendingGoal = null;
+
+  // ── DOM refs ─────────────────────────────────────────────────────────────────
+  const arena = document.getElementById('arena');
+  const ctx = arena.getContext('2d');
+  const el = id => document.getElementById(id);
+
+  // ── WebSocket ─────────────────────────────────────────────────────────────────
+  function connect() {
+    const ws = new WebSocket(`ws://${location.host}/ws`);
+
+    ws.onopen = () => {
+      el('statusDot').classList.add('ok');
+      el('statusText').textContent = 'Connected';
+    };
+
+    ws.onclose = () => {
+      el('statusDot').classList.remove('ok');
+      el('statusText').textContent = 'Disconnected — reconnecting…';
+      setTimeout(connect, 2000);
+    };
+
+    ws.onerror = () => {
+      el('statusText').textContent = 'Error';
+    };
+
+    ws.onmessage = evt => {
+      const msg = JSON.parse(evt.data);
+      if (msg.type === 'generation') {
+        currentMsg = msg;
+        animIdx = 0;
+        el('gen').textContent = msg.generation;
+        el('fitness').textContent = msg.bestFitness.toFixed(2);
+        el('avgFitness').textContent = msg.avgFitness.toFixed(2);
+        el('species').textContent = msg.species;
+        el('complexity').textContent = msg.complexity.toFixed(2);
+        history.fitness.push(msg.bestFitness);
+        history.avgFitness.push(msg.avgFitness);
+        history.species.push(msg.species);
+        history.complexity.push(msg.complexity);
+        drawSparkline(el('fitChart'), history.fitness, '#4ade80');
+        drawSparkline(el('specChart'), history.species, '#f59e0b');
+        drawSparkline(el('cmpxChart'), history.complexity, '#818cf8');
+      }
+    };
+
+    // expose ws so click handler can use it
+    arena._ws = ws;
+  }
+
+  connect();
+
+  // ── Goal click ────────────────────────────────────────────────────────────────
+  arena.addEventListener('click', e => {
+    const rect = arena.getBoundingClientRect();
+    const sx = ARENA_W / rect.width;
+    const sy = ARENA_H / rect.height;
+    const gx = Math.round((e.clientX - rect.left) * sx);
+    const gy = Math.round((e.clientY - rect.top) * sy);
+    // Clamp inside arena
+    const cx = Math.max(GOAL_R, Math.min(ARENA_W - GOAL_R, gx));
+    const cy = Math.max(GOAL_R, Math.min(ARENA_H - GOAL_R, gy));
+    pendingGoal = { x: cx, y: cy };
+    if (currentMsg) {
+      currentMsg.goalX = cx;
+      currentMsg.goalY = cy;
+    }
+    if (arena._ws && arena._ws.readyState === WebSocket.OPEN) {
+      arena._ws.send(JSON.stringify({ type: 'setGoal', x: cx, y: cy }));
+    }
+  });
+
+  // ── Render loop ───────────────────────────────────────────────────────────────
+  function render(ts) {
+    requestAnimationFrame(render);
+
+    // Advance animation frame
+    if (currentMsg && currentMsg.trajectory && currentMsg.trajectory.length > 0) {
+      if (ts - lastFrameTime >= FRAME_MS) {
+        lastFrameTime = ts;
+        animIdx = (animIdx + 1) % currentMsg.trajectory.length;
+      }
+    }
+
+    ctx.clearRect(0, 0, ARENA_W, ARENA_H);
+
+    // Background
+    ctx.fillStyle = '#1a1a2e';
+    ctx.fillRect(0, 0, ARENA_W, ARENA_H);
+
+    // Arena border
+    ctx.strokeStyle = '#374151';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(1, 1, ARENA_W - 2, ARENA_H - 2);
+
+    if (!currentMsg) {
+      ctx.fillStyle = '#6b7280';
+      ctx.font = '18px Segoe UI, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('Waiting for evolution to start…', ARENA_W / 2, ARENA_H / 2);
+      return;
+    }
+
+    const goalX = currentMsg.goalX;
+    const goalY = currentMsg.goalY;
+
+    // Ghost trajectory
+    const traj = currentMsg.trajectory;
+    if (traj && traj.length > 1) {
+      ctx.beginPath();
+      ctx.moveTo(traj[0].x, traj[0].y);
+      for (let i = 1; i < traj.length; i++) ctx.lineTo(traj[i].x, traj[i].y);
+      ctx.strokeStyle = 'rgba(96, 165, 250, 0.25)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+
+    // Goal zone
+    ctx.beginPath();
+    ctx.arc(goalX, goalY, GOAL_R, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(34, 197, 94, 0.15)';
+    ctx.fill();
+    ctx.strokeStyle = '#22c55e';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.fillStyle = '#22c55e';
+    ctx.font = 'bold 13px Segoe UI, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('GOAL', goalX, goalY + 5);
+
+    // Start marker
+    ctx.beginPath();
+    ctx.arc(CarFitnessEvaluator.DefaultStartX, CarFitnessEvaluator.DefaultStartY, 8, 0, Math.PI * 2);
+    ctx.fillStyle = '#f59e0b';
+    ctx.fill();
+
+    const frame = traj && traj.length > 0 ? traj[animIdx] : null;
+    if (!frame) return;
+
+    // Sensor rays
+    for (let i = 0; i < 5; i++) {
+      const angle = frame.heading + RAY_ANGLES[i];
+      const d = frame.sensors[i];          // normalized [0,1]
+      const rayLen = d * MAX_RAY_LEN;
+      const ex = frame.x + Math.cos(angle) * rayLen;
+      const ey = frame.y + Math.sin(angle) * rayLen;
+      // Color: green = far (safe), red = close (obstacle)
+      const r = Math.round(255 * (1 - d));
+      const g = Math.round(200 * d);
+      ctx.strokeStyle = `rgba(${r},${g},0,0.7)`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(frame.x, frame.y);
+      ctx.lineTo(ex, ey);
+      ctx.stroke();
+      // Dot at hit point
+      ctx.beginPath();
+      ctx.arc(ex, ey, 3, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${r},${g},0,0.8)`;
+      ctx.fill();
+    }
+
+    // Car body (triangle pointing in heading direction)
+    ctx.save();
+    ctx.translate(frame.x, frame.y);
+    ctx.rotate(frame.heading);
+    ctx.fillStyle = '#60a5fa';
+    ctx.strokeStyle = '#bfdbfe';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(16, 0);    // nose
+    ctx.lineTo(-10, -7);  // rear-left
+    ctx.lineTo(-10, 7);   // rear-right
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
+
+    // Steering/throttle readout
+    const steerPct = ((frame.steering * 2 - 1) * 100).toFixed(0);
+    const throttlePct = (frame.throttle * 100).toFixed(0);
+    const speedVal = frame.speed.toFixed(1);
+    el('indicators').textContent =
+      `Steering: ${steerPct > 0 ? '+' : ''}${steerPct}%  |  Throttle: ${throttlePct}%  |  Speed: ${speedVal}`;
+  }
+
+  requestAnimationFrame(render);
+
+  // ── Sparkline helper ─────────────────────────────────────────────────────────
+  function drawSparkline(canvas, data, color) {
+    if (!canvas || data.length === 0) return;
+    const c = canvas.getContext('2d');
+    const w = canvas.width, h = canvas.height;
+    const pad = 4;
+    c.clearRect(0, 0, w, h);
+    c.fillStyle = '#111827';
+    c.fillRect(0, 0, w, h);
+
+    const min = Math.min(...data);
+    const max = Math.max(...data);
+    const range = max - min || 1;
+
+    c.strokeStyle = color;
+    c.lineWidth = 1.5;
+    c.beginPath();
+    for (let i = 0; i < data.length; i++) {
+      const x = pad + (i / Math.max(data.length - 1, 1)) * (w - 2 * pad);
+      const y = (h - pad) - ((data[i] - min) / range) * (h - 2 * pad);
+      i === 0 ? c.moveTo(x, y) : c.lineTo(x, y);
+    }
+    c.stroke();
+
+    // Latest value label
+    c.fillStyle = color;
+    c.font = '9px monospace';
+    c.textAlign = 'right';
+    c.fillText(data[data.length - 1].toFixed(1), w - 2, h - 2);
+  }
+
+  // ── Expose default start position constant used for start marker ─────────────
+  const CarFitnessEvaluator = {
+    DefaultStartX: 80,
+    DefaultStartY: 300,
+  };
+})();
+</script>
+</body>
+</html>
