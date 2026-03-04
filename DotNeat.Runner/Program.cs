@@ -8,6 +8,7 @@ IExperiment experiment = experimentName switch
     "cartpole" => new CartPoleExperiment(seed),
     "mux6" => new Mux6Experiment(seed),
     "multiplexer" => new Mux6Experiment(seed),
+    "car" => new CarExperiment(seed),
     _ => new XorExperiment(seed),
 };
 
