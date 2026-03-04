@@ -2,6 +2,8 @@
 
 DotNeat is a clean-room, from-scratch implementation of the classic NEAT algorithm (NeuroEvolution of Augmenting Topologies) written entirely in modern C# for .NET.
 
+[![Continuous Integration](https://github.com/adamstirtan/DotNeat/actions/workflows/ci.yaml/badge.svg)](https://github.com/adamstirtan/DotNeat/actions/workflows/ci.yaml)
+
 ![f9b259be-c178-434a-b26e-1ee4fddac40f](https://github.com/user-attachments/assets/ba5085df-2e5f-4c8b-af3f-c82daf2c0fce)
 
 NEAT — originally developed by Kenneth O. Stanley — is a powerful neuroevolution method that evolves both the weights and the topology (structure) of neural networks using genetic algorithms. It starts with simple networks and gradually complexifies them by adding nodes and connections, while using historical markings and speciation to protect structural innovation.
