@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>xor evolution report</title>
+  <style>
+    body { font-family: Segoe UI, Arial, sans-serif; margin: 24px; color: #1f2937; }
+    h1 { margin-bottom: 4px; }
+    .meta { color: #6b7280; margin-bottom: 16px; }
+    .chart { margin: 16px 0 28px 0; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; }
+    .caption { font-weight: 600; margin-bottom: 8px; }
+    .legend { font-size: 12px; color: #4b5563; margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <h1>xor evolution visualization</h1>
+  <div class="meta">Seed: 12345 | Generations: 40</div>
+
+  <div class="chart">
+    <div class="caption">Fitness progression</div>
+    <svg viewBox="0 0 920 250" width="100%" height="260" role="img" aria-label="Fitness over generations">
+<line x1="50" y1="215" x2="900" y2="215" stroke="#9ca3af" />
+<line x1="50" y1="20" x2="50" y2="215" stroke="#9ca3af" />
+<line x1="50" y1="36.25" x2="900" y2="36.25" stroke="#ef4444" stroke-dasharray="6,4" />
+<text x="56" y="30.25" font-size="11" fill="#ef4444">Perfect XOR (4/4)</text>
+<polyline fill="none" stroke="#2e7d32" stroke-width="2" points="50.00,188.18 71.79,188.17 93.59,188.16 115.38,179.81 137.18,179.81 158.97,177.62 180.77,157.98 202.56,153.19 224.36,153.19 246.15,152.96 267.95,143.62 289.74,143.62 311.54,135.49 333.33,132.81 355.13,132.81 376.92,130.66 398.72,130.66 420.51,130.66 442.31,130.66 464.10,123.28 485.90,117.85 507.69,117.85 529.49,117.85 551.28,115.46 573.08,115.46 594.87,101.13 616.67,101.13 638.46,101.13 660.26,87.40 682.05,87.40 703.85,87.40 725.64,87.40 747.44,87.40 769.23,83.23 791.03,83.23 812.82,83.23 834.62,83.23 856.41,79.53 878.21,79.09 900.00,79.09" />
+<polyline fill="none" stroke="#1565c0" stroke-width="2" points="50.00,198.75 71.79,193.98 93.59,192.51 115.38,192.30 137.18,191.44 158.97,192.54 180.77,191.74 202.56,192.04 224.36,191.12 246.15,190.17 267.95,188.94 289.74,190.06 311.54,187.65 333.33,195.08 355.13,187.68 376.92,192.66 398.72,187.92 420.51,188.47 442.31,185.38 464.10,185.14 485.90,180.63 507.69,184.23 529.49,177.51 551.28,180.48 573.08,175.92 594.87,178.25 616.67,181.98 638.46,174.67 660.26,175.02 682.05,173.31 703.85,174.05 725.64,171.61 747.44,169.56 769.23,171.69 791.03,172.25 812.82,168.58 834.62,167.62 856.41,167.38 878.21,168.37 900.00,169.26" />
+<rect x="56" y="231" width="10" height="10" fill="#2e7d32" />
+<text x="72" y="240" font-size="11" fill="#374151">Best fitness</text>
+<rect x="56" y="217" width="10" height="10" fill="#1565c0" />
+<text x="72" y="226" font-size="11" fill="#374151">Average fitness</text>
+<text x="50" y="244" font-size="11" fill="#6b7280">Gen 0</text>
+<text x="845" y="244" font-size="11" fill="#6b7280">Gen 39</text>
+<text x="54" y="32" font-size="11" fill="#6b7280">4.11</text>
+<text x="54" y="211" font-size="11" fill="#6b7280">2.82</text>
+</svg>
+
+  </div>
+
+  <div class="chart">
+    <div class="caption">Speciation behavior</div>
+    <svg viewBox="0 0 920 250" width="100%" height="260" role="img" aria-label="Species count">
+<line x1="50" y1="215" x2="900" y2="215" stroke="#9ca3af" />
+<line x1="50" y1="20" x2="50" y2="215" stroke="#9ca3af" />
+<polyline fill="none" stroke="#6a1b9a" stroke-width="2" points="50.00,198.75 71.79,198.75 93.59,194.79 115.38,190.82 137.18,186.86 158.97,186.86 180.77,167.04 202.56,159.12 224.36,147.23 246.15,147.23 267.95,143.26 289.74,131.37 311.54,127.41 333.33,119.48 355.13,111.55 376.92,99.66 398.72,95.70 420.51,95.70 442.31,95.70 464.10,91.74 485.90,87.77 507.69,79.85 529.49,79.85 551.28,75.88 573.08,75.88 594.87,71.92 616.67,56.07 638.46,56.07 660.26,56.07 682.05,48.14 703.85,44.18 725.64,44.18 747.44,44.18 769.23,44.18 791.03,44.18 812.82,44.18 834.62,40.21 856.41,40.21 878.21,40.21 900.00,36.25" />
+<rect x="56" y="231" width="10" height="10" fill="#6a1b9a" />
+<text x="72" y="240" font-size="11" fill="#374151">Species</text>
+<text x="50" y="244" font-size="11" fill="#6b7280">Gen 0</text>
+<text x="845" y="244" font-size="11" fill="#6b7280">Gen 39</text>
+<text x="54" y="32" font-size="11" fill="#6b7280">46.10</text>
+<text x="54" y="211" font-size="11" fill="#6b7280">-3.10</text>
+</svg>
+
+  </div>
+
+  <div class="chart">
+    <div class="caption">Structural growth</div>
+    <svg viewBox="0 0 920 250" width="100%" height="260" role="img" aria-label="Average complexity">
+<line x1="50" y1="215" x2="900" y2="215" stroke="#9ca3af" />
+<line x1="50" y1="20" x2="50" y2="215" stroke="#9ca3af" />
+<polyline fill="none" stroke="#ef6c00" stroke-width="2" points="50.00,198.13 71.79,196.38 93.59,198.75 115.38,181.88 137.18,173.45 158.97,162.34 180.77,160.28 202.56,135.91 224.36,131.80 246.15,118.53 267.95,115.44 289.74,108.45 311.54,103.41 333.33,97.44 355.13,91.89 376.92,94.36 398.72,83.15 420.51,81.40 442.31,76.57 464.10,71.22 485.90,70.40 507.69,67.72 529.49,63.40 551.28,59.91 573.08,61.65 594.87,59.08 616.67,54.45 638.46,57.44 660.26,54.25 682.05,51.78 703.85,58.16 725.64,46.95 747.44,48.69 769.23,46.84 791.03,49.41 812.82,41.60 834.62,40.67 856.41,36.25 878.21,36.76 900.00,36.35" />
+<rect x="56" y="231" width="10" height="10" fill="#ef6c00" />
+<text x="72" y="240" font-size="11" fill="#374151">Complexity</text>
+<text x="50" y="244" font-size="11" fill="#6b7280">Gen 0</text>
+<text x="845" y="244" font-size="11" fill="#6b7280">Gen 39</text>
+<text x="54" y="32" font-size="11" fill="#6b7280">22.32</text>
+<text x="54" y="211" font-size="11" fill="#6b7280">3.36</text>
+</svg>
+
+  </div>
+
+  
+
+  <div class="chart">
+  <div class="caption">Network structure snapshots (champion genomes)</div>
+  <div class="meta">Inputs are blue, hidden are amber, outputs are green. Edge color encodes weight sign (green positive, red negative).</div>
+  <div style="margin: 10px 0;"><canvas id="networkCanvas0" width="900" height="420" style="border:1px solid #e5e7eb;border-radius:6px;width:100%;height:auto;"></canvas></div>
+<div style="margin: 10px 0;"><canvas id="networkCanvas1" width="900" height="420" style="border:1px solid #e5e7eb;border-radius:6px;width:100%;height:auto;"></canvas></div>
+<div style="margin: 10px 0;"><canvas id="networkCanvas2" width="900" height="420" style="border:1px solid #e5e7eb;border-radius:6px;width:100%;height:auto;"></canvas></div>
+<div style="margin: 10px 0;"><canvas id="networkCanvas3" width="900" height="420" style="border:1px solid #e5e7eb;border-radius:6px;width:100%;height:auto;"></canvas></div>
+<div style="margin: 10px 0;"><canvas id="networkCanvas4" width="900" height="420" style="border:1px solid #e5e7eb;border-radius:6px;width:100%;height:auto;"></canvas></div>
+
+</div>
+<script>
+(() => {
+  const snapshots = [{"generation":0,"nodes":[{"id":"1b4b7a96-4bae-473d-8619-8b0b6f03bb0d","nodeType":"Input"},{"id":"c167a273-b984-401e-b1ac-2a36c38649bb","nodeType":"Input"},{"id":"44448429-b6ee-44e0-a374-ed3f16c9576d","nodeType":"Output"}],"connections":[{"inputNodeId":"1b4b7a96-4bae-473d-8619-8b0b6f03bb0d","outputNodeId":"44448429-b6ee-44e0-a374-ed3f16c9576d","weight":0.03507517326393872,"enabled":true},{"inputNodeId":"c167a273-b984-401e-b1ac-2a36c38649bb","outputNodeId":"44448429-b6ee-44e0-a374-ed3f16c9576d","weight":-0.02921806975697072,"enabled":true}]},{"generation":10,"nodes":[{"id":"1b4b7a96-4bae-473d-8619-8b0b6f03bb0d","nodeType":"Input"},{"id":"44448429-b6ee-44e0-a374-ed3f16c9576d","nodeType":"Output"},{"id":"c167a273-b984-401e-b1ac-2a36c38649bb","nodeType":"Input"},{"id":"e98db163-bd1b-4293-8d24-d10f38d8f68b","nodeType":"Hidden"},{"id":"db9a1fdb-473c-406a-b76c-9d9685cb39d8","nodeType":"Hidden"}],"connections":[{"inputNodeId":"1b4b7a96-4bae-473d-8619-8b0b6f03bb0d","outputNodeId":"44448429-b6ee-44e0-a374-ed3f16c9576d","weight":-1.3116316922528817,"enabled":true},{"inputNodeId":"c167a273-b984-401e-b1ac-2a36c38649bb","outputNodeId":"44448429-b6ee-44e0-a374-ed3f16c9576d","weight":-0.3608150268722396,"enabled":false},{"inputNodeId":"c167a273-b984-401e-b1ac-2a36c38649bb","outputNodeId":"e98db163-bd1b-4293-8d24-d10f38d8f68b","weight":-1.0793858399053038,"enabled":true},{"inputNodeId":"e98db163-bd1b-4293-8d24-d10f38d8f68b","outputNodeId":"44448429-b6ee-44e0-a374-ed3f16c9576d","weight":0.6677427577170278,"enabled":true},{"inputNodeId":"1b4b7a96-4bae-473d-8619-8b0b6f03bb0d","outputNodeId":"e98db163-bd1b-4293-8d24-d10f38d8f68b","weight":-0.6058019733083444,"enabled":false},{"inputNodeId":"1b4b7a96-4bae-473d-8619-8b0b6f03bb0d","outputNodeId":"db9a1fdb-473c-406a-b76c-9d9685cb39d8","weight":1.3521877726317326,"enabled":true},{"inputNodeId":"db9a1fdb-473c-406a-b76c-9d9685cb39d8","outputNodeId":"e98db163-bd1b-4293-8d24-d10f38d8f68b","weight":0.4122858396788529,"enabled":true},{"inputNodeId":"c167a273-b984-401e-b1ac-2a36c38649bb","outputNodeId":"db9a1fdb-473c-406a-b76c-9d9685cb39d8","weight":-1.1454802726141553,"enabled":true},{"inputNodeId":"db9a1fdb-473c-406a-b76c-9d9685cb39d8","outputNodeId":"44448429-b6ee-44e0-a374-ed3f16c9576d","weight":1.0594817249381363,"enabled":true}]},{"generation":20,"nodes":[{"id":"1b4b7a96-4bae-473d-8619-8b0b6f03bb0d","nodeType":"Input"},{"id":"44448429-b6ee-44e0-a374-ed3f16c9576d","nodeType":"Output"},{"id":"c167a273-b984-401e-b1ac-2a36c38649bb","nodeType":"Input"},{"id":"e98db163-bd1b-4293-8d24-d10f38d8f68b","nodeType":"Hidden"},{"id":"2c522b6c-8ac5-43e2-a58c-df0208205a2f","nodeType":"Hidden"}],"connections":[{"inputNodeId":"1b4b7a96-4bae-473d-8619-8b0b6f03bb0d","outputNodeId":"44448429-b6ee-44e0-a374-ed3f16c9576d","weight":0.3869355199797708,"enabled":true},{"inputNodeId":"c167a273-b984-401e-b1ac-2a36c38649bb","outputNodeId":"44448429-b6ee-44e0-a374-ed3f16c9576d","weight":-1.254857422809516,"enabled":true},{"inputNodeId":"c167a273-b984-401e-b1ac-2a36c38649bb","outputNodeId":"e98db163-bd1b-4293-8d24-d10f38d8f68b","weight":0.8700785862608246,"enabled":true},{"inputNodeId":"e98db163-bd1b-4293-8d24-d10f38d8f68b","outputNodeId":"44448429-b6ee-44e0-a374-ed3f16c9576d","weight":1.4134847598213167,"enabled":true},{"inputNodeId":"1b4b7a96-4bae-473d-8619-8b0b6f03bb0d","outputNodeId":"e98db163-bd1b-4293-8d24-d10f38d8f68b","weight":-0.9167828186958947,"enabled":true},{"inputNodeId":"e98db163-bd1b-4293-8d24-d10f38d8f68b","outputNodeId":"2c522b6c-8ac5-43e2-a58c-df0208205a2f","weight":0.9394007913486105,"enabled":true},{"inputNodeId":"2c522b6c-8ac5-43e2-a58c-df0208205a2f","outputNodeId":"44448429-b6ee-44e0-a374-ed3f16c9576d","weight":1.8031445121407255,"enabled":true},{"inputNodeId":"1b4b7a96-4bae-473d-8619-8b0b6f03bb0d","outputNodeId":"2c522b6c-8ac5-43e2-a58c-df0208205a2f","weight":-0.5146100531865889,"enabled":true}]},{"generation":29,"nodes":[{"id":"1b4b7a96-4bae-473d-8619-8b0b6f03bb0d","nodeType":"Input"},{"id":"44448429-b6ee-44e0-a374-ed3f16c9576d","nodeType":"Output"},{"id":"c167a273-b984-401e-b1ac-2a36c38649bb","nodeType":"Input"},{"id":"e98db163-bd1b-4293-8d24-d10f38d8f68b","nodeType":"Hidden"},{"id":"db9a1fdb-473c-406a-b76c-9d9685cb39d8","nodeType":"Hidden"},{"id":"bd5fe719-d139-4a53-99ce-4475a181b360","nodeType":"Hidden"}],"connections":[{"inputNodeId":"1b4b7a96-4bae-473d-8619-8b0b6f03bb0d","outputNodeId":"44448429-b6ee-44e0-a374-ed3f16c9576d","weight":-1.2586683057521788,"enabled":true},{"inputNodeId":"c167a273-b984-401e-b1ac-2a36c38649bb","outputNodeId":"44448429-b6ee-44e0-a374-ed3f16c9576d","weight":-0.8997431382070031,"enabled":false},{"inputNodeId":"c167a273-b984-401e-b1ac-2a36c38649bb","outputNodeId":"e98db163-bd1b-4293-8d24-d10f38d8f68b","weight":1.3488823120244233,"enabled":true},{"inputNodeId":"e98db163-bd1b-4293-8d24-d10f38d8f68b","outputNodeId":"44448429-b6ee-44e0-a374-ed3f16c9576d","weight":1.1138495983154746,"enabled":true},{"inputNodeId":"1b4b7a96-4bae-473d-8619-8b0b6f03bb0d","outputNodeId":"e98db163-bd1b-4293-8d24-d10f38d8f68b","weight":-1.306851903305786,"enabled":true},{"inputNodeId":"1b4b7a96-4bae-473d-8619-8b0b6f03bb0d","outputNodeId":"db9a1fdb-473c-406a-b76c-9d9685cb39d8","weight":2.7499308546771912,"enabled":true},{"inputNodeId":"db9a1fdb-473c-406a-b76c-9d9685cb39d8","outputNodeId":"e98db163-bd1b-4293-8d24-d10f38d8f68b","weight":-0.968969093155567,"enabled":true},{"inputNodeId":"c167a273-b984-401e-b1ac-2a36c38649bb","outputNodeId":"db9a1fdb-473c-406a-b76c-9d9685cb39d8","weight":-2.13565343838914,"enabled":true},{"inputNodeId":"db9a1fdb-473c-406a-b76c-9d9685cb39d8","outputNodeId":"44448429-b6ee-44e0-a374-ed3f16c9576d","weight":1.7072510464616357,"enabled":true},{"inputNodeId":"c167a273-b984-401e-b1ac-2a36c38649bb","outputNodeId":"bd5fe719-d139-4a53-99ce-4475a181b360","weight":1.0699785324139421,"enabled":true},{"inputNodeId":"bd5fe719-d139-4a53-99ce-4475a181b360","outputNodeId":"db9a1fdb-473c-406a-b76c-9d9685cb39d8","weight":-1.6296910465833223,"enabled":true}]},{"generation":39,"nodes":[{"id":"1b4b7a96-4bae-473d-8619-8b0b6f03bb0d","nodeType":"Input"},{"id":"44448429-b6ee-44e0-a374-ed3f16c9576d","nodeType":"Output"},{"id":"c167a273-b984-401e-b1ac-2a36c38649bb","nodeType":"Input"},{"id":"e98db163-bd1b-4293-8d24-d10f38d8f68b","nodeType":"Hidden"},{"id":"db9a1fdb-473c-406a-b76c-9d9685cb39d8","nodeType":"Hidden"},{"id":"bd5fe719-d139-4a53-99ce-4475a181b360","nodeType":"Hidden"}],"connections":[{"inputNodeId":"1b4b7a96-4bae-473d-8619-8b0b6f03bb0d","outputNodeId":"44448429-b6ee-44e0-a374-ed3f16c9576d","weight":-1.6618971273591263,"enabled":true},{"inputNodeId":"c167a273-b984-401e-b1ac-2a36c38649bb","outputNodeId":"44448429-b6ee-44e0-a374-ed3f16c9576d","weight":-0.41736639878589954,"enabled":true},{"inputNodeId":"c167a273-b984-401e-b1ac-2a36c38649bb","outputNodeId":"e98db163-bd1b-4293-8d24-d10f38d8f68b","weight":1.4658620213465126,"enabled":true},{"inputNodeId":"e98db163-bd1b-4293-8d24-d10f38d8f68b","outputNodeId":"44448429-b6ee-44e0-a374-ed3f16c9576d","weight":1.524305495584526,"enabled":true},{"inputNodeId":"1b4b7a96-4bae-473d-8619-8b0b6f03bb0d","outputNodeId":"e98db163-bd1b-4293-8d24-d10f38d8f68b","weight":-1.607458462290214,"enabled":true},{"inputNodeId":"1b4b7a96-4bae-473d-8619-8b0b6f03bb0d","outputNodeId":"db9a1fdb-473c-406a-b76c-9d9685cb39d8","weight":3.2186322804627165,"enabled":true},{"inputNodeId":"db9a1fdb-473c-406a-b76c-9d9685cb39d8","outputNodeId":"e98db163-bd1b-4293-8d24-d10f38d8f68b","weight":-0.7599488122202217,"enabled":true},{"inputNodeId":"c167a273-b984-401e-b1ac-2a36c38649bb","outputNodeId":"db9a1fdb-473c-406a-b76c-9d9685cb39d8","weight":-2.6468162635559294,"enabled":true},{"inputNodeId":"db9a1fdb-473c-406a-b76c-9d9685cb39d8","outputNodeId":"44448429-b6ee-44e0-a374-ed3f16c9576d","weight":1.9577533952695099,"enabled":true},{"inputNodeId":"c167a273-b984-401e-b1ac-2a36c38649bb","outputNodeId":"bd5fe719-d139-4a53-99ce-4475a181b360","weight":0.8314363842045127,"enabled":true},{"inputNodeId":"bd5fe719-d139-4a53-99ce-4475a181b360","outputNodeId":"db9a1fdb-473c-406a-b76c-9d9685cb39d8","weight":-1.8861109303711499,"enabled":true}]}];
+
+  function drawSnapshot(canvasId, snapshot) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const width = canvas.width;
+    const height = canvas.height;
+    const pad = 32;
+    ctx.clearRect(0, 0, width, height);
+
+    const nodes = snapshot.nodes;
+    const edges = snapshot.connections.filter(c => c.enabled);
+
+    const nodeMap = new Map(nodes.map(n => [n.id, n]));
+    const outgoing = new Map();
+    const indegree = new Map();
+    const level = new Map();
+
+    for (const n of nodes) {
+      outgoing.set(n.id, []);
+      indegree.set(n.id, 0);
+      level.set(n.id, n.nodeType === 'Input' ? 0 : 1);
+    }
+
+    for (const e of edges) {
+      if (!outgoing.has(e.inputNodeId) || !indegree.has(e.outputNodeId)) continue;
+      outgoing.get(e.inputNodeId).push(e.outputNodeId);
+      indegree.set(e.outputNodeId, indegree.get(e.outputNodeId) + 1);
+    }
+
+    const queue = [];
+    for (const [id, d] of indegree.entries()) {
+      if (d === 0) queue.push(id);
+    }
+
+    while (queue.length > 0) {
+      const current = queue.shift();
+      const currentLevel = level.get(current) ?? 0;
+      for (const next of outgoing.get(current) ?? []) {
+        level.set(next, Math.max(level.get(next) ?? 0, currentLevel + 1));
+        indegree.set(next, indegree.get(next) - 1);
+        if (indegree.get(next) === 0) queue.push(next);
+      }
+    }
+
+    let maxLevel = 0;
+    for (const l of level.values()) maxLevel = Math.max(maxLevel, l);
+    for (const n of nodes) {
+      if (n.nodeType === 'Output') level.set(n.id, maxLevel + 1);
+    }
+    maxLevel += 1;
+
+    const byLevel = new Map();
+    for (const n of nodes) {
+      const l = level.get(n.id) ?? 0;
+      if (!byLevel.has(l)) byLevel.set(l, []);
+      byLevel.get(l).push(n);
+    }
+
+    const pos = new Map();
+    for (let l = 0; l <= maxLevel; l++) {
+      const group = byLevel.get(l) ?? [];
+      const x = pad + (maxLevel === 0 ? 0.5 : l / maxLevel) * (width - (2 * pad));
+      for (let i = 0; i < group.length; i++) {
+        const y = pad + ((i + 1) / (group.length + 1)) * (height - (2 * pad));
+        pos.set(group[i].id, { x, y });
+      }
+    }
+
+    for (const e of edges) {
+      const a = pos.get(e.inputNodeId);
+      const b = pos.get(e.outputNodeId);
+      if (!a || !b) continue;
+      const strength = Math.min(1, Math.abs(e.weight) / 3);
+      const alpha = 0.25 + (0.65 * strength);
+      ctx.strokeStyle = e.weight >= 0 ? `rgba(46,125,50,${alpha.toFixed(3)})` : `rgba(198,40,40,${alpha.toFixed(3)})`;
+      ctx.lineWidth = 1 + (2 * strength);
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.stroke();
+    }
+
+    for (const n of nodes) {
+      const p = pos.get(n.id);
+      if (!p) continue;
+      const color = n.nodeType === 'Input'
+        ? '#1565c0'
+        : (n.nodeType === 'Output' ? '#2e7d32' : '#ef6c00');
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 9, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#111827';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    ctx.fillStyle = '#111827';
+    ctx.font = 'bold 13px Segoe UI, Arial';
+    ctx.fillText(`Generation ${snapshot.generation} | Nodes: ${nodes.length} | Enabled connections: ${edges.length}`, 16, 20);
+  }
+
+  snapshots.forEach((snapshot, i) => drawSnapshot(`networkCanvas${i}`, snapshot));
+})();
+</script>
+</body>
+</html>

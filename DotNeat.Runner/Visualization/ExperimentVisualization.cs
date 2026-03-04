@@ -1,4 +1,3 @@
-using DotNeat;
 using System.Text;
 using System.Text.Json;
 
@@ -29,7 +28,7 @@ public static class ExperimentVisualization
         string visualizationRoot = ResolveVisualizationRoot();
         string root = Path.Combine(visualizationRoot, experimentName);
         string runDir = Path.Combine(root, $"{DateTime.UtcNow:yyyyMMdd-HHmmss}-seed{seed}");
-        Directory.CreateDirectory(runDir);
+        _ = Directory.CreateDirectory(runDir);
 
         string csvPath = Path.Combine(runDir, "history.csv");
         File.WriteAllText(csvPath, BuildCsv(history, additionalMetricSelector, additionalMetricLabel));
@@ -58,7 +57,7 @@ public static class ExperimentVisualization
         for (int i = 1; i < count - 1; i++)
         {
             int generation = (int)Math.Round(i * (generationCount - 1d) / (count - 1d));
-            result.Add(generation);
+            _ = result.Add(generation);
         }
 
         return result;
@@ -70,19 +69,19 @@ public static class ExperimentVisualization
         string? additionalMetricLabel)
     {
         StringBuilder sb = new();
-        sb.Append("Generation,BestFitness,AverageFitness,SpeciesCount,AverageComplexity");
+        _ = sb.Append("Generation,BestFitness,AverageFitness,SpeciesCount,AverageComplexity");
 
         bool hasAdditional = additionalMetricSelector is not null && !string.IsNullOrWhiteSpace(additionalMetricLabel);
         if (hasAdditional)
         {
-            sb.Append(',').Append(additionalMetricLabel);
+            _ = sb.Append(',').Append(additionalMetricLabel);
         }
 
-        sb.AppendLine();
+        _ = sb.AppendLine();
 
         foreach (GenerationMetrics m in history)
         {
-            sb.Append(m.Generation).Append(',')
+            _ = sb.Append(m.Generation).Append(',')
                 .Append(m.BestFitness.ToString("F6")).Append(',')
                 .Append(m.AverageFitness.ToString("F6")).Append(',')
                 .Append(m.SpeciesCount).Append(',')
@@ -90,10 +89,10 @@ public static class ExperimentVisualization
 
             if (hasAdditional)
             {
-                sb.Append(',').Append(additionalMetricSelector!(m).ToString("F6"));
+                _ = sb.Append(',').Append(additionalMetricSelector!(m).ToString("F6"));
             }
 
-            sb.AppendLine();
+            _ = sb.AppendLine();
         }
 
         return sb.ToString();
@@ -242,7 +241,7 @@ public static class ExperimentVisualization
         StringBuilder canvases = new();
         for (int i = 0; i < snapshots.Count; i++)
         {
-            canvases.AppendLine($"<div style=\"margin: 10px 0;\"><canvas id=\"networkCanvas{i}\" width=\"900\" height=\"420\" style=\"border:1px solid #e5e7eb;border-radius:6px;width:100%;height:auto;\"></canvas></div>");
+            _ = canvases.AppendLine($"<div style=\"margin: 10px 0;\"><canvas id=\"networkCanvas{i}\" width=\"900\" height=\"420\" style=\"border:1px solid #e5e7eb;border-radius:6px;width:100%;height:auto;\"></canvas></div>");
         }
 
         return $$"""
@@ -431,52 +430,47 @@ public static class ExperimentVisualization
 
         double PlotX(int x)
         {
-            if (xMax == xMin)
-            {
-                return left;
-            }
-
-            return left + (double)(x - xMin) / (xMax - xMin) * (width - left - right);
+            return xMax == xMin ? left : left + ((double)(x - xMin) / (xMax - xMin) * (width - left - right));
         }
 
         double PlotY(double y)
         {
-            return top + (yMax - y) / (yMax - yMin) * (height - top - bottom);
+            return top + ((yMax - y) / (yMax - yMin) * (height - top - bottom));
         }
 
         StringBuilder sb = new();
-        sb.AppendLine($"<svg viewBox=\"0 0 {width} {height}\" width=\"100%\" height=\"260\" role=\"img\" aria-label=\"{title}\">");
-        sb.AppendLine($"<line x1=\"{left}\" y1=\"{height - bottom}\" x2=\"{width - right}\" y2=\"{height - bottom}\" stroke=\"#9ca3af\" />");
-        sb.AppendLine($"<line x1=\"{left}\" y1=\"{top}\" x2=\"{left}\" y2=\"{height - bottom}\" stroke=\"#9ca3af\" />");
+        _ = sb.AppendLine($"<svg viewBox=\"0 0 {width} {height}\" width=\"100%\" height=\"260\" role=\"img\" aria-label=\"{title}\">");
+        _ = sb.AppendLine($"<line x1=\"{left}\" y1=\"{height - bottom}\" x2=\"{width - right}\" y2=\"{height - bottom}\" stroke=\"#9ca3af\" />");
+        _ = sb.AppendLine($"<line x1=\"{left}\" y1=\"{top}\" x2=\"{left}\" y2=\"{height - bottom}\" stroke=\"#9ca3af\" />");
 
         if (horizontalLine.HasValue)
         {
             double y = PlotY(horizontalLine.Value);
-            sb.AppendLine($"<line x1=\"{left}\" y1=\"{y:F2}\" x2=\"{width - right}\" y2=\"{y:F2}\" stroke=\"#ef4444\" stroke-dasharray=\"6,4\" />");
+            _ = sb.AppendLine($"<line x1=\"{left}\" y1=\"{y:F2}\" x2=\"{width - right}\" y2=\"{y:F2}\" stroke=\"#ef4444\" stroke-dasharray=\"6,4\" />");
             if (!string.IsNullOrWhiteSpace(horizontalLabel))
             {
-                sb.AppendLine($"<text x=\"{left + 6}\" y=\"{y - 6:F2}\" font-size=\"11\" fill=\"#ef4444\">{horizontalLabel}</text>");
+                _ = sb.AppendLine($"<text x=\"{left + 6}\" y=\"{y - 6:F2}\" font-size=\"11\" fill=\"#ef4444\">{horizontalLabel}</text>");
             }
         }
 
         foreach ((string name, string color, List<(int x, double y)> points) in series)
         {
             string polyline = string.Join(' ', points.Select(p => $"{PlotX(p.x):F2},{PlotY(p.y):F2}"));
-            sb.AppendLine($"<polyline fill=\"none\" stroke=\"{color}\" stroke-width=\"2\" points=\"{polyline}\" />");
+            _ = sb.AppendLine($"<polyline fill=\"none\" stroke=\"{color}\" stroke-width=\"2\" points=\"{polyline}\" />");
         }
 
         for (int i = 0; i < series.Count; i++)
         {
             int y = height - 10 - (i * 14);
-            sb.AppendLine($"<rect x=\"{left + 6}\" y=\"{y - 9}\" width=\"10\" height=\"10\" fill=\"{series[i].color}\" />");
-            sb.AppendLine($"<text x=\"{left + 22}\" y=\"{y}\" font-size=\"11\" fill=\"#374151\">{series[i].name}</text>");
+            _ = sb.AppendLine($"<rect x=\"{left + 6}\" y=\"{y - 9}\" width=\"10\" height=\"10\" fill=\"{series[i].color}\" />");
+            _ = sb.AppendLine($"<text x=\"{left + 22}\" y=\"{y}\" font-size=\"11\" fill=\"#374151\">{series[i].name}</text>");
         }
 
-        sb.AppendLine($"<text x=\"{left}\" y=\"{height - 6}\" font-size=\"11\" fill=\"#6b7280\">Gen {xMin}</text>");
-        sb.AppendLine($"<text x=\"{width - right - 55}\" y=\"{height - 6}\" font-size=\"11\" fill=\"#6b7280\">Gen {xMax}</text>");
-        sb.AppendLine($"<text x=\"{left + 4}\" y=\"{top + 12}\" font-size=\"11\" fill=\"#6b7280\">{yMax:F2}</text>");
-        sb.AppendLine($"<text x=\"{left + 4}\" y=\"{height - bottom - 4}\" font-size=\"11\" fill=\"#6b7280\">{yMin:F2}</text>");
-        sb.AppendLine("</svg>");
+        _ = sb.AppendLine($"<text x=\"{left}\" y=\"{height - 6}\" font-size=\"11\" fill=\"#6b7280\">Gen {xMin}</text>");
+        _ = sb.AppendLine($"<text x=\"{width - right - 55}\" y=\"{height - 6}\" font-size=\"11\" fill=\"#6b7280\">Gen {xMax}</text>");
+        _ = sb.AppendLine($"<text x=\"{left + 4}\" y=\"{top + 12}\" font-size=\"11\" fill=\"#6b7280\">{yMax:F2}</text>");
+        _ = sb.AppendLine($"<text x=\"{left + 4}\" y=\"{height - bottom - 4}\" font-size=\"11\" fill=\"#6b7280\">{yMin:F2}</text>");
+        _ = sb.AppendLine("</svg>");
         return sb.ToString();
     }
 }

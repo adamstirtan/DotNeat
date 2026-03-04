@@ -1,30 +1,119 @@
 # DotNeat
 
-DotNeat is a clean-room, from-scratch implementation of the classic NEAT algorithm (NeuroEvolution of Augmenting Topologies) written entirely in modern C# for .NET.
+DotNeat is a from-scratch NEAT (NeuroEvolution of Augmenting Topologies) implementation in modern C# / .NET.
 
 [![Continuous Integration](https://github.com/adamstirtan/DotNeat/actions/workflows/ci.yaml/badge.svg)](https://github.com/adamstirtan/DotNeat/actions/workflows/ci.yaml)
 
-![f9b259be-c178-434a-b26e-1ee4fddac40f](https://github.com/user-attachments/assets/ba5085df-2e5f-4c8b-af3f-c82daf2c0fce)
+It is designed for:
 
-NEAT — originally developed by Kenneth O. Stanley — is a powerful neuroevolution method that evolves both the weights and the topology (structure) of neural networks using genetic algorithms. It starts with simple networks and gradually complexifies them by adding nodes and connections, while using historical markings and speciation to protect structural innovation.
+- learning how NEAT works internally,
+- experimenting with mutation/speciation/reproduction strategies,
+- teaching neuroevolution concepts with concrete visual outputs.
 
-## Why DotNeat exists
+## What the library currently supports
 
-The project was built primarily for learning, experimentation, and deep understanding of how NEAT actually works under the hood — without relying on existing wrapper libraries or ports.
+Core NEAT pipeline features implemented in `DotNeat`:
 
-## Key design choices and focus areas:
+- `Genome` representation (`NodeGene`, `ConnectionGene`) with validation
+- `NeuralNetwork` phenotype build from genome (topological sort + forward pass)
+- Mutation operators:
+  - weight perturb/reset
+  - add connection
+  - add node (split enabled connection)
+  - enable/disable toggling (cycle-safe)
+- Crossover:
+  - innovation-number matching
+  - disjoint/excess handling
+  - fitter-parent bias
+- Speciation:
+  - compatibility distance (`c1*excess + c2*disjoint + c3*avgWeightDiff`)
+  - grouping into species
+  - explicit fitness sharing
+- Reproduction pipeline:
+  - within-species selection
+  - elitism
+  - offspring allocation by adjusted fitness
+  - crossover/mutation probabilities
+- Generation orchestration:
+  - initialize -> evaluate -> speciate -> reproduce -> next generation
+  - generation metrics history (best fitness, average fitness, species count, complexity)
+  - optional per-generation callbacks for logging/snapshots
+- Parallelized population fitness evaluation in the orchestrator
 
-- Clarity first — Code is written to be readable and well-commented rather than ultra-optimized. Every major NEAT concept (genomes, phenotypes, speciation, innovation numbers, crossover, mutation, compatibility distance, etc.) is implemented in a traceable way.
-- Modern C# & .NET style — Leverages recent language features (records, pattern matching, nullable reference types, init-only properties, etc.) while staying compatible with current .NET versions (likely .NET 6+ / .NET 8+).
-- No external dependencies (or very minimal) — Pure .NET implementation so it's easy to understand, fork, modify, or use as a teaching tool.
-- Experimentation-friendly — Designed so you can easily tweak mutation probabilities, speciation parameters, activation functions, or even core mechanisms to see what happens.
+## Runner experiments
 
-## Typical use cases people explore with DotNeat-style implementations
+`DotNeat.Runner` currently includes:
 
-- Classic control tasks (pole balancing, mountain car, etc.)
-- Visualizing network evolution over generations
-- Comparing NEAT variants (e.g., with/without explicit fitness sharing, different crossover strategies)
-- Integrating with custom environments or games
-- Learning material for people studying neuroevolution, genetic algorithms, or AI without heavy math prerequisites
+- `xor` — classic XOR benchmark
+- `cartpole` — single-pole balancing benchmark
+- `mux6` (alias: `multiplexer`) — 6-bit multiplexer benchmark
 
-In short: if you're curious about how one of the most influential neuroevolution algorithms really works — line by line — or want a readable, hackable reference implementation in C#, DotNeat is exactly that kind of project.
+## Visualizations
+
+Each experiment run generates:
+
+- `history.csv`
+- `report.html` with:
+  - fitness progression charts
+  - species and complexity charts
+  - optional task-specific chart(s)
+  - **champion network snapshots** (canvas drawings over selected generations)
+
+Output path is stable regardless of working directory:
+
+`artifacts/visualizations/<experiment>/<timestamp-seed>/report.html`
+
+## Quick start
+
+From repository root:
+
+```bash
+dotnet build
+dotnet run --project DotNeat.Runner -- xor 31337
+dotnet run --project DotNeat.Runner -- cartpole 12345
+dotnet run --project DotNeat.Runner -- mux6 12345
+```
+
+## Recent sample runs (latest local code)
+
+The following runs were executed against the latest code in this repository:
+
+| Experiment |  Seed | Final best fitness | Notes                                                     |
+| ---------- | ----: | -----------------: | --------------------------------------------------------- |
+| XOR        | 31337 |     3.670531 / 4.0 | Steady improvement, not fully solved in 40 generations    |
+| XOR        | 12345 |     3.718018 / 4.0 | Similar trend, higher final fitness                       |
+| MUX-6      | 12345 |            54 / 64 | Complex benchmark, partial solution after 200 generations |
+| CartPole   | 12345 |             301.60 | ~300.6 average champion steps survived, not solved to 500 |
+
+Generated reports for those runs are under:
+
+- `artifacts/visualizations/xor/20260304-151150-seed31337/report.html`
+- `artifacts/visualizations/xor/20260304-151155-seed12345/report.html`
+- `artifacts/visualizations/mux6/20260304-151247-seed12345/report.html`
+- `artifacts/visualizations/cartpole/20260304-151411-seed12345/report.html`
+
+## Example evolved networks
+
+### XOR
+
+![XOR network](images/xor-report.png)
+![XOR network](images/xor.png)
+
+### CartPole
+
+![CartPole evolution report screenshot placeholder](images/cartpole-report.png)
+![CartPole evolution report screenshot placeholder](images/cartpole.png)
+
+### MUX-6
+
+![MUX-6 evolution report screenshot placeholder](images/mux6-report.png)
+![MUX-6 evolution report screenshot placeholder](images/mux6.png)
+
+## Teaching/demo notes
+
+Good things to point out while presenting:
+
+1. **Fitness vs average fitness**: are we improving one champion or the whole population?
+2. **Species count trend**: are innovations being protected?
+3. **Complexity trend**: structural growth over time (the "AT" in NEAT).
+4. **Network snapshots**: topology evolution from simple initial graphs to task-adapted structures.

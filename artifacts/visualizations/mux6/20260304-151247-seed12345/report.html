@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>mux6 evolution report</title>
+  <style>
+    body { font-family: Segoe UI, Arial, sans-serif; margin: 24px; color: #1f2937; }
+    h1 { margin-bottom: 4px; }
+    .meta { color: #6b7280; margin-bottom: 16px; }
+    .chart { margin: 16px 0 28px 0; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; }
+    .caption { font-weight: 600; margin-bottom: 8px; }
+    .legend { font-size: 12px; color: #4b5563; margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <h1>mux6 evolution visualization</h1>
+  <div class="meta">Seed: 12345 | Generations: 200</div>
+
+  <div class="chart">
+    <div class="caption">Fitness progression</div>
+    <svg viewBox="0 0 920 250" width="100%" height="260" role="img" aria-label="Fitness over generations">
+<line x1="50" y1="215" x2="900" y2="215" stroke="#9ca3af" />
+<line x1="50" y1="20" x2="50" y2="215" stroke="#9ca3af" />
+<line x1="50" y1="36.25" x2="900" y2="36.25" stroke="#ef4444" stroke-dasharray="6,4" />
+<text x="56" y="30.25" font-size="11" fill="#ef4444">Perfect classification (64/64)</text>
+<polyline fill="none" stroke="#2e7d32" stroke-width="2" points="50.00,136.68 54.27,136.68 58.54,136.68 62.81,136.68 67.09,136.68 71.36,136.68 75.63,136.68 79.90,131.66 84.17,131.66 88.44,131.66 92.71,131.66 96.98,131.66 101.26,131.66 105.53,131.66 109.80,131.66 114.07,131.66 118.34,131.66 122.61,131.66 126.88,131.66 131.16,131.66 135.43,131.66 139.70,121.62 143.97,121.62 148.24,121.62 152.51,121.62 156.78,121.62 161.06,121.62 165.33,121.62 169.60,121.62 173.87,121.62 178.14,121.62 182.41,121.62 186.68,121.62 190.95,121.62 195.23,121.62 199.50,121.62 203.77,121.62 208.04,121.62 212.31,121.62 216.58,121.62 220.85,121.62 225.13,121.62 229.40,121.62 233.67,121.62 237.94,121.62 242.21,121.62 246.48,121.62 250.75,121.62 255.03,121.62 259.30,121.62 263.57,121.62 267.84,121.62 272.11,121.62 276.38,116.60 280.65,116.60 284.92,116.60 289.20,116.60 293.47,116.60 297.74,116.60 302.01,116.60 306.28,116.60 310.55,116.60 314.82,116.60 319.10,116.60 323.37,116.60 327.64,116.60 331.91,116.60 336.18,116.60 340.45,116.60 344.72,116.60 348.99,116.60 353.27,116.60 357.54,116.60 361.81,111.57 366.08,111.57 370.35,111.57 374.62,111.57 378.89,111.57 383.17,111.57 387.44,111.57 391.71,111.57 395.98,111.57 400.25,111.57 404.52,111.57 408.79,111.57 413.07,111.57 417.34,111.57 421.61,111.57 425.88,111.57 430.15,111.57 434.42,111.57 438.69,106.55 442.96,106.55 447.24,106.55 451.51,106.55 455.78,106.55 460.05,106.55 464.32,106.55 468.59,106.55 472.86,106.55 477.14,106.55 481.41,106.55 485.68,106.55 489.95,106.55 494.22,106.55 498.49,106.55 502.76,106.55 507.04,106.55 511.31,106.55 515.58,106.55 519.85,106.55 524.12,106.55 528.39,106.55 532.66,106.55 536.93,106.55 541.21,106.55 545.48,106.55 549.75,106.55 554.02,101.53 558.29,101.53 562.56,101.53 566.83,101.53 571.11,101.53 575.38,101.53 579.65,101.53 583.92,101.53 588.19,101.53 592.46,101.53 596.73,101.53 601.01,101.53 605.28,96.51 609.55,96.51 613.82,96.51 618.09,96.51 622.36,96.51 626.63,96.51 630.90,96.51 635.18,96.51 639.45,96.51 643.72,96.51 647.99,96.51 652.26,96.51 656.53,96.51 660.80,96.51 665.08,96.51 669.35,96.51 673.62,91.49 677.89,91.49 682.16,91.49 686.43,91.49 690.70,91.49 694.97,91.49 699.25,91.49 703.52,91.49 707.79,91.49 712.06,91.49 716.33,91.49 720.60,91.49 724.87,91.49 729.15,91.49 733.42,91.49 737.69,91.49 741.96,91.49 746.23,91.49 750.50,91.49 754.77,91.49 759.05,91.49 763.32,91.49 767.59,91.49 771.86,91.49 776.13,91.49 780.40,91.49 784.67,91.49 788.94,91.49 793.22,91.49 797.49,91.49 801.76,91.49 806.03,91.49 810.30,91.49 814.57,91.49 818.84,91.49 823.12,91.49 827.39,91.49 831.66,91.49 835.93,91.49 840.20,86.47 844.47,86.47 848.74,86.47 853.02,86.47 857.29,86.47 861.56,86.47 865.83,86.47 870.10,86.47 874.37,86.47 878.64,86.47 882.91,86.47 887.19,86.47 891.46,86.47 895.73,86.47 900.00,86.47" />
+<polyline fill="none" stroke="#1565c0" stroke-width="2" points="50.00,198.75 54.27,188.20 58.54,180.12 62.81,183.94 67.09,179.62 71.36,174.37 75.63,173.06 79.90,175.22 84.17,174.34 88.44,170.40 92.71,168.22 96.98,165.28 101.26,166.96 105.53,165.46 109.80,164.38 114.07,165.83 118.34,164.75 122.61,164.00 126.88,161.97 131.16,164.75 135.43,163.00 139.70,161.01 143.97,161.06 148.24,159.78 152.51,160.38 156.78,158.00 161.06,158.18 165.33,159.28 169.60,158.73 173.87,158.80 178.14,158.78 182.41,156.67 186.68,157.42 190.95,155.76 195.23,154.94 199.50,155.69 203.77,155.31 208.04,155.61 212.31,155.82 216.58,155.46 220.85,155.82 225.13,152.07 229.40,154.69 233.67,152.48 237.94,151.60 242.21,152.10 246.48,152.22 250.75,152.10 255.03,153.10 259.30,152.25 263.57,152.00 267.84,150.57 272.11,151.92 276.38,151.27 280.65,153.40 284.92,149.86 289.20,152.25 293.47,151.27 297.74,151.57 302.01,150.94 306.28,149.26 310.55,151.42 314.82,151.87 319.10,151.02 323.37,152.85 327.64,152.07 331.91,151.67 336.18,151.55 340.45,151.12 344.72,151.52 348.99,149.34 353.27,150.64 357.54,151.97 361.81,151.75 366.08,149.01 370.35,150.74 374.62,151.20 378.89,151.50 383.17,148.61 387.44,150.52 391.71,150.47 395.98,150.44 400.25,149.56 404.52,150.89 408.79,150.12 413.07,149.86 417.34,150.89 421.61,149.89 425.88,148.56 430.15,148.43 434.42,148.51 438.69,149.76 442.96,148.01 447.24,148.41 451.51,147.63 455.78,147.08 460.05,148.33 464.32,148.71 468.59,147.50 472.86,151.14 477.14,148.18 481.41,147.60 485.68,149.66 489.95,149.24 494.22,148.63 498.49,147.86 502.76,146.15 507.04,145.75 511.31,146.55 515.58,147.20 519.85,146.98 524.12,146.83 528.39,146.35 532.66,145.82 536.93,145.22 541.21,146.22 545.48,147.23 549.75,146.83 554.02,148.41 558.29,148.01 562.56,147.48 566.83,144.94 571.11,145.42 575.38,145.90 579.65,147.10 583.92,144.62 588.19,147.05 592.46,147.10 596.73,144.94 601.01,146.88 605.28,147.58 609.55,147.35 613.82,146.47 618.09,145.27 622.36,146.37 626.63,146.40 630.90,145.27 635.18,145.75 639.45,143.71 643.72,147.48 647.99,145.32 652.26,145.07 656.53,143.91 660.80,146.58 665.08,146.02 669.35,144.94 673.62,145.14 677.89,145.32 682.16,145.19 686.43,145.02 690.70,144.67 694.97,144.89 699.25,145.37 703.52,143.51 707.79,145.40 712.06,144.74 716.33,145.17 720.60,144.74 724.87,144.87 729.15,145.55 733.42,144.27 737.69,144.52 741.96,144.37 746.23,145.75 750.50,146.22 754.77,144.54 759.05,144.52 763.32,145.77 767.59,144.92 771.86,144.52 776.13,144.92 780.40,145.07 784.67,144.57 788.94,145.12 793.22,144.62 797.49,144.42 801.76,144.39 806.03,145.27 810.30,145.04 814.57,144.22 818.84,144.37 823.12,145.19 827.39,143.96 831.66,144.34 835.93,143.69 840.20,145.47 844.47,145.45 848.74,145.07 853.02,143.36 857.29,143.54 861.56,146.47 865.83,145.55 870.10,144.74 874.37,144.77 878.64,143.59 882.91,143.76 887.19,145.67 891.46,143.44 895.73,142.26 900.00,143.99" />
+<rect x="56" y="231" width="10" height="10" fill="#2e7d32" />
+<text x="72" y="240" font-size="11" fill="#374151">Best fitness</text>
+<rect x="56" y="217" width="10" height="10" fill="#1565c0" />
+<text x="72" y="226" font-size="11" fill="#374151">Average fitness</text>
+<text x="50" y="244" font-size="11" fill="#6b7280">Gen 0</text>
+<text x="845" y="244" font-size="11" fill="#6b7280">Gen 199</text>
+<text x="54" y="32" font-size="11" fill="#6b7280">67.24</text>
+<text x="54" y="211" font-size="11" fill="#6b7280">28.40</text>
+</svg>
+
+  </div>
+
+  <div class="chart">
+    <div class="caption">Speciation behavior</div>
+    <svg viewBox="0 0 920 250" width="100%" height="260" role="img" aria-label="Species count">
+<line x1="50" y1="215" x2="900" y2="215" stroke="#9ca3af" />
+<line x1="50" y1="20" x2="50" y2="215" stroke="#9ca3af" />
+<polyline fill="none" stroke="#6a1b9a" stroke-width="2" points="50.00,198.75 54.27,198.75 58.54,195.08 62.81,195.08 67.09,192.64 71.36,191.42 75.63,186.53 79.90,184.09 84.17,177.98 88.44,175.54 92.71,170.65 96.98,164.54 101.26,160.87 105.53,159.65 109.80,158.43 114.07,149.88 118.34,144.99 122.61,142.55 126.88,138.88 131.16,135.22 135.43,133.99 139.70,131.55 143.97,129.11 148.24,129.11 152.51,124.22 156.78,123.00 161.06,121.78 165.33,121.78 169.60,119.33 173.87,118.11 178.14,116.89 182.41,115.67 186.68,113.22 190.95,113.22 195.23,110.78 199.50,109.56 203.77,108.34 208.04,104.67 212.31,104.67 216.58,102.23 220.85,102.23 225.13,101.01 229.40,98.56 233.67,98.56 237.94,97.34 242.21,97.34 246.48,97.34 250.75,97.34 255.03,97.34 259.30,97.34 263.57,96.12 267.84,92.45 272.11,92.45 276.38,88.79 280.65,87.57 284.92,87.57 289.20,85.12 293.47,85.12 297.74,85.12 302.01,85.12 306.28,83.90 310.55,83.90 314.82,83.90 319.10,83.90 323.37,83.90 327.64,82.68 331.91,82.68 336.18,81.46 340.45,81.46 344.72,80.23 348.99,79.01 353.27,79.01 357.54,77.79 361.81,77.79 366.08,76.57 370.35,75.35 374.62,75.35 378.89,75.35 383.17,75.35 387.44,75.35 391.71,75.35 395.98,74.13 400.25,74.13 404.52,74.13 408.79,74.13 413.07,74.13 417.34,72.90 421.61,70.46 425.88,70.46 430.15,69.24 434.42,68.02 438.69,69.24 442.96,69.24 447.24,69.24 451.51,68.02 455.78,68.02 460.05,68.02 464.32,68.02 468.59,68.02 472.86,68.02 477.14,66.80 481.41,66.80 485.68,64.35 489.95,64.35 494.22,64.35 498.49,64.35 502.76,64.35 507.04,64.35 511.31,63.13 515.58,63.13 519.85,63.13 524.12,63.13 528.39,61.91 532.66,61.91 536.93,61.91 541.21,60.69 545.48,59.46 549.75,59.46 554.02,59.46 558.29,59.46 562.56,59.46 566.83,59.46 571.11,59.46 575.38,58.24 579.65,58.24 583.92,58.24 588.19,58.24 592.46,58.24 596.73,58.24 601.01,58.24 605.28,57.02 609.55,53.36 613.82,53.36 618.09,53.36 622.36,53.36 626.63,52.13 630.90,52.13 635.18,52.13 639.45,52.13 643.72,52.13 647.99,52.13 652.26,52.13 656.53,52.13 660.80,52.13 665.08,49.69 669.35,48.47 673.62,48.47 677.89,47.25 682.16,47.25 686.43,47.25 690.70,47.25 694.97,47.25 699.25,47.25 703.52,46.02 707.79,46.02 712.06,46.02 716.33,44.80 720.60,44.80 724.87,44.80 729.15,43.58 733.42,42.36 737.69,42.36 741.96,42.36 746.23,41.14 750.50,41.14 754.77,41.14 759.05,41.14 763.32,42.36 767.59,42.36 771.86,42.36 776.13,42.36 780.40,41.14 784.67,41.14 788.94,41.14 793.22,41.14 797.49,41.14 801.76,41.14 806.03,41.14 810.30,41.14 814.57,41.14 818.84,41.14 823.12,41.14 827.39,41.14 831.66,41.14 835.93,41.14 840.20,41.14 844.47,39.92 848.74,39.92 853.02,39.92 857.29,41.14 861.56,41.14 865.83,41.14 870.10,41.14 874.37,39.92 878.64,39.92 882.91,38.69 887.19,38.69 891.46,37.47 895.73,37.47 900.00,36.25" />
+<rect x="56" y="231" width="10" height="10" fill="#6a1b9a" />
+<text x="72" y="240" font-size="11" fill="#374151">Species</text>
+<text x="50" y="244" font-size="11" fill="#6b7280">Gen 0</text>
+<text x="845" y="244" font-size="11" fill="#6b7280">Gen 199</text>
+<text x="54" y="32" font-size="11" fill="#6b7280">147.30</text>
+<text x="54" y="211" font-size="11" fill="#6b7280">-12.30</text>
+</svg>
+
+  </div>
+
+  <div class="chart">
+    <div class="caption">Structural growth</div>
+    <svg viewBox="0 0 920 250" width="100%" height="260" role="img" aria-label="Average complexity">
+<line x1="50" y1="215" x2="900" y2="215" stroke="#9ca3af" />
+<line x1="50" y1="20" x2="50" y2="215" stroke="#9ca3af" />
+<polyline fill="none" stroke="#ef6c00" stroke-width="2" points="50.00,198.75 54.27,197.93 58.54,197.60 62.81,173.37 67.09,172.49 71.36,162.11 75.63,155.19 79.90,151.01 84.17,148.26 88.44,141.78 92.71,131.73 96.98,125.08 101.26,122.00 105.53,116.40 109.80,113.16 114.07,108.88 118.34,104.86 122.61,100.74 126.88,99.04 131.16,95.25 135.43,91.74 139.70,89.26 143.97,90.64 148.24,86.46 152.51,83.28 156.78,82.95 161.06,80.97 165.33,81.13 169.60,80.80 173.87,81.35 178.14,80.36 182.41,79.43 186.68,77.67 190.95,77.18 195.23,75.36 199.50,76.30 203.77,76.35 208.04,75.80 212.31,72.84 216.58,71.79 220.85,70.15 225.13,71.41 229.40,69.43 233.67,66.63 237.94,67.78 242.21,67.01 246.48,66.68 250.75,67.51 255.03,67.45 259.30,66.85 263.57,64.38 267.84,64.71 272.11,61.41 276.38,60.15 280.65,61.41 284.92,60.64 289.20,60.97 293.47,58.77 297.74,62.34 302.01,60.97 306.28,58.22 310.55,59.54 314.82,58.28 319.10,59.27 323.37,59.49 327.64,58.72 331.91,59.10 336.18,59.32 340.45,57.95 344.72,58.00 348.99,56.74 353.27,56.91 357.54,56.47 361.81,55.97 366.08,56.52 370.35,55.81 374.62,56.30 378.89,55.26 383.17,56.80 387.44,55.48 391.71,56.74 395.98,55.48 400.25,54.65 404.52,56.36 408.79,55.04 413.07,54.71 417.34,54.65 421.61,54.76 425.88,52.29 430.15,51.08 434.42,52.84 438.69,48.61 442.96,53.01 447.24,51.47 451.51,53.06 455.78,52.62 460.05,53.83 464.32,51.52 468.59,50.86 472.86,51.41 477.14,49.16 481.41,49.43 485.68,50.09 489.95,50.70 494.22,49.32 498.49,48.28 502.76,48.23 507.04,47.57 511.31,49.00 515.58,44.00 519.85,48.45 524.12,47.18 528.39,44.16 532.66,44.66 536.93,47.02 541.21,47.51 545.48,47.90 549.75,46.19 554.02,46.41 558.29,48.23 562.56,45.59 566.83,46.85 571.11,45.97 575.38,49.32 579.65,44.93 583.92,45.37 588.19,45.09 592.46,46.41 596.73,43.89 601.01,46.74 605.28,44.93 609.55,42.35 613.82,45.53 618.09,44.22 622.36,43.12 626.63,44.60 630.90,45.04 635.18,45.48 639.45,44.27 643.72,46.52 647.99,44.44 652.26,46.96 656.53,42.46 660.80,46.36 665.08,43.72 669.35,42.57 673.62,42.18 677.89,45.15 682.16,41.58 686.43,42.84 690.70,44.87 694.97,43.56 699.25,41.52 703.52,40.32 707.79,44.71 712.06,40.10 716.33,45.92 720.60,39.88 724.87,42.95 729.15,38.61 733.42,42.35 737.69,38.50 741.96,40.53 746.23,39.60 750.50,38.78 754.77,42.46 759.05,36.96 763.32,41.80 767.59,38.83 771.86,41.30 776.13,39.93 780.40,38.34 784.67,39.11 788.94,37.73 793.22,40.15 797.49,37.84 801.76,38.50 806.03,36.25 810.30,42.51 814.57,37.68 818.84,39.93 823.12,36.91 827.39,39.93 831.66,38.56 835.93,36.74 840.20,38.56 844.47,38.50 848.74,37.18 853.02,39.05 857.29,36.36 861.56,38.34 865.83,42.46 870.10,38.12 874.37,37.51 878.64,37.84 882.91,36.58 887.19,37.07 891.46,37.13 895.73,39.38 900.00,37.57" />
+<rect x="56" y="231" width="10" height="10" fill="#ef6c00" />
+<text x="72" y="240" font-size="11" fill="#374151">Complexity</text>
+<text x="50" y="244" font-size="11" fill="#6b7280">Gen 0</text>
+<text x="845" y="244" font-size="11" fill="#6b7280">Gen 199</text>
+<text x="54" y="32" font-size="11" fill="#6b7280">29.27</text>
+<text x="54" y="211" font-size="11" fill="#6b7280">11.52</text>
+</svg>
+
+  </div>
+
+  
+
+  <div class="chart">
+  <div class="caption">Network structure snapshots (champion genomes)</div>
+  <div class="meta">Inputs are blue, hidden are amber, outputs are green. Edge color encodes weight sign (green positive, red negative).</div>
+  <div style="margin: 10px 0;"><canvas id="networkCanvas0" width="900" height="420" style="border:1px solid #e5e7eb;border-radius:6px;width:100%;height:auto;"></canvas></div>
+<div style="margin: 10px 0;"><canvas id="networkCanvas1" width="900" height="420" style="border:1px solid #e5e7eb;border-radius:6px;width:100%;height:auto;"></canvas></div>
+<div style="margin: 10px 0;"><canvas id="networkCanvas2" width="900" height="420" style="border:1px solid #e5e7eb;border-radius:6px;width:100%;height:auto;"></canvas></div>
+<div style="margin: 10px 0;"><canvas id="networkCanvas3" width="900" height="420" style="border:1px solid #e5e7eb;border-radius:6px;width:100%;height:auto;"></canvas></div>
+<div style="margin: 10px 0;"><canvas id="networkCanvas4" width="900" height="420" style="border:1px solid #e5e7eb;border-radius:6px;width:100%;height:auto;"></canvas></div>
+<div style="margin: 10px 0;"><canvas id="networkCanvas5" width="900" height="420" style="border:1px solid #e5e7eb;border-radius:6px;width:100%;height:auto;"></canvas></div>
+
+</div>
+<script>
+(() => {
+  const snapshots = [{"generation":0,"nodes":[{"id":"5a08a716-dad9-4954-b351-c4fee4ed6fae","nodeType":"Input"},{"id":"1871c6dd-0703-4843-bba8-572ed5c73cb4","nodeType":"Input"},{"id":"26ad7a8f-be3d-4340-8c39-f75eca28b729","nodeType":"Input"},{"id":"26d7e971-8ca6-4ca5-9401-f30112b8811d","nodeType":"Input"},{"id":"bdffe8a0-59de-4f1b-adf6-c0f2826403b6","nodeType":"Input"},{"id":"66fd8b13-5e5b-43db-9f65-1895c1b02f82","nodeType":"Input"},{"id":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","nodeType":"Output"}],"connections":[{"inputNodeId":"5a08a716-dad9-4954-b351-c4fee4ed6fae","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":-0.21394958776140105,"enabled":true},{"inputNodeId":"1871c6dd-0703-4843-bba8-572ed5c73cb4","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":-0.58881039712057,"enabled":true},{"inputNodeId":"26ad7a8f-be3d-4340-8c39-f75eca28b729","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":0.009519520685784322,"enabled":true},{"inputNodeId":"26d7e971-8ca6-4ca5-9401-f30112b8811d","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":0.004659682980114432,"enabled":true},{"inputNodeId":"bdffe8a0-59de-4f1b-adf6-c0f2826403b6","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":0.6518853118884775,"enabled":true},{"inputNodeId":"66fd8b13-5e5b-43db-9f65-1895c1b02f82","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":0.8995357667559458,"enabled":true}]},{"generation":40,"nodes":[{"id":"5a08a716-dad9-4954-b351-c4fee4ed6fae","nodeType":"Input"},{"id":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","nodeType":"Output"},{"id":"1871c6dd-0703-4843-bba8-572ed5c73cb4","nodeType":"Input"},{"id":"26ad7a8f-be3d-4340-8c39-f75eca28b729","nodeType":"Input"},{"id":"26d7e971-8ca6-4ca5-9401-f30112b8811d","nodeType":"Input"},{"id":"bdffe8a0-59de-4f1b-adf6-c0f2826403b6","nodeType":"Input"},{"id":"66fd8b13-5e5b-43db-9f65-1895c1b02f82","nodeType":"Input"},{"id":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","nodeType":"Hidden"},{"id":"583888d8-3ba0-4174-a304-6335e9017003","nodeType":"Hidden"}],"connections":[{"inputNodeId":"5a08a716-dad9-4954-b351-c4fee4ed6fae","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":1.0200075758714267,"enabled":true},{"inputNodeId":"1871c6dd-0703-4843-bba8-572ed5c73cb4","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":-2.035127344091948,"enabled":true},{"inputNodeId":"26ad7a8f-be3d-4340-8c39-f75eca28b729","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":0.27477862163203703,"enabled":true},{"inputNodeId":"26d7e971-8ca6-4ca5-9401-f30112b8811d","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":0.4222546696766534,"enabled":true},{"inputNodeId":"bdffe8a0-59de-4f1b-adf6-c0f2826403b6","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":1.1108611301103892,"enabled":true},{"inputNodeId":"66fd8b13-5e5b-43db-9f65-1895c1b02f82","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":1.519803880723102,"enabled":true},{"inputNodeId":"5a08a716-dad9-4954-b351-c4fee4ed6fae","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":1.8827372909908822,"enabled":true},{"inputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":-0.7621299749063931,"enabled":true},{"inputNodeId":"bdffe8a0-59de-4f1b-adf6-c0f2826403b6","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":1.415943169927198,"enabled":true},{"inputNodeId":"26ad7a8f-be3d-4340-8c39-f75eca28b729","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":-0.04516117463128688,"enabled":true},{"inputNodeId":"26d7e971-8ca6-4ca5-9401-f30112b8811d","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":-0.7937731790793003,"enabled":true},{"inputNodeId":"66fd8b13-5e5b-43db-9f65-1895c1b02f82","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":-1.006314780333226,"enabled":true},{"inputNodeId":"66fd8b13-5e5b-43db-9f65-1895c1b02f82","outputNodeId":"583888d8-3ba0-4174-a304-6335e9017003","weight":0.6218106223371859,"enabled":true},{"inputNodeId":"583888d8-3ba0-4174-a304-6335e9017003","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":-0.6877704000509206,"enabled":true}]},{"generation":80,"nodes":[{"id":"5a08a716-dad9-4954-b351-c4fee4ed6fae","nodeType":"Input"},{"id":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","nodeType":"Output"},{"id":"1871c6dd-0703-4843-bba8-572ed5c73cb4","nodeType":"Input"},{"id":"26ad7a8f-be3d-4340-8c39-f75eca28b729","nodeType":"Input"},{"id":"26d7e971-8ca6-4ca5-9401-f30112b8811d","nodeType":"Input"},{"id":"bdffe8a0-59de-4f1b-adf6-c0f2826403b6","nodeType":"Input"},{"id":"66fd8b13-5e5b-43db-9f65-1895c1b02f82","nodeType":"Input"},{"id":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","nodeType":"Hidden"},{"id":"63dcfee8-9a27-4e7c-b2ce-4a5ee5d60a77","nodeType":"Hidden"},{"id":"583888d8-3ba0-4174-a304-6335e9017003","nodeType":"Hidden"}],"connections":[{"inputNodeId":"5a08a716-dad9-4954-b351-c4fee4ed6fae","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":1.3826355072123167,"enabled":true},{"inputNodeId":"1871c6dd-0703-4843-bba8-572ed5c73cb4","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":-0.9839404069278113,"enabled":true},{"inputNodeId":"26ad7a8f-be3d-4340-8c39-f75eca28b729","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":0.6714374011715116,"enabled":true},{"inputNodeId":"26d7e971-8ca6-4ca5-9401-f30112b8811d","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":0.13363340340258245,"enabled":true},{"inputNodeId":"bdffe8a0-59de-4f1b-adf6-c0f2826403b6","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":1.7226122355659548,"enabled":true},{"inputNodeId":"66fd8b13-5e5b-43db-9f65-1895c1b02f82","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":-0.07338925733854484,"enabled":true},{"inputNodeId":"5a08a716-dad9-4954-b351-c4fee4ed6fae","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":1.8752981225844927,"enabled":true},{"inputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":-1.7511075994703487,"enabled":true},{"inputNodeId":"bdffe8a0-59de-4f1b-adf6-c0f2826403b6","outputNodeId":"63dcfee8-9a27-4e7c-b2ce-4a5ee5d60a77","weight":1.9163170286530247,"enabled":true},{"inputNodeId":"63dcfee8-9a27-4e7c-b2ce-4a5ee5d60a77","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":1.26052247651877,"enabled":true},{"inputNodeId":"bdffe8a0-59de-4f1b-adf6-c0f2826403b6","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":1.3072004985563463,"enabled":true},{"inputNodeId":"26ad7a8f-be3d-4340-8c39-f75eca28b729","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":0.1392688241970116,"enabled":true},{"inputNodeId":"26d7e971-8ca6-4ca5-9401-f30112b8811d","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":-0.920778150400509,"enabled":true},{"inputNodeId":"66fd8b13-5e5b-43db-9f65-1895c1b02f82","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":-1.9227356416744814,"enabled":true},{"inputNodeId":"66fd8b13-5e5b-43db-9f65-1895c1b02f82","outputNodeId":"583888d8-3ba0-4174-a304-6335e9017003","weight":0.8664733883303,"enabled":true},{"inputNodeId":"583888d8-3ba0-4174-a304-6335e9017003","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":0.04308895209948027,"enabled":true},{"inputNodeId":"1871c6dd-0703-4843-bba8-572ed5c73cb4","outputNodeId":"583888d8-3ba0-4174-a304-6335e9017003","weight":0.07466044629675367,"enabled":true}]},{"generation":119,"nodes":[{"id":"5a08a716-dad9-4954-b351-c4fee4ed6fae","nodeType":"Input"},{"id":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","nodeType":"Output"},{"id":"1871c6dd-0703-4843-bba8-572ed5c73cb4","nodeType":"Input"},{"id":"26ad7a8f-be3d-4340-8c39-f75eca28b729","nodeType":"Input"},{"id":"26d7e971-8ca6-4ca5-9401-f30112b8811d","nodeType":"Input"},{"id":"bdffe8a0-59de-4f1b-adf6-c0f2826403b6","nodeType":"Input"},{"id":"66fd8b13-5e5b-43db-9f65-1895c1b02f82","nodeType":"Input"},{"id":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","nodeType":"Hidden"},{"id":"63dcfee8-9a27-4e7c-b2ce-4a5ee5d60a77","nodeType":"Hidden"},{"id":"583888d8-3ba0-4174-a304-6335e9017003","nodeType":"Hidden"}],"connections":[{"inputNodeId":"5a08a716-dad9-4954-b351-c4fee4ed6fae","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":1.3826355072123167,"enabled":true},{"inputNodeId":"1871c6dd-0703-4843-bba8-572ed5c73cb4","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":-0.9839404069278113,"enabled":true},{"inputNodeId":"26ad7a8f-be3d-4340-8c39-f75eca28b729","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":0.6714374011715116,"enabled":true},{"inputNodeId":"26d7e971-8ca6-4ca5-9401-f30112b8811d","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":0.13363340340258245,"enabled":false},{"inputNodeId":"bdffe8a0-59de-4f1b-adf6-c0f2826403b6","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":1.7226122355659548,"enabled":true},{"inputNodeId":"66fd8b13-5e5b-43db-9f65-1895c1b02f82","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":-0.07338925733854484,"enabled":true},{"inputNodeId":"5a08a716-dad9-4954-b351-c4fee4ed6fae","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":1.8752981225844927,"enabled":true},{"inputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":-1.7511075994703487,"enabled":true},{"inputNodeId":"bdffe8a0-59de-4f1b-adf6-c0f2826403b6","outputNodeId":"63dcfee8-9a27-4e7c-b2ce-4a5ee5d60a77","weight":1.9163170286530247,"enabled":true},{"inputNodeId":"63dcfee8-9a27-4e7c-b2ce-4a5ee5d60a77","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":1.26052247651877,"enabled":true},{"inputNodeId":"bdffe8a0-59de-4f1b-adf6-c0f2826403b6","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":1.3072004985563463,"enabled":true},{"inputNodeId":"26ad7a8f-be3d-4340-8c39-f75eca28b729","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":0.1392688241970116,"enabled":true},{"inputNodeId":"26d7e971-8ca6-4ca5-9401-f30112b8811d","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":-0.920778150400509,"enabled":true},{"inputNodeId":"66fd8b13-5e5b-43db-9f65-1895c1b02f82","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":-1.9227356416744814,"enabled":true},{"inputNodeId":"66fd8b13-5e5b-43db-9f65-1895c1b02f82","outputNodeId":"583888d8-3ba0-4174-a304-6335e9017003","weight":0.8664733883303,"enabled":true},{"inputNodeId":"583888d8-3ba0-4174-a304-6335e9017003","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":0.04308895209948027,"enabled":true},{"inputNodeId":"1871c6dd-0703-4843-bba8-572ed5c73cb4","outputNodeId":"583888d8-3ba0-4174-a304-6335e9017003","weight":0.07466044629675367,"enabled":true},{"inputNodeId":"26d7e971-8ca6-4ca5-9401-f30112b8811d","outputNodeId":"63dcfee8-9a27-4e7c-b2ce-4a5ee5d60a77","weight":-0.640496188607298,"enabled":true}]},{"generation":159,"nodes":[{"id":"5a08a716-dad9-4954-b351-c4fee4ed6fae","nodeType":"Input"},{"id":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","nodeType":"Output"},{"id":"1871c6dd-0703-4843-bba8-572ed5c73cb4","nodeType":"Input"},{"id":"26ad7a8f-be3d-4340-8c39-f75eca28b729","nodeType":"Input"},{"id":"26d7e971-8ca6-4ca5-9401-f30112b8811d","nodeType":"Input"},{"id":"bdffe8a0-59de-4f1b-adf6-c0f2826403b6","nodeType":"Input"},{"id":"66fd8b13-5e5b-43db-9f65-1895c1b02f82","nodeType":"Input"},{"id":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","nodeType":"Hidden"},{"id":"6cffcd1a-6efc-4b1e-93e3-d65d564bf4ce","nodeType":"Hidden"}],"connections":[{"inputNodeId":"5a08a716-dad9-4954-b351-c4fee4ed6fae","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":0.2807436582077032,"enabled":true},{"inputNodeId":"1871c6dd-0703-4843-bba8-572ed5c73cb4","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":-1.1094259671445126,"enabled":true},{"inputNodeId":"26ad7a8f-be3d-4340-8c39-f75eca28b729","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":0.5302337713214726,"enabled":true},{"inputNodeId":"26d7e971-8ca6-4ca5-9401-f30112b8811d","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":-0.004712718075473188,"enabled":true},{"inputNodeId":"bdffe8a0-59de-4f1b-adf6-c0f2826403b6","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":1.6179672119291344,"enabled":true},{"inputNodeId":"66fd8b13-5e5b-43db-9f65-1895c1b02f82","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":-0.0037279038241730955,"enabled":true},{"inputNodeId":"5a08a716-dad9-4954-b351-c4fee4ed6fae","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":1.9008351165805177,"enabled":true},{"inputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":-1.8300948838377813,"enabled":true},{"inputNodeId":"bdffe8a0-59de-4f1b-adf6-c0f2826403b6","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":0.9394427134839084,"enabled":true},{"inputNodeId":"1871c6dd-0703-4843-bba8-572ed5c73cb4","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":-1.6571549410732251,"enabled":true},{"inputNodeId":"26d7e971-8ca6-4ca5-9401-f30112b8811d","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":-0.9056658495243946,"enabled":true},{"inputNodeId":"66fd8b13-5e5b-43db-9f65-1895c1b02f82","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":-0.6632230771534252,"enabled":true},{"inputNodeId":"26d7e971-8ca6-4ca5-9401-f30112b8811d","outputNodeId":"6cffcd1a-6efc-4b1e-93e3-d65d564bf4ce","weight":2.0065283218894754,"enabled":true},{"inputNodeId":"6cffcd1a-6efc-4b1e-93e3-d65d564bf4ce","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":-1.1234074736123008,"enabled":true},{"inputNodeId":"bdffe8a0-59de-4f1b-adf6-c0f2826403b6","outputNodeId":"6cffcd1a-6efc-4b1e-93e3-d65d564bf4ce","weight":-0.4179198776455223,"enabled":true}]},{"generation":199,"nodes":[{"id":"5a08a716-dad9-4954-b351-c4fee4ed6fae","nodeType":"Input"},{"id":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","nodeType":"Output"},{"id":"1871c6dd-0703-4843-bba8-572ed5c73cb4","nodeType":"Input"},{"id":"26ad7a8f-be3d-4340-8c39-f75eca28b729","nodeType":"Input"},{"id":"26d7e971-8ca6-4ca5-9401-f30112b8811d","nodeType":"Input"},{"id":"bdffe8a0-59de-4f1b-adf6-c0f2826403b6","nodeType":"Input"},{"id":"66fd8b13-5e5b-43db-9f65-1895c1b02f82","nodeType":"Input"},{"id":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","nodeType":"Hidden"},{"id":"6cffcd1a-6efc-4b1e-93e3-d65d564bf4ce","nodeType":"Hidden"}],"connections":[{"inputNodeId":"5a08a716-dad9-4954-b351-c4fee4ed6fae","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":0.2807436582077032,"enabled":true},{"inputNodeId":"1871c6dd-0703-4843-bba8-572ed5c73cb4","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":-1.1094259671445126,"enabled":true},{"inputNodeId":"26ad7a8f-be3d-4340-8c39-f75eca28b729","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":0.5302337713214726,"enabled":true},{"inputNodeId":"26d7e971-8ca6-4ca5-9401-f30112b8811d","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":-0.004712718075473188,"enabled":true},{"inputNodeId":"bdffe8a0-59de-4f1b-adf6-c0f2826403b6","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":1.6179672119291344,"enabled":true},{"inputNodeId":"66fd8b13-5e5b-43db-9f65-1895c1b02f82","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":-0.0037279038241730955,"enabled":true},{"inputNodeId":"5a08a716-dad9-4954-b351-c4fee4ed6fae","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":1.9008351165805177,"enabled":true},{"inputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","outputNodeId":"c2f09993-eccf-41b9-bfeb-819006fbd9f2","weight":-1.8300948838377813,"enabled":true},{"inputNodeId":"bdffe8a0-59de-4f1b-adf6-c0f2826403b6","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":0.9394427134839084,"enabled":true},{"inputNodeId":"1871c6dd-0703-4843-bba8-572ed5c73cb4","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":-1.6571549410732251,"enabled":true},{"inputNodeId":"26d7e971-8ca6-4ca5-9401-f30112b8811d","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":-0.9056658495243946,"enabled":true},{"inputNodeId":"66fd8b13-5e5b-43db-9f65-1895c1b02f82","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":-0.6632230771534252,"enabled":true},{"inputNodeId":"26d7e971-8ca6-4ca5-9401-f30112b8811d","outputNodeId":"6cffcd1a-6efc-4b1e-93e3-d65d564bf4ce","weight":2.0065283218894754,"enabled":true},{"inputNodeId":"6cffcd1a-6efc-4b1e-93e3-d65d564bf4ce","outputNodeId":"4b7990a9-06f4-4e2d-9466-4b9f0d22ce70","weight":-1.1234074736123008,"enabled":true},{"inputNodeId":"bdffe8a0-59de-4f1b-adf6-c0f2826403b6","outputNodeId":"6cffcd1a-6efc-4b1e-93e3-d65d564bf4ce","weight":-0.4179198776455223,"enabled":true},{"inputNodeId":"5a08a716-dad9-4954-b351-c4fee4ed6fae","outputNodeId":"6cffcd1a-6efc-4b1e-93e3-d65d564bf4ce","weight":0.6657674329661614,"enabled":true}]}];
+
+  function drawSnapshot(canvasId, snapshot) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const width = canvas.width;
+    const height = canvas.height;
+    const pad = 32;
+    ctx.clearRect(0, 0, width, height);
+
+    const nodes = snapshot.nodes;
+    const edges = snapshot.connections.filter(c => c.enabled);
+
+    const nodeMap = new Map(nodes.map(n => [n.id, n]));
+    const outgoing = new Map();
+    const indegree = new Map();
+    const level = new Map();
+
+    for (const n of nodes) {
+      outgoing.set(n.id, []);
+      indegree.set(n.id, 0);
+      level.set(n.id, n.nodeType === 'Input' ? 0 : 1);
+    }
+
+    for (const e of edges) {
+      if (!outgoing.has(e.inputNodeId) || !indegree.has(e.outputNodeId)) continue;
+      outgoing.get(e.inputNodeId).push(e.outputNodeId);
+      indegree.set(e.outputNodeId, indegree.get(e.outputNodeId) + 1);
+    }
+
+    const queue = [];
+    for (const [id, d] of indegree.entries()) {
+      if (d === 0) queue.push(id);
+    }
+
+    while (queue.length > 0) {
+      const current = queue.shift();
+      const currentLevel = level.get(current) ?? 0;
+      for (const next of outgoing.get(current) ?? []) {
+        level.set(next, Math.max(level.get(next) ?? 0, currentLevel + 1));
+        indegree.set(next, indegree.get(next) - 1);
+        if (indegree.get(next) === 0) queue.push(next);
+      }
+    }
+
+    let maxLevel = 0;
+    for (const l of level.values()) maxLevel = Math.max(maxLevel, l);
+    for (const n of nodes) {
+      if (n.nodeType === 'Output') level.set(n.id, maxLevel + 1);
+    }
+    maxLevel += 1;
+
+    const byLevel = new Map();
+    for (const n of nodes) {
+      const l = level.get(n.id) ?? 0;
+      if (!byLevel.has(l)) byLevel.set(l, []);
+      byLevel.get(l).push(n);
+    }
+
+    const pos = new Map();
+    for (let l = 0; l <= maxLevel; l++) {
+      const group = byLevel.get(l) ?? [];
+      const x = pad + (maxLevel === 0 ? 0.5 : l / maxLevel) * (width - (2 * pad));
+      for (let i = 0; i < group.length; i++) {
+        const y = pad + ((i + 1) / (group.length + 1)) * (height - (2 * pad));
+        pos.set(group[i].id, { x, y });
+      }
+    }
+
+    for (const e of edges) {
+      const a = pos.get(e.inputNodeId);
+      const b = pos.get(e.outputNodeId);
+      if (!a || !b) continue;
+      const strength = Math.min(1, Math.abs(e.weight) / 3);
+      const alpha = 0.25 + (0.65 * strength);
+      ctx.strokeStyle = e.weight >= 0 ? `rgba(46,125,50,${alpha.toFixed(3)})` : `rgba(198,40,40,${alpha.toFixed(3)})`;
+      ctx.lineWidth = 1 + (2 * strength);
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.stroke();
+    }
+
+    for (const n of nodes) {
+      const p = pos.get(n.id);
+      if (!p) continue;
+      const color = n.nodeType === 'Input'
+        ? '#1565c0'
+        : (n.nodeType === 'Output' ? '#2e7d32' : '#ef6c00');
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 9, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#111827';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    ctx.fillStyle = '#111827';
+    ctx.font = 'bold 13px Segoe UI, Arial';
+    ctx.fillText(`Generation ${snapshot.generation} | Nodes: ${nodes.length} | Enabled connections: ${edges.length}`, 16, 20);
+  }
+
+  snapshots.forEach((snapshot, i) => drawSnapshot(`networkCanvas${i}`, snapshot));
+})();
+</script>
+</body>
+</html>

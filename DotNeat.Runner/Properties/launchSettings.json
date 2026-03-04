@@ -2,7 +2,7 @@
   "profiles": {
     "DotNeat.Runner": {
       "commandName": "Project",
-      "commandLineArgs": "mux6"
+      "commandLineArgs": "cartpole"
     }
   }
 }

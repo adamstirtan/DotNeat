@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>xor evolution report</title>
+  <style>
+    body { font-family: Segoe UI, Arial, sans-serif; margin: 24px; color: #1f2937; }
+    h1 { margin-bottom: 4px; }
+    .meta { color: #6b7280; margin-bottom: 16px; }
+    .chart { margin: 16px 0 28px 0; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; }
+    .caption { font-weight: 600; margin-bottom: 8px; }
+    .legend { font-size: 12px; color: #4b5563; margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <h1>xor evolution visualization</h1>
+  <div class="meta">Seed: 31337 | Generations: 40</div>
+
+  <div class="chart">
+    <div class="caption">Fitness progression</div>
+    <svg viewBox="0 0 920 250" width="100%" height="260" role="img" aria-label="Fitness over generations">
+<line x1="50" y1="215" x2="900" y2="215" stroke="#9ca3af" />
+<line x1="50" y1="20" x2="50" y2="215" stroke="#9ca3af" />
+<line x1="50" y1="36.25" x2="900" y2="36.25" stroke="#ef4444" stroke-dasharray="6,4" />
+<text x="56" y="30.25" font-size="11" fill="#ef4444">Perfect XOR (4/4)</text>
+<polyline fill="none" stroke="#2e7d32" stroke-width="2" points="50.00,187.58 71.79,187.54 93.59,187.54 115.38,183.12 137.18,167.66 158.97,163.79 180.77,155.69 202.56,155.69 224.36,150.47 246.15,142.89 267.95,127.63 289.74,127.63 311.54,127.63 333.33,126.91 355.13,104.20 376.92,104.20 398.72,104.20 420.51,104.20 442.31,104.20 464.10,104.20 485.90,101.17 507.69,101.17 529.49,97.15 551.28,97.15 573.08,97.15 594.87,97.15 616.67,95.83 638.46,95.83 660.26,95.83 682.05,95.83 703.85,95.83 725.64,92.36 747.44,86.49 769.23,86.49 791.03,86.49 812.82,86.45 834.62,86.45 856.41,86.45 878.21,86.45 900.00,86.09" />
+<polyline fill="none" stroke="#1565c0" stroke-width="2" points="50.00,197.54 71.79,194.67 93.59,193.26 115.38,192.64 137.18,190.75 158.97,195.91 180.77,198.75 202.56,191.71 224.36,192.01 246.15,191.41 267.95,181.46 289.74,183.99 311.54,182.89 333.33,178.03 355.13,182.87 376.92,174.99 398.72,170.23 420.51,169.68 442.31,164.83 464.10,171.45 485.90,165.56 507.69,164.34 529.49,160.58 551.28,159.05 573.08,162.98 594.87,157.81 616.67,154.61 638.46,156.98 660.26,153.57 682.05,150.46 703.85,153.87 725.64,155.32 747.44,153.39 769.23,151.45 791.03,150.83 812.82,145.10 834.62,150.16 856.41,147.02 878.21,147.83 900.00,147.19" />
+<rect x="56" y="231" width="10" height="10" fill="#2e7d32" />
+<text x="72" y="240" font-size="11" fill="#374151">Best fitness</text>
+<rect x="56" y="217" width="10" height="10" fill="#1565c0" />
+<text x="72" y="226" font-size="11" fill="#374151">Average fitness</text>
+<text x="50" y="244" font-size="11" fill="#6b7280">Gen 0</text>
+<text x="845" y="244" font-size="11" fill="#6b7280">Gen 39</text>
+<text x="54" y="32" font-size="11" fill="#6b7280">4.11</text>
+<text x="54" y="211" font-size="11" fill="#6b7280">2.82</text>
+</svg>
+
+  </div>
+
+  <div class="chart">
+    <div class="caption">Speciation behavior</div>
+    <svg viewBox="0 0 920 250" width="100%" height="260" role="img" aria-label="Species count">
+<line x1="50" y1="215" x2="900" y2="215" stroke="#9ca3af" />
+<line x1="50" y1="20" x2="50" y2="215" stroke="#9ca3af" />
+<polyline fill="none" stroke="#6a1b9a" stroke-width="2" points="50.00,198.75 71.79,198.75 93.59,198.75 115.38,191.53 137.18,187.92 158.97,169.86 180.77,169.86 202.56,166.25 224.36,140.97 246.15,137.36 267.95,126.53 289.74,122.92 311.54,115.69 333.33,112.08 355.13,108.47 376.92,104.86 398.72,104.86 420.51,101.25 442.31,97.64 464.10,90.42 485.90,94.03 507.69,79.58 529.49,79.58 551.28,75.97 573.08,68.75 594.87,68.75 616.67,68.75 638.46,61.53 660.26,61.53 682.05,54.31 703.85,54.31 725.64,47.08 747.44,39.86 769.23,39.86 791.03,36.25 812.82,36.25 834.62,36.25 856.41,39.86 878.21,36.25 900.00,36.25" />
+<rect x="56" y="231" width="10" height="10" fill="#6a1b9a" />
+<text x="72" y="240" font-size="11" fill="#374151">Species</text>
+<text x="50" y="244" font-size="11" fill="#6b7280">Gen 0</text>
+<text x="845" y="244" font-size="11" fill="#6b7280">Gen 39</text>
+<text x="54" y="32" font-size="11" fill="#6b7280">50.50</text>
+<text x="54" y="211" font-size="11" fill="#6b7280">-3.50</text>
+</svg>
+
+  </div>
+
+  <div class="chart">
+    <div class="caption">Structural growth</div>
+    <svg viewBox="0 0 920 250" width="100%" height="260" role="img" aria-label="Average complexity">
+<line x1="50" y1="215" x2="900" y2="215" stroke="#9ca3af" />
+<line x1="50" y1="20" x2="50" y2="215" stroke="#9ca3af" />
+<polyline fill="none" stroke="#ef6c00" stroke-width="2" points="50.00,198.75 71.79,197.40 93.59,197.58 115.38,193.99 137.18,181.94 158.97,161.18 180.77,149.14 202.56,144.19 224.36,137.63 246.15,122.80 267.95,118.49 289.74,109.50 311.54,103.03 333.33,95.57 355.13,91.62 376.92,87.21 398.72,86.67 420.51,81.10 442.31,80.38 464.10,78.76 485.90,75.80 507.69,74.18 529.49,70.58 551.28,71.57 573.08,68.88 594.87,66.90 616.67,63.30 638.46,58.63 660.26,56.83 682.05,54.85 703.85,52.07 725.64,50.72 747.44,50.72 769.23,45.96 791.03,45.78 812.82,41.55 834.62,42.54 856.41,40.20 878.21,38.41 900.00,36.25" />
+<rect x="56" y="231" width="10" height="10" fill="#ef6c00" />
+<text x="72" y="240" font-size="11" fill="#374151">Complexity</text>
+<text x="50" y="244" font-size="11" fill="#6b7280">Gen 0</text>
+<text x="845" y="244" font-size="11" fill="#6b7280">Gen 39</text>
+<text x="54" y="32" font-size="11" fill="#6b7280">24.89</text>
+<text x="54" y="211" font-size="11" fill="#6b7280">3.19</text>
+</svg>
+
+  </div>
+
+  
+
+  <div class="chart">
+  <div class="caption">Network structure snapshots (champion genomes)</div>
+  <div class="meta">Inputs are blue, hidden are amber, outputs are green. Edge color encodes weight sign (green positive, red negative).</div>
+  <div style="margin: 10px 0;"><canvas id="networkCanvas0" width="900" height="420" style="border:1px solid #e5e7eb;border-radius:6px;width:100%;height:auto;"></canvas></div>
+<div style="margin: 10px 0;"><canvas id="networkCanvas1" width="900" height="420" style="border:1px solid #e5e7eb;border-radius:6px;width:100%;height:auto;"></canvas></div>
+<div style="margin: 10px 0;"><canvas id="networkCanvas2" width="900" height="420" style="border:1px solid #e5e7eb;border-radius:6px;width:100%;height:auto;"></canvas></div>
+<div style="margin: 10px 0;"><canvas id="networkCanvas3" width="900" height="420" style="border:1px solid #e5e7eb;border-radius:6px;width:100%;height:auto;"></canvas></div>
+<div style="margin: 10px 0;"><canvas id="networkCanvas4" width="900" height="420" style="border:1px solid #e5e7eb;border-radius:6px;width:100%;height:auto;"></canvas></div>
+
+</div>
+<script>
+(() => {
+  const snapshots = [{"generation":0,"nodes":[{"id":"c786da2e-afa1-4764-95e4-7904dbba7703","nodeType":"Input"},{"id":"8fd35899-af3f-4179-afc5-1ffc2158b6f7","nodeType":"Input"},{"id":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","nodeType":"Output"}],"connections":[{"inputNodeId":"c786da2e-afa1-4764-95e4-7904dbba7703","outputNodeId":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","weight":-0.03989439971740094,"enabled":true},{"inputNodeId":"8fd35899-af3f-4179-afc5-1ffc2158b6f7","outputNodeId":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","weight":-0.012515186803655265,"enabled":true}]},{"generation":10,"nodes":[{"id":"c786da2e-afa1-4764-95e4-7904dbba7703","nodeType":"Input"},{"id":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","nodeType":"Output"},{"id":"8fd35899-af3f-4179-afc5-1ffc2158b6f7","nodeType":"Input"},{"id":"1ed76514-5305-4616-b27f-b857ff2dce21","nodeType":"Hidden"},{"id":"022cfb32-999c-4e09-8571-d55241f77568","nodeType":"Hidden"},{"id":"178a9bcd-ac69-42a4-bf51-69b90c852797","nodeType":"Hidden"},{"id":"dcd50832-bbe4-492d-92af-a42620b70880","nodeType":"Hidden"}],"connections":[{"inputNodeId":"c786da2e-afa1-4764-95e4-7904dbba7703","outputNodeId":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","weight":-0.9452929137951196,"enabled":true},{"inputNodeId":"8fd35899-af3f-4179-afc5-1ffc2158b6f7","outputNodeId":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","weight":0.3368178846951657,"enabled":true},{"inputNodeId":"c786da2e-afa1-4764-95e4-7904dbba7703","outputNodeId":"1ed76514-5305-4616-b27f-b857ff2dce21","weight":0.9604438478874247,"enabled":true},{"inputNodeId":"1ed76514-5305-4616-b27f-b857ff2dce21","outputNodeId":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","weight":0.6028222486389904,"enabled":true},{"inputNodeId":"8fd35899-af3f-4179-afc5-1ffc2158b6f7","outputNodeId":"1ed76514-5305-4616-b27f-b857ff2dce21","weight":-1.4020766513431802,"enabled":true},{"inputNodeId":"1ed76514-5305-4616-b27f-b857ff2dce21","outputNodeId":"022cfb32-999c-4e09-8571-d55241f77568","weight":1.0265393003944956,"enabled":true},{"inputNodeId":"022cfb32-999c-4e09-8571-d55241f77568","outputNodeId":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","weight":0.8213380076090518,"enabled":true},{"inputNodeId":"1ed76514-5305-4616-b27f-b857ff2dce21","outputNodeId":"178a9bcd-ac69-42a4-bf51-69b90c852797","weight":0.7670287023144907,"enabled":false},{"inputNodeId":"178a9bcd-ac69-42a4-bf51-69b90c852797","outputNodeId":"022cfb32-999c-4e09-8571-d55241f77568","weight":0.9118703066892319,"enabled":true},{"inputNodeId":"1ed76514-5305-4616-b27f-b857ff2dce21","outputNodeId":"dcd50832-bbe4-492d-92af-a42620b70880","weight":1.0337731179938527,"enabled":true},{"inputNodeId":"dcd50832-bbe4-492d-92af-a42620b70880","outputNodeId":"178a9bcd-ac69-42a4-bf51-69b90c852797","weight":0.9737512376037198,"enabled":true}]},{"generation":20,"nodes":[{"id":"c786da2e-afa1-4764-95e4-7904dbba7703","nodeType":"Input"},{"id":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","nodeType":"Output"},{"id":"8fd35899-af3f-4179-afc5-1ffc2158b6f7","nodeType":"Input"},{"id":"29a487cc-a1f6-40fe-b633-257670ce24f1","nodeType":"Hidden"},{"id":"1ed76514-5305-4616-b27f-b857ff2dce21","nodeType":"Hidden"},{"id":"022cfb32-999c-4e09-8571-d55241f77568","nodeType":"Hidden"},{"id":"a8fb683a-98c1-4c12-a3d4-e63e01fd59a3","nodeType":"Hidden"},{"id":"e9604142-8864-4779-a941-3623bca9fca1","nodeType":"Hidden"}],"connections":[{"inputNodeId":"c786da2e-afa1-4764-95e4-7904dbba7703","outputNodeId":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","weight":-2.4230624169218644,"enabled":true},{"inputNodeId":"8fd35899-af3f-4179-afc5-1ffc2158b6f7","outputNodeId":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","weight":0.36096556268677377,"enabled":true},{"inputNodeId":"8fd35899-af3f-4179-afc5-1ffc2158b6f7","outputNodeId":"29a487cc-a1f6-40fe-b633-257670ce24f1","weight":0.14914816624910954,"enabled":true},{"inputNodeId":"29a487cc-a1f6-40fe-b633-257670ce24f1","outputNodeId":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","weight":0.09971323418417638,"enabled":false},{"inputNodeId":"c786da2e-afa1-4764-95e4-7904dbba7703","outputNodeId":"1ed76514-5305-4616-b27f-b857ff2dce21","weight":-1.5495407020438186,"enabled":false},{"inputNodeId":"1ed76514-5305-4616-b27f-b857ff2dce21","outputNodeId":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","weight":-1.013458902301946,"enabled":false},{"inputNodeId":"8fd35899-af3f-4179-afc5-1ffc2158b6f7","outputNodeId":"1ed76514-5305-4616-b27f-b857ff2dce21","weight":-1.2027385125880774,"enabled":true},{"inputNodeId":"1ed76514-5305-4616-b27f-b857ff2dce21","outputNodeId":"022cfb32-999c-4e09-8571-d55241f77568","weight":1.9089614987880745,"enabled":true},{"inputNodeId":"022cfb32-999c-4e09-8571-d55241f77568","outputNodeId":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","weight":1.3201812169142908,"enabled":true},{"inputNodeId":"c786da2e-afa1-4764-95e4-7904dbba7703","outputNodeId":"a8fb683a-98c1-4c12-a3d4-e63e01fd59a3","weight":1.2615204102646191,"enabled":true},{"inputNodeId":"a8fb683a-98c1-4c12-a3d4-e63e01fd59a3","outputNodeId":"1ed76514-5305-4616-b27f-b857ff2dce21","weight":2.0376168363902796,"enabled":true},{"inputNodeId":"8fd35899-af3f-4179-afc5-1ffc2158b6f7","outputNodeId":"a8fb683a-98c1-4c12-a3d4-e63e01fd59a3","weight":-0.8605188903680625,"enabled":true},{"inputNodeId":"29a487cc-a1f6-40fe-b633-257670ce24f1","outputNodeId":"e9604142-8864-4779-a941-3623bca9fca1","weight":1,"enabled":true},{"inputNodeId":"e9604142-8864-4779-a941-3623bca9fca1","outputNodeId":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","weight":0.09971323418417638,"enabled":true}]},{"generation":29,"nodes":[{"id":"c786da2e-afa1-4764-95e4-7904dbba7703","nodeType":"Input"},{"id":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","nodeType":"Output"},{"id":"8fd35899-af3f-4179-afc5-1ffc2158b6f7","nodeType":"Input"},{"id":"1ed76514-5305-4616-b27f-b857ff2dce21","nodeType":"Hidden"},{"id":"022cfb32-999c-4e09-8571-d55241f77568","nodeType":"Hidden"},{"id":"178a9bcd-ac69-42a4-bf51-69b90c852797","nodeType":"Hidden"},{"id":"c69107c9-0226-414e-bdc0-8b629363ccc2","nodeType":"Hidden"},{"id":"c96b7f1d-35bf-495d-85ed-806add89fb8e","nodeType":"Hidden"}],"connections":[{"inputNodeId":"c786da2e-afa1-4764-95e4-7904dbba7703","outputNodeId":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","weight":-1.8495112537636942,"enabled":true},{"inputNodeId":"8fd35899-af3f-4179-afc5-1ffc2158b6f7","outputNodeId":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","weight":0.05602853608132741,"enabled":true},{"inputNodeId":"c786da2e-afa1-4764-95e4-7904dbba7703","outputNodeId":"1ed76514-5305-4616-b27f-b857ff2dce21","weight":1.0097594289154557,"enabled":true},{"inputNodeId":"1ed76514-5305-4616-b27f-b857ff2dce21","outputNodeId":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","weight":0.43400361753720956,"enabled":true},{"inputNodeId":"8fd35899-af3f-4179-afc5-1ffc2158b6f7","outputNodeId":"1ed76514-5305-4616-b27f-b857ff2dce21","weight":-1.0618807584335475,"enabled":true},{"inputNodeId":"1ed76514-5305-4616-b27f-b857ff2dce21","outputNodeId":"022cfb32-999c-4e09-8571-d55241f77568","weight":1.7174553646321666,"enabled":true},{"inputNodeId":"022cfb32-999c-4e09-8571-d55241f77568","outputNodeId":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","weight":0.8147780850598486,"enabled":true},{"inputNodeId":"1ed76514-5305-4616-b27f-b857ff2dce21","outputNodeId":"178a9bcd-ac69-42a4-bf51-69b90c852797","weight":1.39753962438439,"enabled":true},{"inputNodeId":"178a9bcd-ac69-42a4-bf51-69b90c852797","outputNodeId":"022cfb32-999c-4e09-8571-d55241f77568","weight":1.3992882685732508,"enabled":true},{"inputNodeId":"8fd35899-af3f-4179-afc5-1ffc2158b6f7","outputNodeId":"178a9bcd-ac69-42a4-bf51-69b90c852797","weight":0.6083415936717492,"enabled":false},{"inputNodeId":"8fd35899-af3f-4179-afc5-1ffc2158b6f7","outputNodeId":"c69107c9-0226-414e-bdc0-8b629363ccc2","weight":1.3604797398487478,"enabled":true},{"inputNodeId":"c69107c9-0226-414e-bdc0-8b629363ccc2","outputNodeId":"178a9bcd-ac69-42a4-bf51-69b90c852797","weight":1.0653019750794872,"enabled":false},{"inputNodeId":"c69107c9-0226-414e-bdc0-8b629363ccc2","outputNodeId":"c96b7f1d-35bf-495d-85ed-806add89fb8e","weight":1.0638073351531325,"enabled":true},{"inputNodeId":"c96b7f1d-35bf-495d-85ed-806add89fb8e","outputNodeId":"178a9bcd-ac69-42a4-bf51-69b90c852797","weight":0.8825334102299685,"enabled":true},{"inputNodeId":"c786da2e-afa1-4764-95e4-7904dbba7703","outputNodeId":"c96b7f1d-35bf-495d-85ed-806add89fb8e","weight":-0.559745237026245,"enabled":true}]},{"generation":39,"nodes":[{"id":"c786da2e-afa1-4764-95e4-7904dbba7703","nodeType":"Input"},{"id":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","nodeType":"Output"},{"id":"8fd35899-af3f-4179-afc5-1ffc2158b6f7","nodeType":"Input"},{"id":"29a487cc-a1f6-40fe-b633-257670ce24f1","nodeType":"Hidden"},{"id":"1ed76514-5305-4616-b27f-b857ff2dce21","nodeType":"Hidden"},{"id":"022cfb32-999c-4e09-8571-d55241f77568","nodeType":"Hidden"},{"id":"a8fb683a-98c1-4c12-a3d4-e63e01fd59a3","nodeType":"Hidden"}],"connections":[{"inputNodeId":"c786da2e-afa1-4764-95e4-7904dbba7703","outputNodeId":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","weight":-2.2659287437172275,"enabled":true},{"inputNodeId":"8fd35899-af3f-4179-afc5-1ffc2158b6f7","outputNodeId":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","weight":0.382250117595424,"enabled":true},{"inputNodeId":"8fd35899-af3f-4179-afc5-1ffc2158b6f7","outputNodeId":"29a487cc-a1f6-40fe-b633-257670ce24f1","weight":0.06756953767853313,"enabled":true},{"inputNodeId":"29a487cc-a1f6-40fe-b633-257670ce24f1","outputNodeId":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","weight":-0.70657605561734,"enabled":true},{"inputNodeId":"c786da2e-afa1-4764-95e4-7904dbba7703","outputNodeId":"1ed76514-5305-4616-b27f-b857ff2dce21","weight":0.5811632795171641,"enabled":true},{"inputNodeId":"1ed76514-5305-4616-b27f-b857ff2dce21","outputNodeId":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","weight":-0.09911828958388325,"enabled":true},{"inputNodeId":"c786da2e-afa1-4764-95e4-7904dbba7703","outputNodeId":"29a487cc-a1f6-40fe-b633-257670ce24f1","weight":1.009955498953329,"enabled":true},{"inputNodeId":"8fd35899-af3f-4179-afc5-1ffc2158b6f7","outputNodeId":"1ed76514-5305-4616-b27f-b857ff2dce21","weight":-1.2011237709788247,"enabled":true},{"inputNodeId":"1ed76514-5305-4616-b27f-b857ff2dce21","outputNodeId":"022cfb32-999c-4e09-8571-d55241f77568","weight":1.7405661172888087,"enabled":true},{"inputNodeId":"022cfb32-999c-4e09-8571-d55241f77568","outputNodeId":"c20a9bf3-219d-4287-bedc-51a2c4cbb4ca","weight":2.3824564216576776,"enabled":true},{"inputNodeId":"c786da2e-afa1-4764-95e4-7904dbba7703","outputNodeId":"a8fb683a-98c1-4c12-a3d4-e63e01fd59a3","weight":1.6404707630353381,"enabled":true},{"inputNodeId":"a8fb683a-98c1-4c12-a3d4-e63e01fd59a3","outputNodeId":"1ed76514-5305-4616-b27f-b857ff2dce21","weight":2.1190113229299947,"enabled":true},{"inputNodeId":"8fd35899-af3f-4179-afc5-1ffc2158b6f7","outputNodeId":"a8fb683a-98c1-4c12-a3d4-e63e01fd59a3","weight":-2.165553150030576,"enabled":true},{"inputNodeId":"8fd35899-af3f-4179-afc5-1ffc2158b6f7","outputNodeId":"022cfb32-999c-4e09-8571-d55241f77568","weight":0.6455364672679156,"enabled":true},{"inputNodeId":"29a487cc-a1f6-40fe-b633-257670ce24f1","outputNodeId":"a8fb683a-98c1-4c12-a3d4-e63e01fd59a3","weight":-0.35757175523674656,"enabled":true}]}];
+
+  function drawSnapshot(canvasId, snapshot) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const width = canvas.width;
+    const height = canvas.height;
+    const pad = 32;
+    ctx.clearRect(0, 0, width, height);
+
+    const nodes = snapshot.nodes;
+    const edges = snapshot.connections.filter(c => c.enabled);
+
+    const nodeMap = new Map(nodes.map(n => [n.id, n]));
+    const outgoing = new Map();
+    const indegree = new Map();
+    const level = new Map();
+
+    for (const n of nodes) {
+      outgoing.set(n.id, []);
+      indegree.set(n.id, 0);
+      level.set(n.id, n.nodeType === 'Input' ? 0 : 1);
+    }
+
+    for (const e of edges) {
+      if (!outgoing.has(e.inputNodeId) || !indegree.has(e.outputNodeId)) continue;
+      outgoing.get(e.inputNodeId).push(e.outputNodeId);
+      indegree.set(e.outputNodeId, indegree.get(e.outputNodeId) + 1);
+    }
+
+    const queue = [];
+    for (const [id, d] of indegree.entries()) {
+      if (d === 0) queue.push(id);
+    }
+
+    while (queue.length > 0) {
+      const current = queue.shift();
+      const currentLevel = level.get(current) ?? 0;
+      for (const next of outgoing.get(current) ?? []) {
+        level.set(next, Math.max(level.get(next) ?? 0, currentLevel + 1));
+        indegree.set(next, indegree.get(next) - 1);
+        if (indegree.get(next) === 0) queue.push(next);
+      }
+    }
+
+    let maxLevel = 0;
+    for (const l of level.values()) maxLevel = Math.max(maxLevel, l);
+    for (const n of nodes) {
+      if (n.nodeType === 'Output') level.set(n.id, maxLevel + 1);
+    }
+    maxLevel += 1;
+
+    const byLevel = new Map();
+    for (const n of nodes) {
+      const l = level.get(n.id) ?? 0;
+      if (!byLevel.has(l)) byLevel.set(l, []);
+      byLevel.get(l).push(n);
+    }
+
+    const pos = new Map();
+    for (let l = 0; l <= maxLevel; l++) {
+      const group = byLevel.get(l) ?? [];
+      const x = pad + (maxLevel === 0 ? 0.5 : l / maxLevel) * (width - (2 * pad));
+      for (let i = 0; i < group.length; i++) {
+        const y = pad + ((i + 1) / (group.length + 1)) * (height - (2 * pad));
+        pos.set(group[i].id, { x, y });
+      }
+    }
+
+    for (const e of edges) {
+      const a = pos.get(e.inputNodeId);
+      const b = pos.get(e.outputNodeId);
+      if (!a || !b) continue;
+      const strength = Math.min(1, Math.abs(e.weight) / 3);
+      const alpha = 0.25 + (0.65 * strength);
+      ctx.strokeStyle = e.weight >= 0 ? `rgba(46,125,50,${alpha.toFixed(3)})` : `rgba(198,40,40,${alpha.toFixed(3)})`;
+      ctx.lineWidth = 1 + (2 * strength);
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.stroke();
+    }
+
+    for (const n of nodes) {
+      const p = pos.get(n.id);
+      if (!p) continue;
+      const color = n.nodeType === 'Input'
+        ? '#1565c0'
+        : (n.nodeType === 'Output' ? '#2e7d32' : '#ef6c00');
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 9, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#111827';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    ctx.fillStyle = '#111827';
+    ctx.font = 'bold 13px Segoe UI, Arial';
+    ctx.fillText(`Generation ${snapshot.generation} | Nodes: ${nodes.length} | Enabled connections: ${edges.length}`, 16, 20);
+  }
+
+  snapshots.forEach((snapshot, i) => drawSnapshot(`networkCanvas${i}`, snapshot));
+})();
+</script>
+</body>
+</html>
