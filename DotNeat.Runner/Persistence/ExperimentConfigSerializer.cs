@@ -1,5 +1,4 @@
 using System.Text.Json;
-using DotNeat;
 
 namespace DotNeat.Runner.Persistence;
 
@@ -32,6 +31,13 @@ internal static class ExperimentConfigSerializer
                 options.Reproduction.WeightPerturbScale,
                 options.Reproduction.WeightResetMin,
                 options.Reproduction.WeightResetMax,
+                options.Reproduction.BiasMutationChance,
+                options.Reproduction.BiasPerturbChance,
+                options.Reproduction.BiasPerturbScale,
+                options.Reproduction.BiasResetMin,
+                options.Reproduction.BiasResetMax,
+                options.Reproduction.NewNodeBiasMin,
+                options.Reproduction.NewNodeBiasMax,
             },
             ExperimentSpecific = experimentSpecific,
         };

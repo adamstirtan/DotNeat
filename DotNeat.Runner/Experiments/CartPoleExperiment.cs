@@ -94,7 +94,7 @@ public sealed class CartPoleExperiment(int seed = 12345) : IExperiment
         genome.Nodes.Add(new NodeGene(inputVel, NodeType.Input, new ReluActivationFunction(), 0));
         genome.Nodes.Add(new NodeGene(inputAngle, NodeType.Input, new ReluActivationFunction(), 0));
         genome.Nodes.Add(new NodeGene(inputAngularVel, NodeType.Input, new ReluActivationFunction(), 0));
-        genome.Nodes.Add(new NodeGene(output, NodeType.Output, new SigmoidActivationFunction(), 0));
+        genome.Nodes.Add(new NodeGene(output, NodeType.Output, new SigmoidActivationFunction(), NextBias(rng)));
 
         int innov0 = tracker.GetOrCreateConnectionInnovation(inputPos, output);
         int innov1 = tracker.GetOrCreateConnectionInnovation(inputVel, output);
@@ -110,6 +110,11 @@ public sealed class CartPoleExperiment(int seed = 12345) : IExperiment
     }
 
     private static double NextWeight(Random rng)
+    {
+        return -1d + (2d * rng.NextDouble());
+    }
+
+    private static double NextBias(Random rng)
     {
         return -1d + (2d * rng.NextDouble());
     }

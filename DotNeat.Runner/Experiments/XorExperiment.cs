@@ -1,4 +1,3 @@
-using DotNeat;
 using DotNeat.Runner.Persistence;
 
 namespace DotNeat.Runner.Experiments;
@@ -71,7 +70,7 @@ public sealed class XorExperiment(int seed = 31337) : IExperiment
         Genome genome = new();
         genome.Nodes.Add(new NodeGene(inputA, NodeType.Input, new ReluActivationFunction(), 0));
         genome.Nodes.Add(new NodeGene(inputB, NodeType.Input, new ReluActivationFunction(), 0));
-        genome.Nodes.Add(new NodeGene(output, NodeType.Output, new SigmoidActivationFunction(), 0));
+        genome.Nodes.Add(new NodeGene(output, NodeType.Output, new SigmoidActivationFunction(), NextBias(rng)));
 
         int innovationA = tracker.GetOrCreateConnectionInnovation(inputA, output);
         int innovationB = tracker.GetOrCreateConnectionInnovation(inputB, output);
@@ -83,6 +82,11 @@ public sealed class XorExperiment(int seed = 31337) : IExperiment
     }
 
     private static double NextWeight(Random rng)
+    {
+        return -1d + (2d * rng.NextDouble());
+    }
+
+    private static double NextBias(Random rng)
     {
         return -1d + (2d * rng.NextDouble());
     }

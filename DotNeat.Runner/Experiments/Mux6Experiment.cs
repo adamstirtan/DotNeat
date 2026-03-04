@@ -100,7 +100,7 @@ public sealed class Mux6Experiment : IExperiment
         genome.Nodes.Add(new NodeGene(d1, NodeType.Input, new ReluActivationFunction(), 0));
         genome.Nodes.Add(new NodeGene(d2, NodeType.Input, new ReluActivationFunction(), 0));
         genome.Nodes.Add(new NodeGene(d3, NodeType.Input, new ReluActivationFunction(), 0));
-        genome.Nodes.Add(new NodeGene(output, NodeType.Output, new SigmoidActivationFunction(), 0));
+        genome.Nodes.Add(new NodeGene(output, NodeType.Output, new SigmoidActivationFunction(), NextBias(rng)));
 
         Guid[] inputs = [a0, a1, d0, d1, d2, d3];
 
@@ -114,6 +114,11 @@ public sealed class Mux6Experiment : IExperiment
     }
 
     private static double NextWeight(Random rng)
+    {
+        return -1d + (2d * rng.NextDouble());
+    }
+
+    private static double NextBias(Random rng)
     {
         return -1d + (2d * rng.NextDouble());
     }

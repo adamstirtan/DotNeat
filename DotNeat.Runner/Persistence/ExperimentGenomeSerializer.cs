@@ -1,5 +1,4 @@
 using System.Text.Json;
-using DotNeat;
 
 namespace DotNeat.Runner.Persistence;
 

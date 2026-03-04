@@ -12,7 +12,14 @@ public sealed record ReproductionOptions(
     double WeightPerturbChance = 0.9,
     double WeightPerturbScale = 0.5,
     double WeightResetMin = -1d,
-    double WeightResetMax = 1d)
+    double WeightResetMax = 1d,
+    double BiasMutationChance = 1d,
+    double BiasPerturbChance = 0.9,
+    double BiasPerturbScale = 0.5,
+    double BiasResetMin = -1d,
+    double BiasResetMax = 1d,
+    double NewNodeBiasMin = -1d,
+    double NewNodeBiasMax = 1d)
 {
     public void Validate()
     {
@@ -33,6 +40,23 @@ public sealed record ReproductionOptions(
         ValidateProbability(AddNodeMutationProbability, nameof(AddNodeMutationProbability));
         ValidateProbability(ToggleConnectionMutationProbability, nameof(ToggleConnectionMutationProbability));
         ValidateProbability(WeightPerturbChance, nameof(WeightPerturbChance));
+        ValidateProbability(BiasMutationChance, nameof(BiasMutationChance));
+        ValidateProbability(BiasPerturbChance, nameof(BiasPerturbChance));
+
+        if (WeightResetMax <= WeightResetMin)
+        {
+            throw new ArgumentOutOfRangeException(nameof(WeightResetMax), "WeightResetMax must be greater than WeightResetMin.");
+        }
+
+        if (BiasResetMax <= BiasResetMin)
+        {
+            throw new ArgumentOutOfRangeException(nameof(BiasResetMax), "BiasResetMax must be greater than BiasResetMin.");
+        }
+
+        if (NewNodeBiasMax <= NewNodeBiasMin)
+        {
+            throw new ArgumentOutOfRangeException(nameof(NewNodeBiasMax), "NewNodeBiasMax must be greater than NewNodeBiasMin.");
+        }
 
         double operatorProbabilitySum = WeightMutationProbability
             + AddConnectionMutationProbability
@@ -263,12 +287,26 @@ public static class ReproductionPipeline
 
         if (roll < config.WeightMutationProbability)
         {
-            _ = mutator.MutateWeights(
+            bool weightMutated = mutator.MutateWeights(
                 genome,
                 config.WeightPerturbChance,
                 config.WeightPerturbScale,
                 config.WeightResetMin,
                 config.WeightResetMax);
+
+            bool biasMutated = mutator.MutateBiases(
+                genome,
+                config.BiasMutationChance,
+                config.BiasPerturbChance,
+                config.BiasPerturbScale,
+                config.BiasResetMin,
+                config.BiasResetMax);
+
+            if (!weightMutated && !biasMutated)
+            {
+                _ = mutator.MutateToggleConnection(genome);
+            }
+
             return;
         }
 
@@ -286,9 +324,10 @@ public static class ReproductionPipeline
         roll -= config.AddConnectionMutationProbability;
         if (roll < config.AddNodeMutationProbability)
         {
-            if (!mutator.MutateAddNode(genome))
+            if (!mutator.MutateAddNode(genome, config.NewNodeBiasMin, config.NewNodeBiasMax))
             {
                 _ = mutator.MutateWeights(genome, config.WeightPerturbChance, config.WeightPerturbScale, config.WeightResetMin, config.WeightResetMax);
+                _ = mutator.MutateBiases(genome, config.BiasMutationChance, config.BiasPerturbChance, config.BiasPerturbScale, config.BiasResetMin, config.BiasResetMax);
             }
 
             return;
@@ -297,6 +336,7 @@ public static class ReproductionPipeline
         if (!mutator.MutateToggleConnection(genome))
         {
             _ = mutator.MutateWeights(genome, config.WeightPerturbChance, config.WeightPerturbScale, config.WeightResetMin, config.WeightResetMax);
+            _ = mutator.MutateBiases(genome, config.BiasMutationChance, config.BiasPerturbChance, config.BiasPerturbScale, config.BiasResetMin, config.BiasResetMax);
         }
     }
 

@@ -122,7 +122,17 @@ public sealed class GenomeMutator(InnovationTracker innovationTracker, Random? r
 
     public bool MutateAddNode(Genome genome)
     {
+        return MutateAddNode(genome, -1d, 1d);
+    }
+
+    public bool MutateAddNode(Genome genome, double newNodeBiasMin, double newNodeBiasMax)
+    {
         ArgumentNullException.ThrowIfNull(genome);
+
+        if (newNodeBiasMax <= newNodeBiasMin)
+        {
+            throw new ArgumentOutOfRangeException(nameof(newNodeBiasMax), "newNodeBiasMax must be greater than newNodeBiasMin.");
+        }
 
         List<ConnectionGene> enabledConnections = [.. genome.Connections.Where(c => c.Enabled)];
         if (enabledConnections.Count == 0)
@@ -137,7 +147,8 @@ public sealed class GenomeMutator(InnovationTracker innovationTracker, Random? r
 
         if (genome.Nodes.All(n => n.GeneId != splitInnovation.NewNodeId))
         {
-            genome.Nodes.Add(new NodeGene(splitInnovation.NewNodeId, NodeType.Hidden, new ReluActivationFunction(), 0d));
+            double newNodeBias = NextInRange(newNodeBiasMin, newNodeBiasMax);
+            genome.Nodes.Add(new NodeGene(splitInnovation.NewNodeId, NodeType.Hidden, new ReluActivationFunction(), newNodeBias));
         }
 
         UpsertConnection(
@@ -155,6 +166,67 @@ public sealed class GenomeMutator(InnovationTracker innovationTracker, Random? r
             splitInnovation.OutputConnectionInnovationNumber);
 
         return true;
+    }
+
+    public bool MutateBiases(
+        Genome genome,
+        double mutationChance = 1d,
+        double perturbChance = 0.9,
+        double perturbScale = 0.5,
+        double resetMin = -1d,
+        double resetMax = 1d)
+    {
+        ArgumentNullException.ThrowIfNull(genome);
+
+        if (mutationChance < 0d || mutationChance > 1d)
+        {
+            throw new ArgumentOutOfRangeException(nameof(mutationChance), "mutationChance must be in [0, 1].");
+        }
+
+        if (perturbChance < 0d || perturbChance > 1d)
+        {
+            throw new ArgumentOutOfRangeException(nameof(perturbChance), "perturbChance must be in [0, 1].");
+        }
+
+        if (perturbScale < 0d)
+        {
+            throw new ArgumentOutOfRangeException(nameof(perturbScale), "perturbScale must be >= 0.");
+        }
+
+        if (resetMax <= resetMin)
+        {
+            throw new ArgumentOutOfRangeException(nameof(resetMax), "resetMax must be greater than resetMin.");
+        }
+
+        List<NodeGene> mutableNodes = [.. genome.Nodes.Where(n => n.NodeType != NodeType.Input)];
+        if (mutableNodes.Count == 0)
+        {
+            return false;
+        }
+
+        bool anyMutated = false;
+
+        foreach (NodeGene node in mutableNodes)
+        {
+            if (_random.NextDouble() > mutationChance)
+            {
+                continue;
+            }
+
+            if (_random.NextDouble() < perturbChance)
+            {
+                double delta = NextInRange(-perturbScale, perturbScale);
+                node.Bias += delta;
+            }
+            else
+            {
+                node.Bias = NextInRange(resetMin, resetMax);
+            }
+
+            anyMutated = true;
+        }
+
+        return anyMutated;
     }
 
     public bool MutateToggleConnection(Genome genome)

@@ -18,6 +18,56 @@ public sealed class GenomeMutatorTests
     }
 
     [TestMethod]
+    public void MutateAddNode_InitializesNewHiddenNodeBiasWithinProvidedRange()
+    {
+        Guid input = Guid.NewGuid();
+        Guid output = Guid.NewGuid();
+
+        Genome genome = new();
+        genome.Nodes.Add(new NodeGene(input, NodeType.Input, new ReluActivationFunction(), 0));
+        genome.Nodes.Add(new NodeGene(output, NodeType.Output, new SigmoidActivationFunction(), 0));
+        genome.Connections.Add(new ConnectionGene(Guid.NewGuid(), input, output, 0.75, true, 1));
+
+        InnovationTracker tracker = new();
+        GenomeMutator mutator = new(tracker, new Random(4));
+
+        bool added = mutator.MutateAddNode(genome, newNodeBiasMin: 0.5, newNodeBiasMax: 0.6);
+
+        Assert.IsTrue(added);
+
+        NodeSplitInnovation split = tracker.GetOrCreateNodeSplitInnovation(1);
+        NodeGene newNode = genome.Nodes.Single(n => n.GeneId == split.NewNodeId);
+        Assert.AreEqual(NodeType.Hidden, newNode.NodeType);
+        Assert.IsTrue(newNode.Bias is >= 0.5 and <= 0.6);
+    }
+
+    [TestMethod]
+    public void MutateBiases_MutatesOnlyNonInputNodes()
+    {
+        Guid input = Guid.NewGuid();
+        Guid hidden = Guid.NewGuid();
+        Guid output = Guid.NewGuid();
+
+        Genome genome = new();
+        genome.Nodes.Add(new NodeGene(input, NodeType.Input, new ReluActivationFunction(), 0));
+        genome.Nodes.Add(new NodeGene(hidden, NodeType.Hidden, new ReluActivationFunction(), 0));
+        genome.Nodes.Add(new NodeGene(output, NodeType.Output, new SigmoidActivationFunction(), 0));
+
+        GenomeMutator mutator = new(new InnovationTracker(), new Random(42));
+
+        bool mutated = mutator.MutateBiases(
+            genome,
+            mutationChance: 1d,
+            perturbChance: 0d,
+            resetMin: 0.25,
+            resetMax: 0.35);
+
+        Assert.IsTrue(mutated);
+        Assert.AreEqual(0d, genome.Nodes.Single(n => n.NodeType == NodeType.Input).Bias);
+        Assert.IsTrue(genome.Nodes.Where(n => n.NodeType != NodeType.Input).All(n => n.Bias is >= 0.25 and <= 0.35));
+    }
+
+    [TestMethod]
     public void MutateWeights_ResetsWeights_WhenPerturbChanceIsZero()
     {
         Genome genome = CreateSingleConnectionGenome(weight: 0.5);
