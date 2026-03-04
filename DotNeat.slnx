@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="DotNeat.Runner/DotNeat.Runner.csproj" />
+  <Project Path="DotNeat.Tests/DotNeat.Tests.csproj" Id="f7f537e5-fca7-4b7e-b772-b8017263f981" />
+  <Project Path="DotNeat/DotNeat.csproj" />
+</Solution>
