@@ -61,7 +61,7 @@ Each experiment run generates:
 
 Output path is stable regardless of working directory:
 
-`artifacts/visualizations/<experiment>/<timestamp-seed>/report.html`
+`artifacts/<experiment>/<timestamp-seed>/report.html`
 
 ## Quick start
 
@@ -87,10 +87,10 @@ The following runs were executed against the latest code in this repository:
 
 Generated reports for those runs are under:
 
-- `artifacts/visualizations/xor/20260304-151150-seed31337/report.html`
-- `artifacts/visualizations/xor/20260304-151155-seed12345/report.html`
-- `artifacts/visualizations/mux6/20260304-151247-seed12345/report.html`
-- `artifacts/visualizations/cartpole/20260304-151411-seed12345/report.html`
+- `artifacts/xor/20260304-151150-seed31337/report.html`
+- `artifacts/xor/20260304-151155-seed12345/report.html`
+- `artifacts/mux6/20260304-151247-seed12345/report.html`
+- `artifacts/cartpole/20260304-151411-seed12345/report.html`
 
 ## Example evolved networks
 

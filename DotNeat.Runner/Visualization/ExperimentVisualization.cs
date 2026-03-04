@@ -104,7 +104,7 @@ public static class ExperimentVisualization
             ?? FindRepositoryRoot(Environment.CurrentDirectory);
 
         string basePath = repoRoot ?? Environment.CurrentDirectory;
-        return Path.Combine(basePath, "artifacts", "visualizations");
+        return Path.Combine(basePath, "artifacts");
     }
 
     private static string? FindRepositoryRoot(string startPath)
