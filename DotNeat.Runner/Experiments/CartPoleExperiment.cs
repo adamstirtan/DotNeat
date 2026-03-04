@@ -1,3 +1,4 @@
+using DotNeat;
 using DotNeat.Runner.Visualization;
 
 namespace DotNeat.Runner.Experiments;
@@ -52,15 +53,26 @@ public sealed class CartPoleExperiment(int seed = 12345) : IExperiment
         Console.WriteLine();
         Console.WriteLine("Generation | BestFitness | AvgFitness | Species | AvgComplexity | ChampSteps");
 
-        EvolutionResult result = orchestrator.Run(metrics =>
-        {
-            if (metrics.Generation % 10 == 0 || metrics.Generation == options.GenerationCount - 1)
+        HashSet<int> snapshotGenerations = ExperimentVisualization.SelectSnapshotGenerations(options.GenerationCount, desiredSnapshotCount: 6);
+        List<NetworkSnapshot> snapshots = [];
+
+        EvolutionResult result = orchestrator.Run(
+            onGenerationCompleted: metrics =>
             {
-                double champSteps = metrics.BestFitness - 1.0;
-                Console.WriteLine(
-                    $"{metrics.Generation,10} | {metrics.BestFitness,11:F2} | {metrics.AverageFitness,10:F2} | {metrics.SpeciesCount,7} | {metrics.AverageComplexity,13:F2} | {champSteps,10:F1}");
-            }
-        });
+                if (metrics.Generation % 10 == 0 || metrics.Generation == options.GenerationCount - 1)
+                {
+                    double champSteps = metrics.BestFitness - 1.0;
+                    Console.WriteLine(
+                        $"{metrics.Generation,10} | {metrics.BestFitness,11:F2} | {metrics.AverageFitness,10:F2} | {metrics.SpeciesCount,7} | {metrics.AverageComplexity,13:F2} | {champSteps,10:F1}");
+                }
+            },
+            onGenerationChampionCaptured: (metrics, champion) =>
+            {
+                if (snapshotGenerations.Contains(metrics.Generation))
+                {
+                    snapshots.Add(new NetworkSnapshot(metrics.Generation, champion));
+                }
+            });
 
         Console.WriteLine();
         double bestSteps = result.BestFitness - 1.0;
@@ -75,7 +87,8 @@ public sealed class CartPoleExperiment(int seed = 12345) : IExperiment
             goalFitness: maxSteps + 1,
             goalLabel: "Solved threshold",
             additionalMetricSelector: m => m.BestFitness - 1.0,
-            additionalMetricLabel: "ChampionSteps");
+            additionalMetricLabel: "ChampionSteps",
+            networkSnapshots: snapshots);
 
         Console.WriteLine($"Visualization report: {reportPath}");
     }

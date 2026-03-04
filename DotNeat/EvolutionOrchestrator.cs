@@ -52,7 +52,9 @@ public sealed class EvolutionOrchestrator(Func<Genome, double> evaluate, Evoluti
     private readonly Func<Genome, double> _evaluate = evaluate ?? throw new ArgumentNullException(nameof(evaluate));
     private readonly EvolutionOptions _options = options ?? throw new ArgumentNullException(nameof(options));
 
-    public EvolutionResult Run(Action<GenerationMetrics>? onGenerationCompleted = null)
+    public EvolutionResult Run(
+        Action<GenerationMetrics>? onGenerationCompleted = null,
+        Action<GenerationMetrics, Genome>? onGenerationChampionCaptured = null)
     {
         _options.Validate();
 
@@ -112,6 +114,11 @@ public sealed class EvolutionOrchestrator(Func<Genome, double> evaluate, Evoluti
             GenerationMetrics metrics = new(generation, generationBestFitness, averageFitness, species.Count, averageComplexity);
             history.Add(metrics);
             onGenerationCompleted?.Invoke(metrics);
+
+            if (onGenerationChampionCaptured is not null)
+            {
+                onGenerationChampionCaptured(metrics, CloneGenome(generationBest));
+            }
 
             if (generation == _options.GenerationCount - 1)
             {

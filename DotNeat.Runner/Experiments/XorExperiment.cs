@@ -1,3 +1,4 @@
+using DotNeat;
 using DotNeat.Runner.Visualization;
 
 namespace DotNeat.Runner.Experiments;
@@ -42,14 +43,25 @@ public sealed class XorExperiment(int seed = 31337) : IExperiment
         Console.WriteLine($"Seed: {_seed}");
         Console.WriteLine("Generation | BestFitness | AvgFitness | Species | AvgComplexity");
 
+        HashSet<int> snapshotGenerations = ExperimentVisualization.SelectSnapshotGenerations(options.GenerationCount, desiredSnapshotCount: 5);
+        List<NetworkSnapshot> snapshots = [];
+
         EvolutionOrchestrator orchestrator = new(evaluator.Evaluate, options);
-        EvolutionResult result = orchestrator.Run(metrics =>
-        {
-            if (metrics.Generation % 5 == 0 || metrics.Generation == options.GenerationCount - 1)
+        EvolutionResult result = orchestrator.Run(
+            onGenerationCompleted: metrics =>
             {
-                Console.WriteLine($"{metrics.Generation,10} | {metrics.BestFitness,11:F6} | {metrics.AverageFitness,10:F6} | {metrics.SpeciesCount,7} | {metrics.AverageComplexity,13:F2}");
-            }
-        });
+                if (metrics.Generation % 5 == 0 || metrics.Generation == options.GenerationCount - 1)
+                {
+                    Console.WriteLine($"{metrics.Generation,10} | {metrics.BestFitness,11:F6} | {metrics.AverageFitness,10:F6} | {metrics.SpeciesCount,7} | {metrics.AverageComplexity,13:F2}");
+                }
+            },
+            onGenerationChampionCaptured: (metrics, champion) =>
+            {
+                if (snapshotGenerations.Contains(metrics.Generation))
+                {
+                    snapshots.Add(new NetworkSnapshot(metrics.Generation, champion));
+                }
+            });
 
         Console.WriteLine();
         Console.WriteLine($"Best fitness: {result.BestFitness:F6} / 4.000000");
@@ -59,7 +71,8 @@ public sealed class XorExperiment(int seed = 31337) : IExperiment
             seed: _seed,
             history: result.History,
             goalFitness: 4d,
-            goalLabel: "Perfect XOR (4/4)");
+            goalLabel: "Perfect XOR (4/4)",
+            networkSnapshots: snapshots);
 
         Console.WriteLine($"Visualization report: {reportPath}");
     }

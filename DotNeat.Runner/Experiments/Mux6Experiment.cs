@@ -57,14 +57,25 @@ public sealed class Mux6Experiment : IExperiment
         Console.WriteLine();
         Console.WriteLine("Generation | BestFitness | AvgFitness | Species | AvgComplexity");
 
-        EvolutionResult result = orchestrator.Run(metrics =>
-        {
-            if (metrics.Generation % 10 == 0 || metrics.Generation == options.GenerationCount - 1)
+        HashSet<int> snapshotGenerations = ExperimentVisualization.SelectSnapshotGenerations(options.GenerationCount, desiredSnapshotCount: 6);
+        List<NetworkSnapshot> snapshots = [];
+
+        EvolutionResult result = orchestrator.Run(
+            onGenerationCompleted: metrics =>
             {
-                Console.WriteLine(
-                    $"{metrics.Generation,10} | {metrics.BestFitness,11:F2} | {metrics.AverageFitness,10:F2} | {metrics.SpeciesCount,7} | {metrics.AverageComplexity,13:F2}");
-            }
-        });
+                if (metrics.Generation % 10 == 0 || metrics.Generation == options.GenerationCount - 1)
+                {
+                    Console.WriteLine(
+                        $"{metrics.Generation,10} | {metrics.BestFitness,11:F2} | {metrics.AverageFitness,10:F2} | {metrics.SpeciesCount,7} | {metrics.AverageComplexity,13:F2}");
+                }
+            },
+            onGenerationChampionCaptured: (metrics, champion) =>
+            {
+                if (snapshotGenerations.Contains(metrics.Generation))
+                {
+                    snapshots.Add(new NetworkSnapshot(metrics.Generation, champion));
+                }
+            });
 
         Console.WriteLine();
         bool solved = result.BestFitness >= 64d;
@@ -76,7 +87,8 @@ public sealed class Mux6Experiment : IExperiment
             seed: _seed,
             history: result.History,
             goalFitness: 64d,
-            goalLabel: "Perfect classification (64/64)");
+            goalLabel: "Perfect classification (64/64)",
+            networkSnapshots: snapshots);
 
         Console.WriteLine($"Visualization report: {reportPath}");
     }

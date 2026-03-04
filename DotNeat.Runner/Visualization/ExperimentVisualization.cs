@@ -1,7 +1,10 @@
 using DotNeat;
 using System.Text;
+using System.Text.Json;
 
 namespace DotNeat.Runner.Visualization;
+
+public sealed record NetworkSnapshot(int Generation, Genome Genome);
 
 public static class ExperimentVisualization
 {
@@ -12,7 +15,8 @@ public static class ExperimentVisualization
         double? goalFitness = null,
         string? goalLabel = null,
         Func<GenerationMetrics, double>? additionalMetricSelector = null,
-        string? additionalMetricLabel = null)
+        string? additionalMetricLabel = null,
+        IReadOnlyList<NetworkSnapshot>? networkSnapshots = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(experimentName);
         ArgumentNullException.ThrowIfNull(history);
@@ -31,9 +35,33 @@ public static class ExperimentVisualization
         File.WriteAllText(csvPath, BuildCsv(history, additionalMetricSelector, additionalMetricLabel));
 
         string htmlPath = Path.Combine(runDir, "report.html");
-        File.WriteAllText(htmlPath, BuildHtml(experimentName, seed, history, goalFitness, goalLabel, additionalMetricSelector, additionalMetricLabel));
+        File.WriteAllText(htmlPath, BuildHtml(experimentName, seed, history, goalFitness, goalLabel, additionalMetricSelector, additionalMetricLabel, networkSnapshots));
 
         return htmlPath;
+    }
+
+    public static HashSet<int> SelectSnapshotGenerations(int generationCount, int desiredSnapshotCount = 5)
+    {
+        if (generationCount < 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(generationCount), "generationCount must be >= 1.");
+        }
+
+        int count = Math.Max(2, desiredSnapshotCount);
+        HashSet<int> result = [0, generationCount - 1];
+
+        if (generationCount == 1)
+        {
+            return result;
+        }
+
+        for (int i = 1; i < count - 1; i++)
+        {
+            int generation = (int)Math.Round(i * (generationCount - 1d) / (count - 1d));
+            result.Add(generation);
+        }
+
+        return result;
     }
 
     private static string BuildCsv(
@@ -112,7 +140,8 @@ public static class ExperimentVisualization
         double? goalFitness,
         string? goalLabel,
         Func<GenerationMetrics, double>? additionalMetricSelector,
-        string? additionalMetricLabel)
+        string? additionalMetricLabel,
+        IReadOnlyList<NetworkSnapshot>? networkSnapshots)
     {
         List<(int x, double y)> best = [.. history.Select(h => (h.Generation, h.BestFitness))];
         List<(int x, double y)> avg = [.. history.Select(h => (h.Generation, h.AverageFitness))];
@@ -144,6 +173,8 @@ public static class ExperimentVisualization
                 additionalMetricLabel,
                 [(additionalMetricLabel, "#00897b", additional)]);
         }
+
+        string networkSection = BuildNetworkSection(networkSnapshots);
 
         return $$"""
 <!doctype html>
@@ -180,10 +211,189 @@ public static class ExperimentVisualization
   </div>
 
   {{(string.IsNullOrEmpty(additionalSection) ? string.Empty : $"<div class=\"chart\"><div class=\"caption\">Task-specific progress</div>{additionalSection}</div>")}}
+
+  {{networkSection}}
 </body>
 </html>
 """;
     }
+
+    private static string BuildNetworkSection(IReadOnlyList<NetworkSnapshot>? networkSnapshots)
+    {
+        if (networkSnapshots is null || networkSnapshots.Count == 0)
+        {
+            return string.Empty;
+        }
+
+        List<NetworkSnapshotDto> snapshots =
+        [
+            .. networkSnapshots
+                .OrderBy(s => s.Generation)
+                .Select(ToDto)
+        ];
+
+        string snapshotJson = JsonSerializer.Serialize(
+            snapshots,
+            new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            });
+
+        StringBuilder canvases = new();
+        for (int i = 0; i < snapshots.Count; i++)
+        {
+            canvases.AppendLine($"<div style=\"margin: 10px 0;\"><canvas id=\"networkCanvas{i}\" width=\"900\" height=\"420\" style=\"border:1px solid #e5e7eb;border-radius:6px;width:100%;height:auto;\"></canvas></div>");
+        }
+
+        return $$"""
+<div class="chart">
+  <div class="caption">Network structure snapshots (champion genomes)</div>
+  <div class="meta">Inputs are blue, hidden are amber, outputs are green. Edge color encodes weight sign (green positive, red negative).</div>
+  {{canvases}}
+</div>
+<script>
+(() => {
+  const snapshots = {{snapshotJson}};
+
+  function drawSnapshot(canvasId, snapshot) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const width = canvas.width;
+    const height = canvas.height;
+    const pad = 32;
+    ctx.clearRect(0, 0, width, height);
+
+    const nodes = snapshot.nodes;
+    const edges = snapshot.connections.filter(c => c.enabled);
+
+    const nodeMap = new Map(nodes.map(n => [n.id, n]));
+    const outgoing = new Map();
+    const indegree = new Map();
+    const level = new Map();
+
+    for (const n of nodes) {
+      outgoing.set(n.id, []);
+      indegree.set(n.id, 0);
+      level.set(n.id, n.nodeType === 'Input' ? 0 : 1);
+    }
+
+    for (const e of edges) {
+      if (!outgoing.has(e.inputNodeId) || !indegree.has(e.outputNodeId)) continue;
+      outgoing.get(e.inputNodeId).push(e.outputNodeId);
+      indegree.set(e.outputNodeId, indegree.get(e.outputNodeId) + 1);
+    }
+
+    const queue = [];
+    for (const [id, d] of indegree.entries()) {
+      if (d === 0) queue.push(id);
+    }
+
+    while (queue.length > 0) {
+      const current = queue.shift();
+      const currentLevel = level.get(current) ?? 0;
+      for (const next of outgoing.get(current) ?? []) {
+        level.set(next, Math.max(level.get(next) ?? 0, currentLevel + 1));
+        indegree.set(next, indegree.get(next) - 1);
+        if (indegree.get(next) === 0) queue.push(next);
+      }
+    }
+
+    let maxLevel = 0;
+    for (const l of level.values()) maxLevel = Math.max(maxLevel, l);
+    for (const n of nodes) {
+      if (n.nodeType === 'Output') level.set(n.id, maxLevel + 1);
+    }
+    maxLevel += 1;
+
+    const byLevel = new Map();
+    for (const n of nodes) {
+      const l = level.get(n.id) ?? 0;
+      if (!byLevel.has(l)) byLevel.set(l, []);
+      byLevel.get(l).push(n);
+    }
+
+    const pos = new Map();
+    for (let l = 0; l <= maxLevel; l++) {
+      const group = byLevel.get(l) ?? [];
+      const x = pad + (maxLevel === 0 ? 0.5 : l / maxLevel) * (width - (2 * pad));
+      for (let i = 0; i < group.length; i++) {
+        const y = pad + ((i + 1) / (group.length + 1)) * (height - (2 * pad));
+        pos.set(group[i].id, { x, y });
+      }
+    }
+
+    for (const e of edges) {
+      const a = pos.get(e.inputNodeId);
+      const b = pos.get(e.outputNodeId);
+      if (!a || !b) continue;
+      const strength = Math.min(1, Math.abs(e.weight) / 3);
+      const alpha = 0.25 + (0.65 * strength);
+      ctx.strokeStyle = e.weight >= 0 ? `rgba(46,125,50,${alpha.toFixed(3)})` : `rgba(198,40,40,${alpha.toFixed(3)})`;
+      ctx.lineWidth = 1 + (2 * strength);
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.stroke();
+    }
+
+    for (const n of nodes) {
+      const p = pos.get(n.id);
+      if (!p) continue;
+      const color = n.nodeType === 'Input'
+        ? '#1565c0'
+        : (n.nodeType === 'Output' ? '#2e7d32' : '#ef6c00');
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 9, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#111827';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    ctx.fillStyle = '#111827';
+    ctx.font = 'bold 13px Segoe UI, Arial';
+    ctx.fillText(`Generation ${snapshot.generation} | Nodes: ${nodes.length} | Enabled connections: ${edges.length}`, 16, 20);
+  }
+
+  snapshots.forEach((snapshot, i) => drawSnapshot(`networkCanvas${i}`, snapshot));
+})();
+</script>
+""";
+    }
+
+    private static NetworkSnapshotDto ToDto(NetworkSnapshot snapshot)
+    {
+        List<NodeSnapshotDto> nodes =
+        [
+            .. snapshot.Genome.Nodes.Select(n => new NodeSnapshotDto(
+                n.GeneId.ToString("D"),
+                n.NodeType.ToString()))
+        ];
+
+        List<ConnectionSnapshotDto> connections =
+        [
+            .. snapshot.Genome.Connections.Select(c => new ConnectionSnapshotDto(
+                c.InputNodeId.ToString("D"),
+                c.OutputNodeId.ToString("D"),
+                c.Weight,
+                c.Enabled))
+        ];
+
+        return new NetworkSnapshotDto(snapshot.Generation, nodes, connections);
+    }
+
+    private sealed record NodeSnapshotDto(string Id, string NodeType);
+
+    private sealed record ConnectionSnapshotDto(string InputNodeId, string OutputNodeId, double Weight, bool Enabled);
+
+    private sealed record NetworkSnapshotDto(
+        int Generation,
+        IReadOnlyList<NodeSnapshotDto> Nodes,
+        IReadOnlyList<ConnectionSnapshotDto> Connections);
 
     private static string BuildLineChartSvg(
         string title,
