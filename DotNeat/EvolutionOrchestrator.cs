@@ -74,13 +74,26 @@ public sealed class EvolutionOrchestrator(Func<Genome, double> evaluate, Evoluti
 
         for (int generation = 0; generation < _options.GenerationCount; generation++)
         {
-            Dictionary<Guid, double> rawFitness = population.ToDictionary(g => g.GenomeId, g => _evaluate(g));
+            Dictionary<Guid, double> rawFitness = EvaluatePopulationFitness(population);
 
-            Genome generationBest = population
-                .OrderByDescending(g => rawFitness[g.GenomeId])
-                .First();
+            Genome generationBest = population[0];
+            double generationBestFitness = double.MinValue;
+            double totalFitness = 0d;
+            double totalComplexity = 0d;
 
-            double generationBestFitness = rawFitness[generationBest.GenomeId];
+            foreach (Genome genome in population)
+            {
+                double fitness = rawFitness[genome.GenomeId];
+                totalFitness += fitness;
+                totalComplexity += ComputeComplexity(genome);
+
+                if (fitness > generationBestFitness)
+                {
+                    generationBest = genome;
+                    generationBestFitness = fitness;
+                }
+            }
+
             if (generationBestFitness > bestFitness || bestGenome is null)
             {
                 bestFitness = generationBestFitness;
@@ -94,8 +107,8 @@ public sealed class EvolutionOrchestrator(Func<Genome, double> evaluate, Evoluti
                 _options.C2,
                 _options.C3);
 
-            double averageFitness = rawFitness.Values.Average();
-            double averageComplexity = population.Average(ComputeComplexity);
+            double averageFitness = totalFitness / population.Count;
+            double averageComplexity = totalComplexity / population.Count;
             GenerationMetrics metrics = new(generation, generationBestFitness, averageFitness, species.Count, averageComplexity);
             history.Add(metrics);
             onGenerationCompleted?.Invoke(metrics);
@@ -127,6 +140,25 @@ public sealed class EvolutionOrchestrator(Func<Genome, double> evaluate, Evoluti
     {
         int enabledConnections = genome.Connections.Count(c => c.Enabled);
         return genome.Nodes.Count + enabledConnections;
+    }
+
+    private Dictionary<Guid, double> EvaluatePopulationFitness(IReadOnlyList<Genome> population)
+    {
+        int count = population.Count;
+        double[] fitnessValues = new double[count];
+
+        Parallel.For(0, count, i =>
+        {
+            fitnessValues[i] = _evaluate(population[i]);
+        });
+
+        Dictionary<Guid, double> fitnessByGenomeId = new(count);
+        for (int i = 0; i < count; i++)
+        {
+            fitnessByGenomeId[population[i].GenomeId] = fitnessValues[i];
+        }
+
+        return fitnessByGenomeId;
     }
 
     private static Genome CloneGenome(Genome source)
