@@ -46,7 +46,7 @@ public sealed class ModularityExperiment(int seed = 31337) : IExperiment
                     WeightResetMax: 2),
                 InitialGenomeFactory: (rng, tracker) => CreateGenome(rng, tracker, inputA, inputB, output),
                 ModularityLambda: lambda,
-                ModularityScorer: new Func<DotNeat.Genome,double>(DotNeat.ModularityScorer.Score),
+                ModularityScorer: (g) => DotNeat.ModularityScorer.Score(g),
                 Seed: _seed);
 
             SqliteExperimentRunPersistence persistence = new();
@@ -56,15 +56,17 @@ public sealed class ModularityExperiment(int seed = 31337) : IExperiment
                 ConfigJson: ExperimentConfigSerializer.Serialize(options));
 
             EvolutionOrchestrator orchestrator = new(evaluator.Evaluate, options);
+            Genome currentChampion = null;
             EvolutionResult result = orchestrator.Run(
                 onGenerationCompleted: metrics =>
                 {
                     if (metrics.Generation % 10 == 0 || metrics.Generation == options.GenerationCount - 1)
                     {
-                        double modularity = ModularityScorer.Score(result.BestGenome);
+                        double modularity = currentChampion is null ? 0d : DotNeat.ModularityScorer.Score(currentChampion);
                         Console.WriteLine($"{lambda,6} | {metrics.Generation,10} | {metrics.BestFitness,11:F6} | {metrics.AverageFitness,10:F6} | {metrics.SpeciesCount,7} | {metrics.AverageComplexity,13:F2} | {modularity,10:F4}");
                     }
                 },
+                onGenerationChampionCaptured: (metrics, champion) => currentChampion = champion,
                 runPersistence: persistence,
                 runContext: runContext);
 
