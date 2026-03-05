@@ -71,30 +71,35 @@ const edges = computed(() => {
 })
 
 function nodeColor(nodeType: number): string {
-  if (nodeType === 0) return '#2196f3'
-  if (nodeType === 1) return '#ff9800'
-  return '#7e57c2'
+  if (nodeType === 0) return '#1e88e5'
+  if (nodeType === 1) return '#2e7d32'
+  return '#fb8c00'
 }
 
 function edgeColor(weight: number, enabled: boolean): string {
-  if (!enabled) return '#9e9e9e'
-  return weight >= 0 ? '#4caf50' : '#f44336'
+  if (!enabled) return '#b0bec5'
+
+  const magnitude = Math.min(1, Math.abs(weight) / 3)
+  const alpha = 0.35 + 0.65 * magnitude
+  return weight >= 0 ? `rgba(46,125,50,${alpha.toFixed(3)})` : `rgba(198,40,40,${alpha.toFixed(3)})`
 }
 </script>
 
 <template>
-  <v-card title="Champion genome" subtitle="Inputs (blue), hidden (purple), outputs (orange).">
+  <v-card class="h-100 d-flex flex-column" title="Champion genome" subtitle="Inputs (blue), hidden (amber), outputs (green).">
     <template #text>
       <v-alert v-if="!genome" density="compact" type="info" variant="tonal">
         Select a run and generation to visualize the champion topology.
       </v-alert>
-      <svg v-else class="genome-canvas" viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
+      <div v-else class="genome-wrapper">
+        <svg class="genome-canvas" viewBox="0 0 1000 500" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
         <line
           v-for="edge in edges"
           :key="edge.id"
           :stroke="edgeColor(edge.weight, edge.enabled)"
-          :stroke-opacity="edge.enabled ? 0.85 : 0.4"
-          :stroke-width="Math.min(6, Math.max(1.5, Math.abs(edge.weight) * 1.1))"
+          :stroke-opacity="edge.enabled ? 0.9 : 0.7"
+          :stroke-dasharray="edge.enabled ? undefined : '8 6'"
+          :stroke-width="Math.min(9, Math.max(3, Math.abs(edge.weight) * 1.5))"
           :x1="edge.x1 * 1000"
           :x2="edge.x2 * 1000"
           :y1="edge.y1 * 500"
@@ -103,14 +108,12 @@ function edgeColor(weight: number, enabled: boolean): string {
 
         <g v-for="node in positionedNodes" :key="node.id">
           <circle :cx="node.x * 1000" :cy="node.y * 500" :fill="nodeColor(node.type)" r="18" />
-          <text :x="node.x * 1000" :y="node.y * 500 + 4" fill="white" font-size="11" text-anchor="middle">
-            {{ node.id.slice(0, 4) }}
-          </text>
         </g>
-      </svg>
+        </svg>
+      </div>
 
       <div class="legend text-caption mt-2">
-        Green edge = positive weight · Red edge = negative weight · Gray edge = disabled gene.
+        Green edge = positive weight · Red edge = negative weight · Dotted gray edge = disabled gene.
       </div>
     </template>
   </v-card>
@@ -119,13 +122,24 @@ function edgeColor(weight: number, enabled: boolean): string {
 <style scoped>
 .genome-canvas {
   width: 100%;
-  min-height: 360px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  height: 100%;
+  min-height: 220px;
+  border: 1px solid #cfd8dc;
   border-radius: 8px;
-  background: #101217;
+  background: #ffffff;
+}
+
+.genome-wrapper {
+  height: 100%;
 }
 
 .legend {
-  color: rgba(255, 255, 255, 0.7);
+  color: #546e7a;
+}
+
+:deep(.v-card-text) {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 }
 </style>

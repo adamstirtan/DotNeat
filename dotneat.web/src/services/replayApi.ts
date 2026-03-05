@@ -16,3 +16,13 @@ export function fetchRuns(): Promise<ExperimentRun[]> {
 export function fetchGenerations(runId: string): Promise<Generation[]> {
   return fetchJson<Generation[]>(`/api/runs/${encodeURIComponent(runId)}/generations`)
 }
+
+export async function deleteRun(runId: string): Promise<void> {
+  const response = await fetch(`/api/runs/${encodeURIComponent(runId)}`, {
+    method: 'DELETE',
+  })
+
+  if (!response.ok) {
+    throw new Error(`Request failed (${response.status}) for deleting run ${runId}`)
+  }
+}

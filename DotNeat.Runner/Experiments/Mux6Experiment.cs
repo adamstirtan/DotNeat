@@ -1,4 +1,3 @@
-using DotNeat;
 using DotNeat.Runner.Persistence;
 
 namespace DotNeat.Runner.Experiments;
@@ -27,8 +26,8 @@ public sealed class Mux6Experiment : IExperiment
         Guid output = Guid.NewGuid();
 
         EvolutionOptions options = new(
-            PopulationSize: 200,
-            GenerationCount: 200,
+            PopulationSize: 300,
+            GenerationCount: 500,
             CompatibilityThreshold: 3.0,
             C1: 1.0,
             C2: 1.0,

@@ -32,6 +32,19 @@ function withDatabase<T>(operation: (db: InstanceType<typeof BetterSqlite3>) => 
   const db = new BetterSqlite3(dbPath, { readonly: true })
 
   try {
+    db.pragma('foreign_keys = ON')
+    return operation(db)
+  } finally {
+    db.close()
+  }
+}
+
+function withWritableDatabase<T>(operation: (db: InstanceType<typeof BetterSqlite3>) => T): T {
+  ensureDatabase()
+  const db = new BetterSqlite3(dbPath)
+
+  try {
+    db.pragma('foreign_keys = ON')
     return operation(db)
   } finally {
     db.close()
@@ -81,6 +94,23 @@ function createApiMiddleware(): Connect.NextHandleFunction {
 
         res.setHeader('Content-Type', 'application/json')
         res.end(JSON.stringify(generations))
+        return
+      }
+
+      const runDeleteMatch = requestUrl.pathname.match(/^\/api\/runs\/([^/]+)$/)
+      if (runDeleteMatch && req.method === 'DELETE') {
+        const runId = decodeURIComponent(runDeleteMatch[1])
+        const deletedRows = withWritableDatabase((db) => db.prepare('DELETE FROM ExperimentRuns WHERE RunId = ?').run(runId).changes)
+
+        if (deletedRows === 0) {
+          res.statusCode = 404
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify({ error: 'Run not found.' }))
+          return
+        }
+
+        res.statusCode = 204
+        res.end()
         return
       }
 
