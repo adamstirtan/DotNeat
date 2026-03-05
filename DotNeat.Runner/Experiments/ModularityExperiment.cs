@@ -46,7 +46,7 @@ public sealed class ModularityExperiment(int seed = 31337) : IExperiment
                     WeightResetMax: 2),
                 InitialGenomeFactory: (rng, tracker) => CreateGenome(rng, tracker, inputA, inputB, output),
                 ModularityLambda: lambda,
-                ModularityScorer: ModularityScorer.Score,
+                ModularityScorer: new Func<DotNeat.Genome,double>(DotNeat.ModularityScorer.Score),
                 Seed: _seed);
 
             SqliteExperimentRunPersistence persistence = new();
