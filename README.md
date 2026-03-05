@@ -63,6 +63,28 @@ Output path is stable regardless of working directory:
 
 `artifacts/<experiment>/<timestamp-seed>/report.html`
 
+## Web app — Experiment replay
+
+A companion web app (dotneat.web) provides an interactive replay experience for experiment reports, letting you explore champion networks, evolution charts, and history in the browser.
+
+From the repository root:
+
+```bash
+cd dotneat.web
+npm install
+npm run dev
+```
+
+Open the URL shown by the dev server (default: http://localhost:5173) and load a report folder (for example `artifacts/<experiment>/<timestamp-seed>/`). For a production build and preview:
+
+```bash
+npm run build
+npm run preview
+```
+
+The web app reads the same report artifacts emitted by DotNeat.Runner and is intended for teaching, demoing and interactively replaying runs.
+
+
 ## Quick start
 
 From repository root:
