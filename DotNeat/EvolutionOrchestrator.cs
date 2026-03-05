@@ -9,6 +9,8 @@ public sealed record EvolutionOptions(
     double C3,
     ReproductionOptions Reproduction,
     Func<Random, InnovationTracker, Genome> InitialGenomeFactory,
+    double ModularityLambda = 0.0,
+    Func<Genome, double>? ModularityScorer = null,
     int Seed = 12345)
 {
     public void Validate()
@@ -28,9 +30,19 @@ public sealed record EvolutionOptions(
             throw new ArgumentOutOfRangeException(nameof(CompatibilityThreshold), "CompatibilityThreshold must be >= 0.");
         }
 
+        if (ModularityLambda < 0d)
+        {
+            throw new ArgumentOutOfRangeException(nameof(ModularityLambda), "ModularityLambda must be >= 0.");
+        }
+
         ArgumentNullException.ThrowIfNull(Reproduction);
         Reproduction.Validate();
         ArgumentNullException.ThrowIfNull(InitialGenomeFactory);
+
+        if (ModularityScorer is null && ModularityLambda > 0d)
+        {
+            throw new ArgumentException("ModularityLambda > 0 but ModularityScorer is null.", nameof(ModularityScorer));
+        }
     }
 }
 
@@ -189,10 +201,25 @@ public sealed class EvolutionOrchestrator(Func<Genome, double> evaluate, Evoluti
         int count = population.Count;
         double[] fitnessValues = new double[count];
 
-        Parallel.For(0, count, i =>
+        // If modularity is enabled, compute combined fitness = taskFitness + lambda * modularityScore
+        if (_options.ModularityLambda > 0d && _options.ModularityScorer is not null)
         {
-            fitnessValues[i] = _evaluate(population[i]);
-        });
+            double lambda = _options.ModularityLambda;
+
+            Parallel.For(0, count, i =>
+            {
+                double taskFitness = _evaluate(population[i]);
+                double modularity = _options.ModularityScorer!(population[i]);
+                fitnessValues[i] = taskFitness + (lambda * modularity);
+            });
+        }
+        else
+        {
+            Parallel.For(0, count, i =>
+            {
+                fitnessValues[i] = _evaluate(population[i]);
+            });
+        }
 
         Dictionary<Guid, double> fitnessByGenomeId = new(count);
         for (int i = 0; i < count; i++)
