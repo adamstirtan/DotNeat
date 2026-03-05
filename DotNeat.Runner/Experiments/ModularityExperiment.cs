@@ -56,7 +56,7 @@ public sealed class ModularityExperiment(int seed = 31337) : IExperiment
                 ConfigJson: ExperimentConfigSerializer.Serialize(options));
 
             EvolutionOrchestrator orchestrator = new(evaluator.Evaluate, options);
-            Genome currentChampion = null;
+            Genome? currentChampion = null;
             EvolutionResult result = orchestrator.Run(
                 onGenerationCompleted: metrics =>
                 {
