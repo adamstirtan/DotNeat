@@ -2,7 +2,7 @@ using System.Text.Json;
 
 namespace DotNeat.Runner.Persistence;
 
-internal static class ExperimentGenomeSerializer
+public static class ExperimentGenomeSerializer
 {
     public static string Serialize(Genome genome)
     {
