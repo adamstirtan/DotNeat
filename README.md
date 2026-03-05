@@ -2,7 +2,7 @@
 
 DotNeat is a from-scratch NEAT (NeuroEvolution of Augmenting Topologies) implementation in modern C# / .NET.
 
-[![Continuous Integration](https://github.com/adamstirtan/DotNeat/actions/workflows/ci.yaml/badge.svg)](https://github.com/adamstirtan/DotNeat/actions/workflows/ci.yaml)
+[![Continuous Integration](https://github.com/adamstirtan/DotNeat/actions/workflows/ci.yml/badge.svg)](https://github.com/adamstirtan/DotNeat/actions/workflows/ci.yml)
 
 It is designed for:
 
@@ -83,7 +83,6 @@ npm run preview
 ```
 
 The web app reads the same report artifacts emitted by DotNeat.Runner and is intended for teaching, demoing and interactively replaying runs.
-
 
 ## Quick start
 
