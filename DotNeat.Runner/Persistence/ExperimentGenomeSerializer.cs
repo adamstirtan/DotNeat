@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace DotNeat.Runner.Persistence;
 
@@ -29,7 +30,10 @@ public static class ExperimentGenomeSerializer
                     c.InnovationNumber))
             ]);
 
-        return JsonSerializer.Serialize(snapshot);
+        var options = new JsonSerializerOptions();
+        options.Converters.Add(new JsonStringEnumConverter());
+
+        return JsonSerializer.Serialize(snapshot, options);
     }
 
     private sealed record GenomeSnapshot(

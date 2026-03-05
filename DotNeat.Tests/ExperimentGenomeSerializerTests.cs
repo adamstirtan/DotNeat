@@ -1,5 +1,3 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DotNeat.Runner.Persistence;
 using System.Text.Json;
 
 namespace DotNeat.Tests;
@@ -10,19 +8,19 @@ public class ExperimentGenomeSerializerTests
     [TestMethod]
     public void Serialize_outputs_expected_json_structure()
     {
-        var genome = new Genome();
-        var nodeIn = new NodeGene(Guid.NewGuid(), NodeType.Input, new SigmoidActivationFunction(), 0.1);
-        var nodeOut = new NodeGene(Guid.NewGuid(), NodeType.Output, new ReluActivationFunction(), -0.2);
+        Genome genome = new();
+        NodeGene nodeIn = new(Guid.NewGuid(), NodeType.Input, new SigmoidActivationFunction(), 0.1);
+        NodeGene nodeOut = new(Guid.NewGuid(), NodeType.Output, new ReluActivationFunction(), -0.2);
         genome.Nodes.Add(nodeIn);
         genome.Nodes.Add(nodeOut);
 
-        var conn = new ConnectionGene(Guid.NewGuid(), nodeIn.GeneId, nodeOut.GeneId, 0.75, true, 7);
+        ConnectionGene conn = new(Guid.NewGuid(), nodeIn.GeneId, nodeOut.GeneId, 0.75, true, 7);
         genome.Connections.Add(conn);
 
         // Call the now-public serializer directly
         string json = DotNeat.Runner.Persistence.ExperimentGenomeSerializer.Serialize(genome);
 
-        using var doc = JsonDocument.Parse(json);
+        using JsonDocument doc = JsonDocument.Parse(json);
         var root = doc.RootElement;
 
         Assert.IsTrue(root.TryGetProperty("GenomeId", out var gid));
