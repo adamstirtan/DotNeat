@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DotNeat\DotNeat.csproj" />
+    <ProjectReference Include="..\DotNeat.Runner\DotNeat.Runner.csproj" />
   </ItemGroup>
 
   <ItemGroup>
