@@ -19,7 +19,12 @@ public class ExperimentGenomeSerializerTests
         var conn = new ConnectionGene(Guid.NewGuid(), nodeIn.GeneId, nodeOut.GeneId, 0.75, true, 7);
         genome.Connections.Add(conn);
 
-        string json = ExperimentGenomeSerializer.Serialize(genome);
+        // ExperimentGenomeSerializer is internal; call it via reflection from the runner assembly
+        var asm = System.Reflection.Assembly.Load("DotNeat.Runner");
+        var serType = asm.GetType("DotNeat.Runner.Persistence.ExperimentGenomeSerializer");
+        var serializeMethod = serType!.GetMethod("Serialize", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)!;
+        string json = (string)serializeMethod.Invoke(null, new object[] { genome })!;
+
         using var doc = JsonDocument.Parse(json);
         var root = doc.RootElement;
 
@@ -27,8 +32,8 @@ public class ExperimentGenomeSerializerTests
         Assert.IsTrue(root.TryGetProperty("Nodes", out var nodes));
         Assert.IsTrue(root.TryGetProperty("Connections", out var conns));
 
-        Assert.AreEqual(2, nodes.GetArrayLength());
-        Assert.AreEqual(1, conns.GetArrayLength());
+        Assert.IsTrue(nodes.GetArrayLength() == 2);
+        Assert.IsTrue(conns.GetArrayLength() == 1);
 
         var firstNode = nodes[0];
         Assert.AreEqual(nodeIn.GeneId.ToString("D"), firstNode.GetProperty("NodeId").GetString());
@@ -41,7 +46,7 @@ public class ExperimentGenomeSerializerTests
         Assert.AreEqual(conn.InputNodeId.ToString("D"), firstConn.GetProperty("InputNodeId").GetString());
         Assert.AreEqual(conn.OutputNodeId.ToString("D"), firstConn.GetProperty("OutputNodeId").GetString());
         Assert.AreEqual(0.75, firstConn.GetProperty("Weight").GetDouble(), 1e-9);
-        Assert.AreEqual(true, firstConn.GetProperty("Enabled").GetBoolean());
+        Assert.IsTrue(firstConn.GetProperty("Enabled").GetBoolean());
         Assert.AreEqual(7, firstConn.GetProperty("InnovationNumber").GetInt32());
     }
 }
