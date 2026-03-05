@@ -29,8 +29,8 @@ public class ExperimentGenomeSerializerTests
         Assert.IsTrue(root.TryGetProperty("Nodes", out var nodes));
         Assert.IsTrue(root.TryGetProperty("Connections", out var conns));
 
-        Assert.IsTrue(nodes.GetArrayLength() == 2);
-        Assert.IsTrue(conns.GetArrayLength() == 1);
+        Assert.AreEqual(2, nodes.GetArrayLength());
+        Assert.AreEqual(1, conns.GetArrayLength());
 
         var firstNode = nodes[0];
         Assert.AreEqual(nodeIn.GeneId.ToString("D"), firstNode.GetProperty("NodeId").GetString());
