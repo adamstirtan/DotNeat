@@ -4,6 +4,7 @@ public sealed class NeuralNetwork
 {
     private readonly IReadOnlyDictionary<Guid, NodeGene> _nodesById;
     private readonly IReadOnlyDictionary<Guid, IReadOnlyList<ConnectionGene>> _incomingConnectionsByNodeId;
+    private readonly IReadOnlyList<Guid> _topologicalOrderNodeIds;
 
     private NeuralNetwork(
         IReadOnlyDictionary<Guid, NodeGene> nodesById,
@@ -14,8 +15,7 @@ public sealed class NeuralNetwork
     {
         _nodesById = nodesById;
         _incomingConnectionsByNodeId = incomingConnectionsByNodeId;
-        TopologicalOrderNodeIds = topologicalOrderNodeIds;
-
+        _topologicalOrderNodeIds = topologicalOrderNodeIds;
         InputNodeIds = inputNodeIds;
         OutputNodeIds = outputNodeIds;
     }
@@ -24,7 +24,7 @@ public sealed class NeuralNetwork
 
     public IReadOnlyList<Guid> OutputNodeIds { get; }
 
-    public IReadOnlyList<Guid> TopologicalOrderNodeIds { get; }
+    public IReadOnlyList<Guid> TopologicalOrderNodeIds => _topologicalOrderNodeIds;
 
     public static NeuralNetwork FromGenome(Genome genome)
     {
@@ -91,7 +91,7 @@ public sealed class NeuralNetwork
 
         Dictionary<Guid, double> values = [];
 
-        foreach (Guid nodeId in TopologicalOrderNodeIds)
+        foreach (Guid nodeId in _topologicalOrderNodeIds)
         {
             NodeGene node = _nodesById[nodeId];
 
