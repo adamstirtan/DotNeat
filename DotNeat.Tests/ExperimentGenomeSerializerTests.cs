@@ -1,0 +1,47 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using DotNeat.Runner.Persistence;
+using System.Text.Json;
+
+namespace DotNeat.Tests;
+
+[TestClass]
+public class ExperimentGenomeSerializerTests
+{
+    [TestMethod]
+    public void Serialize_outputs_expected_json_structure()
+    {
+        var genome = new Genome();
+        var nodeIn = new NodeGene(Guid.NewGuid(), NodeType.Input, new SigmoidActivationFunction(), 0.1);
+        var nodeOut = new NodeGene(Guid.NewGuid(), NodeType.Output, new ReluActivationFunction(), -0.2);
+        genome.Nodes.Add(nodeIn);
+        genome.Nodes.Add(nodeOut);
+
+        var conn = new ConnectionGene(Guid.NewGuid(), nodeIn.GeneId, nodeOut.GeneId, 0.75, true, 7);
+        genome.Connections.Add(conn);
+
+        string json = ExperimentGenomeSerializer.Serialize(genome);
+        using var doc = JsonDocument.Parse(json);
+        var root = doc.RootElement;
+
+        Assert.IsTrue(root.TryGetProperty("GenomeId", out var gid));
+        Assert.IsTrue(root.TryGetProperty("Nodes", out var nodes));
+        Assert.IsTrue(root.TryGetProperty("Connections", out var conns));
+
+        Assert.AreEqual(2, nodes.GetArrayLength());
+        Assert.AreEqual(1, conns.GetArrayLength());
+
+        var firstNode = nodes[0];
+        Assert.AreEqual(nodeIn.GeneId.ToString("D"), firstNode.GetProperty("NodeId").GetString());
+        Assert.AreEqual("Input", firstNode.GetProperty("NodeType").GetString());
+        Assert.AreEqual("Sigmoid", firstNode.GetProperty("ActivationFunction").GetString());
+        Assert.AreEqual(0.1, firstNode.GetProperty("Bias").GetDouble(), 1e-9);
+
+        var firstConn = conns[0];
+        Assert.AreEqual(conn.GeneId.ToString("D"), firstConn.GetProperty("ConnectionId").GetString());
+        Assert.AreEqual(conn.InputNodeId.ToString("D"), firstConn.GetProperty("InputNodeId").GetString());
+        Assert.AreEqual(conn.OutputNodeId.ToString("D"), firstConn.GetProperty("OutputNodeId").GetString());
+        Assert.AreEqual(0.75, firstConn.GetProperty("Weight").GetDouble(), 1e-9);
+        Assert.AreEqual(true, firstConn.GetProperty("Enabled").GetBoolean());
+        Assert.AreEqual(7, firstConn.GetProperty("InnovationNumber").GetInt32());
+    }
+}
