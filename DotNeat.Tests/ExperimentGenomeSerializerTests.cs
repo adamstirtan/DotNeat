@@ -19,11 +19,8 @@ public class ExperimentGenomeSerializerTests
         var conn = new ConnectionGene(Guid.NewGuid(), nodeIn.GeneId, nodeOut.GeneId, 0.75, true, 7);
         genome.Connections.Add(conn);
 
-        // ExperimentGenomeSerializer is internal; call it via reflection from the runner assembly
-        var asm = System.Reflection.Assembly.Load("DotNeat.Runner");
-        var serType = asm.GetType("DotNeat.Runner.Persistence.ExperimentGenomeSerializer");
-        var serializeMethod = serType!.GetMethod("Serialize", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)!;
-        string json = (string)serializeMethod.Invoke(null, new object[] { genome })!;
+        // Call the now-public serializer directly
+        string json = DotNeat.Runner.Persistence.ExperimentGenomeSerializer.Serialize(genome);
 
         using var doc = JsonDocument.Parse(json);
         var root = doc.RootElement;
