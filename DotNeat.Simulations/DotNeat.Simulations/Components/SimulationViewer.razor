@@ -1,0 +1,62 @@
+@using DotNeat.Simulations.Experiments
+
+<div class="simulation-canvas">
+    <svg viewBox="@GetViewBox()" xmlns="http://www.w3.org/2000/svg">
+        <rect width="@Width" height="@Height" fill="#0f0f0f" />
+        @if (CurrentFrame is { } frame)
+        {
+            @foreach (SimulationEntity entity in frame.Entities)
+            {
+                <circle
+                    cx="@ToCanvasX(entity.X)"
+                    cy="@ToCanvasY(entity.Y)"
+                    r="@entity.Size"
+                    fill="@entity.Color"
+                    opacity="0.75" />
+            }
+
+            @foreach (SimulationActor actor in frame.Actors)
+            {
+                <circle
+                    cx="@ToCanvasX(actor.X)"
+                    cy="@ToCanvasY(actor.Y)"
+                    r="@actor.Size"
+                    fill="@actor.Color" />
+            }
+        }
+    </svg>
+    <p class="frame-description">@CurrentFrame?.Message</p>
+</div>
+
+@code {
+    [Parameter]
+    public SimulationTrace? Trace { get; set; }
+
+    [Parameter]
+    public int FrameIndex { get; set; }
+
+    [Parameter]
+    public double Width { get; set; } = 640;
+
+    [Parameter]
+    public double Height { get; set; } = 320;
+
+    private SimulationFrame? CurrentFrame
+    {
+        get
+        {
+            if (Trace?.Frames is { Count: > 0 } frames && FrameIndex >= 0 && FrameIndex < frames.Count)
+            {
+                return frames[FrameIndex];
+            }
+
+            return null;
+        }
+    }
+
+    private string GetViewBox() => $"0 0 {Width} {Height}";
+
+    private double ToCanvasX(double normalized) => Math.Clamp(normalized, 0d, 1d) * Width;
+
+    private double ToCanvasY(double normalized) => Height - Math.Clamp(normalized, 0d, 1d) * Height;
+}

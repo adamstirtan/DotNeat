@@ -1,0 +1,94 @@
+@page "/simulations/obstacle-navigator"
+@using DotNeat.Simulations.Experiments
+
+<PageTitle>Obstacle Navigator</PageTitle>
+
+<section class="simulation-header">
+    <p class="eyebrow">Medium experiment</p>
+    <h1>Obstacle Navigator</h1>
+    <p>
+        Evolve an agent that hunts for the distant goal while dodging moving obstacles. Visual feedback shows every
+        decision frame as the agent learns to weave through the cluttered world.
+    </p>
+</section>
+
+<div class="toolbar">
+    <button class="primary" disabled="@_session.IsRunning" @onclick="StartSimulationAsync">Run simulation</button>
+    <span class="status-chip">Status: @_session.StatusMessage</span>
+    <span class="status-chip">Seed: @_currentSeed</span>
+    <span class="status-chip">History: @_session.History.Count generations</span>
+</div>
+
+<div class="simulation-stage">
+    <SimulationViewer Trace="@_session.LatestTrace" FrameIndex="@CurrentFrameIndex" Width="720" Height="360" />
+    <div class="playback">
+        <label>Frame @DisplayFrameIndex / @Math.Max(1, FrameCount)</label>
+        <input
+            type="range"
+            min="0"
+            max="@Math.Max(0, FrameCount - 1)"
+            @bind="CurrentFrameIndex"
+            @bind:event="oninput" />
+        <p class="frame-summary">@(_session.LatestTrace?.Summary ?? "Waiting for data...")</p>
+    </div>
+</div>
+
+<section class="metrics">
+    <h2>Generation metrics</h2>
+    @if (_session.History.Count == 0)
+    {
+        <p>No data yet. Run the experiment to gather metrics.</p>
+    }
+    else
+    {
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Gen</th>
+                        <th>Best</th>
+                        <th>Avg</th>
+                        <th>Species</th>
+                        <th>Complexity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (GenerationMetrics metric in _session.History.TakeLast(10))
+                    {
+                        <tr>
+                            <td>@metric.Generation</td>
+                            <td>@metric.BestFitness:F2</td>
+                            <td>@metric.AverageFitness:F2</td>
+                            <td>@metric.SpeciesCount</td>
+                            <td>@metric.AverageComplexity:F1</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>
+
+@code {
+    private readonly SimulationSession _session = new(SimulationCatalog.CreateScenario("obstacle-navigator"));
+    private int _currentFrameIndex;
+    private int _currentSeed = 11123;
+
+    private int FrameCount => _session.LatestTrace?.Frames.Count ?? 0;
+
+    private int DisplayFrameIndex => FrameCount == 0 ? 0 : Math.Clamp(_currentFrameIndex + 1, 1, FrameCount);
+
+    private int CurrentFrameIndex
+    {
+        get => _currentFrameIndex;
+        set => _currentFrameIndex = Math.Clamp(value, 0, Math.Max(0, FrameCount - 1));
+    }
+
+    private async Task StartSimulationAsync()
+    {
+        _currentSeed = Environment.TickCount & int.MaxValue;
+        _currentFrameIndex = 0;
+        await _session.RunAsync(_currentSeed, () => InvokeAsync(StateHasChanged));
+        _currentFrameIndex = Math.Max(0, FrameCount - 1);
+    }
+}

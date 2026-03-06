@@ -1,0 +1,32 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+@page "/"
+@using DotNeat.Simulations.Experiments
+
+<PageTitle>DotNeat Simulations</PageTitle>
+
+<section class="hero">
+    <p class="eyebrow">Neuroevolution experiments</p>
+    <h1>Watch NEAT agents learn in motion</h1>
+    <p class="lead">
+        Each scenario runs a small NEAT experiment inside your browser-backed Blazor host and illustrates how
+        agents adapt to the environment. Select a simulation to start the orchestration, then follow the metrics
+        and animated playback.
+    </p>
+</section>
+
+<section class="simulation-grid">
+    @foreach (SimulationCatalogEntry entry in SimulationCatalog.Entries)
+    {
+        <article class="simulation-card">
+            <header>
+                <span class="badge">@entry.Complexity</span>
+                <h2>@entry.Title</h2>
+            </header>
+            <p>@entry.Description</p>
+            <NavLink class="primary" href="@entry.Route">Launch simulation</NavLink>
+        </article>
+    }
+</section>
