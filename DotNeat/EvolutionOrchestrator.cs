@@ -1,3 +1,6 @@
+using System;
+using System.Threading.Tasks;
+
 namespace DotNeat;
 
 public sealed record EvolutionOptions(
@@ -189,10 +192,20 @@ public sealed class EvolutionOrchestrator(Func<Genome, double> evaluate, Evoluti
         int count = population.Count;
         double[] fitnessValues = new double[count];
 
-        Parallel.For(0, count, i =>
+        if (OperatingSystem.IsBrowser())
         {
-            fitnessValues[i] = _evaluate(population[i]);
-        });
+            for (int i = 0; i < count; i++)
+            {
+                fitnessValues[i] = _evaluate(population[i]);
+            }
+        }
+        else
+        {
+            Parallel.For(0, count, i =>
+            {
+                fitnessValues[i] = _evaluate(population[i]);
+            });
+        }
 
         Dictionary<Guid, double> fitnessByGenomeId = new(count);
         for (int i = 0; i < count; i++)

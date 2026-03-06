@@ -1,5 +1,7 @@
 <Solution>
   <Project Path="DotNeat.Runner/DotNeat.Runner.csproj" />
+  <Project Path="DotNeat.Simulations/DotNeat.Simulations.Client/DotNeat.Simulations.Client.csproj" Id="b8c247f8-d8a2-4130-bb77-fe4a38f3677b" />
+  <Project Path="DotNeat.Simulations/DotNeat.Simulations/DotNeat.Simulations.csproj" Id="19ae8c7c-b424-4738-af95-3e9250a721be" />
   <Project Path="DotNeat.Tests/DotNeat.Tests.csproj" Id="f7f537e5-fca7-4b7e-b772-b8017263f981" />
   <Project Path="dotneat.web/dotneat.web.esproj">
     <Build />

@@ -74,7 +74,11 @@ public sealed class SimulationSession
 
     private static void Notify(Func<Task>? notifyStateChanged)
     {
-        Task? notifyTask = notifyStateChanged?.Invoke();
-        notifyTask?.GetAwaiter().GetResult();
+        // Invoke the UI notification asynchronously and do not block the caller.
+        // Blocking here (e.g. via GetAwaiter().GetResult) can deadlock in single-threaded
+        // environments such as Blazor WebAssembly because the UI callback runs on the
+        // synchronization context that the caller may be occupying. Fire-and-forget
+        // the task so background work can continue and the UI update will be scheduled.
+        _ = notifyStateChanged?.Invoke();
     }
 }
