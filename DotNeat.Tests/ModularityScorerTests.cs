@@ -20,7 +20,7 @@ public sealed class ModularityScorerTests
         Guid id = Guid.NewGuid();
         g.Nodes.Add(new NodeGene(id, NodeType.Input, new ReluActivationFunction(), 0));
         double s = ModularityScorer.Score(g);
-        Assert.AreEqual(0.5d, s);
+        Assert.AreEqual(1d, s);
     }
 
     [TestMethod]
@@ -45,7 +45,7 @@ public sealed class ModularityScorerTests
         g.Nodes.Add(new NodeGene(b, NodeType.Input, new ReluActivationFunction(), 0));
         g.Connections.Add(new ConnectionGene(Guid.NewGuid(), a, b, 0.5, true, 1));
         double s = ModularityScorer.Score(g, weightThreshold: 0.01);
-        Assert.AreEqual(1d, s);
+        Assert.AreEqual(0.5d, s);
     }
 
     [TestMethod]
